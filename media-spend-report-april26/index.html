@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Makeen — Campaign Spend Report (Apr 1–26, 2026)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --navy:    #0c0e1d;
+      --yellow:  #ffc409;
+      --teal:    #96c7c3;
+      --teal-dk: #3a8a86;
+      --blue:    #4a7db0;
+      --blue-dk: #2d5480;
+      --bg:      #f3f4f9;
+      --card:    #ffffff;
+      --border:  #e2e4ef;
+      --text:    #0c0e1d;
+      --muted:   #7c7f96;
+      --meta:    #1877f2;
+      --google:  #ea4335;
+      --tiktok:  #000000;
+      --snap:    #fffc00;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Baloo Bhaijaan 2', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 48px 32px 80px;
+    }
+    .page { max-width: 1180px; margin: 0 auto; }
+
+    /* ── HEADER ── */
+    .header {
+      background: var(--navy);
+      border-radius: 18px;
+      padding: 32px 36px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--yellow);
+      line-height: 1.1;
+    }
+    .header .sub {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.95rem;
+      margin-top: 5px;
+    }
+    .header-right { text-align: right; }
+    .rdate {
+      color: rgba(255,255,255,0.35);
+      font-size: .8rem;
+      margin-top: 8px;
+    }
+    .badge-ar {
+      display: inline-block;
+      background: rgba(255,196,9,0.15);
+      color: var(--yellow);
+      border: 1px solid rgba(255,196,9,0.4);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      margin-bottom: 6px;
+    }
+
+    /* ── CONTEXT NOTE ── */
+    .context-note {
+      background: #fafbff;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue);
+      border-radius: 12px;
+      padding: 16px 22px;
+      margin-bottom: 24px;
+      font-size: .88rem;
+      line-height: 1.7;
+      color: #4a4d63;
+    }
+    .context-note strong { color: var(--navy); }
+
+    /* ── KPI CARDS ── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .kpi {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 22px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      border-radius: 14px 0 0 14px;
+    }
+    .kpi.k-yellow::before { background: var(--yellow); }
+    .kpi.k-navy::before   { background: var(--navy); }
+    .kpi.k-teal::before   { background: var(--teal); }
+    .kpi.k-blue::before   { background: var(--blue); }
+
+    .kpi-lbl {
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .kpi-val { font-size: 2rem; font-weight: 800; line-height: 1; }
+    .kpi-val.y  { color: #b08900; }
+    .kpi-val.n  { color: var(--navy); }
+    .kpi-val.t  { color: var(--teal-dk); }
+    .kpi-val.p  { color: var(--blue-dk); }
+    .kpi-sub { font-size: .72rem; color: var(--muted); margin-top: 6px; }
+
+    /* ── SECTION TITLE ── */
+    .stitle {
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin: 32px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .stitle::after { content:''; flex:1; height:1px; background:var(--border); }
+
+    /* ── PLATFORM HEADER STRIP ── */
+    .platform-strip {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 0;
+      padding: 14px 22px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px 14px 0 0;
+      border-bottom: 0;
+    }
+    .platform-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .platform-icon.meta   { background: linear-gradient(135deg, #1877f2, #3b5998); }
+    .platform-icon.google { background: linear-gradient(135deg, #ea4335, #fbbc04); }
+    .platform-icon.tiktok { background: linear-gradient(135deg, #000, #25f4ee); }
+    .platform-icon.snap   { background: linear-gradient(135deg, #fffc00, #f5a623); color: #000; }
+    .platform-info h3 { font-size: 1.05rem; font-weight: 800; color: var(--navy); }
+    .platform-info .meta-line { font-size: .78rem; color: var(--muted); margin-top: 2px; }
+    .platform-totals {
+      margin-left: auto;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    .pt-block { text-align: right; }
+    .pt-block .pt-lbl { font-size: .65rem; color: var(--muted); text-transform: uppercase; letter-spacing: .09em; font-weight: 700; }
+    .pt-block .pt-val { font-size: 1.05rem; font-weight: 800; color: var(--navy); }
+
+    /* ── TABLE WRAPPER ── */
+    .tbl-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0 0 14px 14px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .tbl-wrap.solo { border-radius: 14px; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--navy); }
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: rgba(255,255,255,.7);
+      white-space: nowrap;
+    }
+    th.r, td.r { text-align: right; }
+    th.c, td.c { text-align: center; }
+    td {
+      padding: 13px 16px;
+      font-size: .88rem;
+      border-top: 1px solid var(--border);
+      color: var(--text);
+    }
+    tbody tr:hover td { background: #f8f9fd; }
+    tfoot tr td {
+      border-top: 2px solid var(--border);
+      background: #fafbff;
+      font-weight: 800;
+    }
+
+    .pname { font-weight:700; }
+    .pname-ar { font-size: .82rem; color: var(--muted); margin-top:1px; direction:rtl; }
+    .project-cell { display:flex; flex-direction:column; }
+    .project-cell .proj-ar { font-weight: 700; color: var(--navy); direction: rtl; text-align: left; }
+    .project-cell .proj-en { font-size: .72rem; color: var(--muted); margin-top: 1px; }
+
+    .chip {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: .67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .chip-active { background: #eef8f7; color: var(--teal-dk); border: 1px solid #b0d8d5; }
+    .chip-off    { background: #f2f3f8; color: var(--muted); border: 1px solid var(--border); }
+    .chip-paused { background: #fff8e0; color: #8a6500; border: 1px solid #f0d060; }
+    .chip-na     { background: #fde8e8; color: #b3261e; border: 1px solid #f4b8b8; }
+    .chip-cap    { background: #eef3f9; color: var(--blue-dk); border: 1px solid #bfd2e6; }
+
+    /* mini bar in table */
+    .mini-bg   { width:90px; height:6px; background:#eaecf6; border-radius:3px; overflow:hidden; display:inline-block; vertical-align:middle; }
+    .mini-fill { height:100%; border-radius:3px; }
+
+    /* ── INACTIVE PLATFORM CARD ── */
+    .inactive-card {
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+    .inactive-card .platform-icon { width: 44px; height: 44px; font-size: 1.1rem; opacity: .85; }
+    .inactive-card .ic-info h3 { font-size: 1rem; font-weight: 800; color: var(--navy); }
+    .inactive-card .ic-info p {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.55;
+      max-width: 720px;
+    }
+    .inactive-card .ic-status {
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    /* ── CHART SECTION ── */
+    .chart-row { display:grid; grid-template-columns:3fr 2fr; gap:16px; margin-bottom:24px; }
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 26px;
+    }
+    .chart-lbl {
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .chart-wrap { position: relative; height: 380px; }
+    .chart-wrap.tall { height: 460px; }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+      font-size: .74rem;
+    }
+
+    @media(max-width:900px){
+      .kpi-row { grid-template-columns: repeat(2,1fr); }
+      .chart-row { grid-template-columns: 1fr; }
+      .platform-totals { gap: 14px; }
+      table { font-size: .82rem; }
+      th, td { padding: 10px 10px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <span class="badge-ar">مكين · MAKEEN</span>
+      <h1>Campaign Spend Report</h1>
+      <div class="sub">Spend &amp; results by campaign &nbsp;·&nbsp; Apr 1 – Apr 26, 2026 (26 days)</div>
+    </div>
+    <div class="header-right">
+      <div class="rdate">Report date: April 26, 2026</div>
+    </div>
+  </div>
+
+  <!-- CONTEXT NOTE -->
+  <div class="context-note">
+    <strong>Scope:</strong> This report is filtered to campaigns that <strong>actually delivered</strong> (had impressions/spend) during Apr 1–26, 2026, broken down by platform and by real estate project. Paused or zero-delivery campaigns are excluded. Figures are presented in Saudi Riyals (SAR) at the pegged rate of 3.75 SAR per USD; native USD values from each ad platform are kept in the muted right column. This report does <em>not</em> compare against a target/PO budget — it focuses on what each campaign spent and what it produced.
+  </div>
+
+  <!-- KPI CARDS -->
+  <div class="kpi-row">
+    <div class="kpi k-yellow">
+      <div class="kpi-lbl">Delivered Campaigns</div>
+      <div class="kpi-val y">18</div>
+      <div class="kpi-sub">8 Meta &middot; 2 Google &middot; 8 Snapchat &middot; 8 projects</div>
+    </div>
+    <div class="kpi k-navy">
+      <div class="kpi-lbl">Total Spend (Apr 1–26)</div>
+      <div class="kpi-val n">90,774</div>
+      <div class="kpi-sub">SAR &middot; $24,206 USD &middot; 3 active platforms</div>
+    </div>
+    <div class="kpi k-teal">
+      <div class="kpi-lbl">Total Leads (Meta + Snap)</div>
+      <div class="kpi-val t">4,251</div>
+      <div class="kpi-sub">Form leads &middot; blended CPL 15.36 SAR</div>
+    </div>
+    <div class="kpi k-blue">
+      <div class="kpi-lbl">Total Clicks (Google)</div>
+      <div class="kpi-val p">4,042</div>
+      <div class="kpi-sub">Search clicks &middot; blended CPC 6.30 SAR</div>
+    </div>
+  </div>
+
+  <!-- ───────────────── SNAPCHAT ───────────────── -->
+  <div class="stitle">Platform 1 — Snapchat Ads (largest spend)</div>
+
+  <div class="platform-strip">
+    <div class="platform-icon snap">S</div>
+    <div class="platform-info">
+      <h3>Snapchat · Lead Generation Campaigns</h3>
+      <div class="meta-line">8 campaigns delivered · 1 ad account (TTP — Makeen Ad Account)</div>
+    </div>
+    <div class="platform-totals">
+      <div class="pt-block"><div class="pt-lbl">Spend</div><div class="pt-val">39,951 SAR</div></div>
+      <div class="pt-block"><div class="pt-lbl">Leads</div><div class="pt-val">2,727</div></div>
+      <div class="pt-block"><div class="pt-lbl">Avg. CPL</div><div class="pt-val">14.65 SAR</div></div>
+      <div class="pt-block"><div class="pt-lbl">Impr.</div><div class="pt-val">1,450,749</div></div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Campaign / Project</th>
+          <th class="c">Status</th>
+          <th class="r">Leads</th>
+          <th class="r">Spend (SAR)</th>
+          <th class="r">CPL (SAR)</th>
+          <th class="r">Impr.</th>
+          <th class="r">Clicks</th>
+          <th class="r">eCPC (SAR)</th>
+          <th class="r">Spend (USD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">طليعة المشرقية</div><div class="proj-en">Talee'at Al Mushriqiyah — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="r">1,319</td>
+          <td class="r">14,479.99</td>
+          <td class="r" style="color:var(--teal-dk);font-weight:700">10.98</td>
+          <td class="r">740,677</td>
+          <td class="r">18,197</td>
+          <td class="r">0.79</td>
+          <td class="r" style="color:var(--muted)">$3,861.33</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 72</div><div class="proj-en">Makeen 72 — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-off">Inactive</span></td>
+          <td class="r">505</td>
+          <td class="r">7,175.10</td>
+          <td class="r" style="color:var(--teal-dk);font-weight:700">14.21</td>
+          <td class="r">352,345</td>
+          <td class="r">10,529</td>
+          <td class="r">0.68</td>
+          <td class="r" style="color:var(--muted)">$1,913.36</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع سما مكين</div><div class="proj-en">Sama Makeen — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="r">404</td>
+          <td class="r">5,445.00</td>
+          <td class="r" style="color:var(--teal-dk);font-weight:700">13.48</td>
+          <td class="r">92,285</td>
+          <td class="r">3,467</td>
+          <td class="r">1.57</td>
+          <td class="r" style="color:var(--muted)">$1,452.00</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 85</div><div class="proj-en">Makeen 85 — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="r">338</td>
+          <td class="r">3,750.00</td>
+          <td class="r" style="color:var(--teal-dk);font-weight:700">11.09</td>
+          <td class="r">74,658</td>
+          <td class="r">1,291</td>
+          <td class="r">2.90</td>
+          <td class="r" style="color:var(--muted)">$1,000.00</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 63 — حي العارض</div><div class="proj-en">Makeen 63 (Al Arid) — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="r">77</td>
+          <td class="r">3,345.00</td>
+          <td class="r">43.44</td>
+          <td class="r">54,271</td>
+          <td class="r">913</td>
+          <td class="r">3.66</td>
+          <td class="r" style="color:var(--muted)">$892.00</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مكين 68 — حي الريان</div><div class="proj-en">Makeen 68 (Al Rayyan) — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="r">40</td>
+          <td class="r">2,850.00</td>
+          <td class="r">71.25</td>
+          <td class="r">76,704</td>
+          <td class="r">1,366</td>
+          <td class="r">2.09</td>
+          <td class="r" style="color:var(--muted)">$760.00</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 64 — حي العارض</div><div class="proj-en">Makeen 64 (Al Arid) — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="r">30</td>
+          <td class="r">2,066.25</td>
+          <td class="r">68.88</td>
+          <td class="r">41,167</td>
+          <td class="r">691</td>
+          <td class="r">2.99</td>
+          <td class="r" style="color:var(--muted)">$551.00</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 80</div><div class="proj-en">Makeen 80 — Leads Campaign (Copy)</div></div></td>
+          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="r">14</td>
+          <td class="r">840.00</td>
+          <td class="r">60.00</td>
+          <td class="r">18,642</td>
+          <td class="r">242</td>
+          <td class="r">3.47</td>
+          <td class="r" style="color:var(--muted)">$224.00</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>SNAPCHAT TOTAL · 8 campaigns</td>
+          <td class="c"></td>
+          <td class="r">2,727</td>
+          <td class="r">39,951.34</td>
+          <td class="r">14.65</td>
+          <td class="r">1,450,749</td>
+          <td class="r">36,696</td>
+          <td class="r">1.09</td>
+          <td class="r" style="color:var(--muted)">$10,653.69</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- ───────────────── META / FACEBOOK ───────────────── -->
+  <div class="stitle">Platform 2 — Meta (Facebook + Instagram)</div>
+
+  <div class="platform-strip">
+    <div class="platform-icon meta">f</div>
+    <div class="platform-info">
+      <h3>Meta · Lead Generation Campaigns</h3>
+      <div class="meta-line">8 campaigns delivered · 1 ad account (TTP | Makeen)</div>
+    </div>
+    <div class="platform-totals">
+      <div class="pt-block"><div class="pt-lbl">Spend</div><div class="pt-val">25,380 SAR</div></div>
+      <div class="pt-block"><div class="pt-lbl">Leads</div><div class="pt-val">1,524</div></div>
+      <div class="pt-block"><div class="pt-lbl">Avg. CPL</div><div class="pt-val">16.65 SAR</div></div>
+      <div class="pt-block"><div class="pt-lbl">Reach</div><div class="pt-val">493,125</div></div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Campaign / Project</th>
+          <th class="c">Status</th>
+          <th class="r">Leads</th>
+          <th class="r">Spend (SAR)</th>
+          <th class="r">CPL (SAR)</th>
+          <th class="r">Impr.</th>
+          <th class="r">Reach</th>
+          <th class="r">Spend (USD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">طليعة المشرقية</div><div class="proj-en">Talee'at Al Mushriqiyah — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-off">Off (Delivered)</span></td>
+          <td class="r">755</td>
+          <td class="r">10,611.19</td>
+          <td class="r" style="color:var(--teal-dk);font-weight:700">14.05</td>
+          <td class="r">583,114</td>
+          <td class="r">229,177</td>
+          <td class="r" style="color:var(--muted)">$2,829.65</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 72</div><div class="proj-en">Makeen 72 — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-off">Off (Delivered)</span></td>
+          <td class="r">241</td>
+          <td class="r">5,384.66</td>
+          <td class="r">22.34</td>
+          <td class="r">211,935</td>
+          <td class="r">115,901</td>
+          <td class="r" style="color:var(--muted)">$1,435.91</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">سنا مكين</div><div class="proj-en">Sana Makeen — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="r">183</td>
+          <td class="r">2,624.44</td>
+          <td class="r" style="color:var(--teal-dk);font-weight:700">14.34</td>
+          <td class="r">133,456</td>
+          <td class="r">66,702</td>
+          <td class="r" style="color:var(--muted)">$699.85</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 85</div><div class="proj-en">Makeen 85 — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-off">Off (Delivered)</span></td>
+          <td class="r">218</td>
+          <td class="r">1,874.81</td>
+          <td class="r" style="color:var(--teal-dk);font-weight:700">8.60</td>
+          <td class="r">50,274</td>
+          <td class="r">26,554</td>
+          <td class="r" style="color:var(--muted)">$499.95</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 63</div><div class="proj-en">Makeen 63 — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="r">57</td>
+          <td class="r">1,817.96</td>
+          <td class="r">31.89</td>
+          <td class="r">34,126</td>
+          <td class="r">17,861</td>
+          <td class="r" style="color:var(--muted)">$484.79</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 64</div><div class="proj-en">Makeen 64 — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="r">35</td>
+          <td class="r">1,502.48</td>
+          <td class="r">42.93</td>
+          <td class="r">12,763</td>
+          <td class="r">7,860</td>
+          <td class="r" style="color:var(--muted)">$400.66</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 80</div><div class="proj-en">Makeen 80 — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="r">27</td>
+          <td class="r">1,267.24</td>
+          <td class="r">46.93</td>
+          <td class="r">34,836</td>
+          <td class="r">25,133</td>
+          <td class="r" style="color:var(--muted)">$337.93</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مكين 68 — حي الريان</div><div class="proj-en">Makeen 68 (Al Rayyan) — Leads Campaign</div></div></td>
+          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="r">8</td>
+          <td class="r">296.96</td>
+          <td class="r">37.12</td>
+          <td class="r">7,617</td>
+          <td class="r">3,937</td>
+          <td class="r" style="color:var(--muted)">$79.19</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>META TOTAL · 8 campaigns</td>
+          <td class="c"></td>
+          <td class="r">1,524</td>
+          <td class="r">25,379.74</td>
+          <td class="r">16.65</td>
+          <td class="r">1,068,121</td>
+          <td class="r">493,125</td>
+          <td class="r" style="color:var(--muted)">$6,767.93</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- ───────────────── GOOGLE ADS ───────────────── -->
+  <div class="stitle">Platform 3 — Google Ads</div>
+
+  <div class="platform-strip">
+    <div class="platform-icon google">G</div>
+    <div class="platform-info">
+      <h3>Google Ads · Search (Website Traffic)</h3>
+      <div class="meta-line">2 campaigns delivered · 1 ad account (TTP — Makeen Ad Account)</div>
+    </div>
+    <div class="platform-totals">
+      <div class="pt-block"><div class="pt-lbl">Spend</div><div class="pt-val">25,443 SAR</div></div>
+      <div class="pt-block"><div class="pt-lbl">Clicks</div><div class="pt-val">4,042</div></div>
+      <div class="pt-block"><div class="pt-lbl">Avg. CPC</div><div class="pt-val">6.30 SAR</div></div>
+      <div class="pt-block"><div class="pt-lbl">Impr.</div><div class="pt-val">53,607</div></div>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Campaign</th>
+          <th class="c">Status</th>
+          <th class="c">Type</th>
+          <th class="r">Clicks</th>
+          <th class="r">Impr.</th>
+          <th class="r">CTR</th>
+          <th class="r">Spend (SAR)</th>
+          <th class="r">Avg. CPC (SAR)</th>
+          <th class="r">Spend (USD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="pname">Website Traffic Search · CPC · April · $2,666</div><div class="pname-ar" dir="ltr" style="color:var(--muted);font-size:.72rem;">Account-wide brand &amp; project traffic</div></td>
+          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="c">Search</td>
+          <td class="r">2,121</td>
+          <td class="r">25,985</td>
+          <td class="r">8.16%</td>
+          <td class="r">14,013.90</td>
+          <td class="r">6.61</td>
+          <td class="r" style="color:var(--muted)">$3,737.04</td>
+        </tr>
+        <tr>
+          <td><div class="pname">Website Traffic Search · Top Page · April · $2,666</div><div class="pname-ar" dir="ltr" style="color:var(--muted);font-size:.72rem;">Top-of-page impression-share campaign</div></td>
+          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="c">Search</td>
+          <td class="r">1,921</td>
+          <td class="r">27,622</td>
+          <td class="r">6.95%</td>
+          <td class="r">11,428.84</td>
+          <td class="r">5.95</td>
+          <td class="r" style="color:var(--muted)">$3,047.69</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>GOOGLE TOTAL · 2 campaigns</td>
+          <td class="c"></td>
+          <td class="c"></td>
+          <td class="r">4,042</td>
+          <td class="r">53,607</td>
+          <td class="r">7.54%</td>
+          <td class="r">25,442.78</td>
+          <td class="r">6.30</td>
+          <td class="r" style="color:var(--muted)">$6,784.74</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- ───────────────── INACTIVE PLATFORMS ───────────────── -->
+  <div class="stitle">Platforms not currently running</div>
+
+  <div class="inactive-card">
+    <div class="platform-icon tiktok">TT</div>
+    <div class="ic-info">
+      <h3>TikTok Ads</h3>
+      <p>No paid campaigns are currently running on TikTok during this reporting window. Spend for Apr 1–26, 2026 = <strong>0 SAR</strong>. The platform is included here for completeness — re-activation can be planned in the next media cycle if priorities shift.</p>
+    </div>
+    <div class="ic-status"><span class="chip chip-paused">Not Running</span></div>
+  </div>
+
+  <!-- ───────────────── PROJECT-LEVEL ROLLUP (META + SNAPCHAT) ───────────────── -->
+  <div class="stitle">Project-level Rollup — Meta + Snapchat (paid leads by real estate project)</div>
+  <div class="tbl-wrap solo">
+    <table>
+      <thead>
+        <tr>
+          <th>Real Estate Project</th>
+          <th class="c">Platforms</th>
+          <th class="r">Meta Spend</th>
+          <th class="r">Snap Spend</th>
+          <th class="r">Total Spend (SAR)</th>
+          <th class="r">% of Total</th>
+          <th class="r">Total Leads</th>
+          <th class="r">Blended CPL (SAR)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">طليعة المشرقية</div><div class="proj-en">Talee'at Al Mushriqiyah</div></div></td>
+          <td class="c">Meta · Snap</td>
+          <td class="r">10,611.19</td>
+          <td class="r">14,479.99</td>
+          <td class="r" style="font-weight:700">25,091.18</td>
+          <td class="r">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
+              <div class="mini-bg"><div class="mini-fill" style="width:38.4%;background:var(--blue);"></div></div>
+              <span style="font-weight:700;color:var(--blue-dk)">38.4%</span>
+            </div>
+          </td>
+          <td class="r">2,074</td>
+          <td class="r" style="color:var(--teal-dk);font-weight:700">12.10</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 72</div><div class="proj-en">Makeen 72</div></div></td>
+          <td class="c">Meta · Snap</td>
+          <td class="r">5,384.66</td>
+          <td class="r">7,175.10</td>
+          <td class="r" style="font-weight:700">12,559.76</td>
+          <td class="r">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
+              <div class="mini-bg"><div class="mini-fill" style="width:19.2%;background:var(--blue);"></div></div>
+              <span style="font-weight:700;color:var(--blue-dk)">19.2%</span>
+            </div>
+          </td>
+          <td class="r">746</td>
+          <td class="r" style="color:var(--teal-dk);font-weight:700">16.84</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">سنا / سما مكين</div><div class="proj-en">Sana / Sama Makeen *</div></div></td>
+          <td class="c">Meta · Snap</td>
+          <td class="r">2,624.44</td>
+          <td class="r">5,445.00</td>
+          <td class="r" style="font-weight:700">8,069.44</td>
+          <td class="r">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
+              <div class="mini-bg"><div class="mini-fill" style="width:12.4%;background:var(--blue);"></div></div>
+              <span style="font-weight:700;color:var(--blue-dk)">12.4%</span>
+            </div>
+          </td>
+          <td class="r">587</td>
+          <td class="r" style="color:var(--teal-dk);font-weight:700">13.74</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 85</div><div class="proj-en">Makeen 85</div></div></td>
+          <td class="c">Meta · Snap</td>
+          <td class="r">1,874.81</td>
+          <td class="r">3,750.00</td>
+          <td class="r" style="font-weight:700">5,624.81</td>
+          <td class="r">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
+              <div class="mini-bg"><div class="mini-fill" style="width:8.6%;background:var(--blue);"></div></div>
+              <span style="font-weight:700;color:var(--blue-dk)">8.6%</span>
+            </div>
+          </td>
+          <td class="r">556</td>
+          <td class="r" style="color:var(--teal-dk);font-weight:700">10.12</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 63</div><div class="proj-en">Makeen 63</div></div></td>
+          <td class="c">Meta · Snap</td>
+          <td class="r">1,817.96</td>
+          <td class="r">3,345.00</td>
+          <td class="r" style="font-weight:700">5,162.96</td>
+          <td class="r">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
+              <div class="mini-bg"><div class="mini-fill" style="width:7.9%;background:var(--blue);"></div></div>
+              <span style="font-weight:700;color:var(--blue-dk)">7.9%</span>
+            </div>
+          </td>
+          <td class="r">134</td>
+          <td class="r">38.53</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مكين 68 — حي الريان</div><div class="proj-en">Makeen 68 (Al Rayyan)</div></div></td>
+          <td class="c">Meta · Snap</td>
+          <td class="r">296.96</td>
+          <td class="r">2,850.00</td>
+          <td class="r" style="font-weight:700">3,146.96</td>
+          <td class="r">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
+              <div class="mini-bg"><div class="mini-fill" style="width:4.8%;background:var(--blue);"></div></div>
+              <span style="font-weight:700;color:var(--blue-dk)">4.8%</span>
+            </div>
+          </td>
+          <td class="r">48</td>
+          <td class="r">65.56</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 64</div><div class="proj-en">Makeen 64</div></div></td>
+          <td class="c">Meta · Snap</td>
+          <td class="r">1,502.48</td>
+          <td class="r">2,066.25</td>
+          <td class="r" style="font-weight:700">3,568.73</td>
+          <td class="r">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
+              <div class="mini-bg"><div class="mini-fill" style="width:5.5%;background:var(--blue);"></div></div>
+              <span style="font-weight:700;color:var(--blue-dk)">5.5%</span>
+            </div>
+          </td>
+          <td class="r">65</td>
+          <td class="r">54.90</td>
+        </tr>
+        <tr>
+          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 80</div><div class="proj-en">Makeen 80</div></div></td>
+          <td class="c">Meta · Snap</td>
+          <td class="r">1,267.24</td>
+          <td class="r">840.00</td>
+          <td class="r" style="font-weight:700">2,107.24</td>
+          <td class="r">
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
+              <div class="mini-bg"><div class="mini-fill" style="width:3.2%;background:var(--blue);"></div></div>
+              <span style="font-weight:700;color:var(--blue-dk)">3.2%</span>
+            </div>
+          </td>
+          <td class="r">41</td>
+          <td class="r">51.40</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>TOTAL · 8 projects</td>
+          <td class="c"></td>
+          <td class="r">25,379.74</td>
+          <td class="r">39,951.34</td>
+          <td class="r">65,331.08</td>
+          <td class="r">100%</td>
+          <td class="r">4,251</td>
+          <td class="r">15.37</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div class="context-note" style="margin-top:14px;">
+    <strong>* Note on سنا / سما:</strong> Meta uses the campaign label "سنا مكين" (Sana) while Snapchat uses "سما مكين" (Sama). These appear to be naming variants of the same project; if they are distinct projects please flag and the rollup will be split. <strong>Note on Google Ads:</strong> The two delivered Google Search campaigns are account-wide traffic / top-page campaigns (not project-specific), so their <strong>25,443 SAR</strong> spend and 4,042 site clicks are reported separately and not split per project above.
+  </div>
+
+  <!-- ───────────────── CHARTS ───────────────── -->
+  <div class="stitle">Visual Analysis</div>
+  <div class="chart-row">
+    <div class="chart-card">
+      <div class="chart-lbl">Total Spend by Project — Meta + Snapchat (SAR)</div>
+      <div class="chart-wrap tall"><canvas id="projectBar"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-lbl">Spend Mix by Platform</div>
+      <div class="chart-wrap tall"><canvas id="platformPie"></canvas></div>
+    </div>
+  </div>
+
+  <div class="chart-row" style="grid-template-columns: 1fr;">
+    <div class="chart-card">
+      <div class="chart-lbl">Cost per Lead by Project — Meta + Snapchat blended (SAR, lower is better)</div>
+      <div class="chart-wrap"><canvas id="cplBar"></canvas></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Makeen Campaign Spend Report &nbsp;&middot;&nbsp; Apr 1 – Apr 26, 2026 &nbsp;&middot;&nbsp; Prepared April 26, 2026 &nbsp;&middot;&nbsp; Currency: SAR (USD shown in muted columns) &nbsp;&middot;&nbsp; Scope: campaigns with delivery only
+  </div>
+
+</div><!-- /page -->
+
+<script>
+const NAVY    = '#0c0e1d';
+const TEAL    = '#96c7c3';
+const TDARK   = '#3a8a86';
+const BLUE    = '#4a7db0';
+const BDARK   = '#2d5480';
+const META_C  = '#1877f2';
+const GOOGLE_C= '#ea4335';
+const SNAP_C  = '#fbbc04';
+const SNAP_DK = '#b08900';
+
+// ── CHART 1: Spend by Project (stacked) ──────────────────────────────────
+const projectLabels = [
+  'طليعة المشرقية',
+  'مكين 72',
+  'سنا / سما مكين',
+  'مكين 85',
+  'مكين 63',
+  'مكين 64',
+  'مكين 68 الريان',
+  'مكين 80'
+];
+const metaSpend = [10611.19, 5384.66, 2624.44, 1874.81, 1817.96, 1502.48, 296.96, 1267.24];
+const snapSpend = [14479.99, 7175.10, 5445.00, 3750.00, 3345.00, 2066.25, 2850.00, 840.00];
+
+new Chart(document.getElementById('projectBar').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: projectLabels,
+    datasets: [
+      {
+        label: 'Meta',
+        data: metaSpend,
+        backgroundColor: 'rgba(24,119,242,0.75)',
+        borderColor: META_C,
+        borderWidth: 1.5,
+        borderRadius: 4,
+      },
+      {
+        label: 'Snapchat',
+        data: snapSpend,
+        backgroundColor: 'rgba(251,188,4,0.85)',
+        borderColor: SNAP_DK,
+        borderWidth: 1.5,
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          color: '#7c7f96',
+          font: { family:'Baloo Bhaijaan 2', size:11 },
+          boxWidth: 12, padding: 16,
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toLocaleString(undefined,{maximumFractionDigits:2})} SAR`
+        }
+      }
+    },
+    scales: {
+      x: {
+        stacked: true,
+        ticks: {
+          color:'#7c7f96',
+          font:{ family:'Baloo Bhaijaan 2', size:11 },
+          callback: v => (v>=1000 ? (v/1000).toFixed(0)+'K' : v)
+        },
+        grid: { color:'rgba(0,0,0,0.05)' }
+      },
+      y: {
+        stacked: true,
+        ticks: { color:'#7c7f96', font:{ family:'Baloo Bhaijaan 2', size:11 } },
+        grid:  { display:false }
+      }
+    }
+  }
+});
+
+// ── CHART 2: Platform Mix (donut) ────────────────────────────────────────
+new Chart(document.getElementById('platformPie').getContext('2d'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Snapchat', 'Google Ads', 'Meta'],
+    datasets: [{
+      data: [39951.34, 25442.78, 25379.74],
+      backgroundColor: ['rgba(251,188,4,0.85)', 'rgba(234,67,53,0.75)', 'rgba(24,119,242,0.75)'],
+      borderColor: [SNAP_DK, GOOGLE_C, META_C],
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '60%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          color: '#7c7f96',
+          font: { family:'Baloo Bhaijaan 2', size:11 },
+          boxWidth: 12, padding: 14,
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
+            const pct = (ctx.raw/total*100).toFixed(1);
+            return ` ${ctx.label}: ${ctx.raw.toLocaleString(undefined,{maximumFractionDigits:0})} SAR (${pct}%)`;
+          }
+        }
+      }
+    }
+  }
+});
+
+// ── CHART 3: Blended CPL by Project ──────────────────────────────────────
+const cplLabels = [
+  'مكين 85','مشرقية','سنا/سما','مكين 72',
+  'مكين 63','مكين 80','مكين 64','مكين 68'
+];
+const cplVals = [10.12, 12.10, 13.74, 16.84, 38.53, 51.40, 54.90, 65.56];
+const blendedCPL = 15.37;
+
+new Chart(document.getElementById('cplBar').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: cplLabels,
+    datasets: [{
+      label: 'Blended CPL (SAR)',
+      data: cplVals,
+      backgroundColor: cplVals.map(v => v < blendedCPL ? 'rgba(58,138,134,0.7)' : 'rgba(74,125,176,0.55)'),
+      borderColor:     cplVals.map(v => v < blendedCPL ? TDARK : BLUE),
+      borderWidth: 1.5,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.raw.toFixed(2)} SAR per lead (Meta + Snap blended)`
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color:'#7c7f96', font:{ family:'Baloo Bhaijaan 2', size:11 } },
+        grid:  { display:false }
+      },
+      y: {
+        ticks: {
+          color:'#7c7f96',
+          font:{ family:'Baloo Bhaijaan 2', size:11 },
+          callback: v => v + ' SAR'
+        },
+        grid: { color:'rgba(0,0,0,0.05)' }
+      }
+    }
+  },
+  plugins: [{
+    id: 'cplRefLine',
+    afterDraw(chart) {
+      const { ctx, chartArea:{ left, right }, scales:{ y } } = chart;
+      const yPos = y.getPixelForValue(blendedCPL);
+      ctx.save();
+      ctx.beginPath();
+      ctx.setLineDash([5,4]);
+      ctx.strokeStyle = 'rgba(12,14,29,0.35)';
+      ctx.lineWidth = 1.5;
+      ctx.moveTo(left, yPos);
+      ctx.lineTo(right, yPos);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(12,14,29,0.55)';
+      ctx.font = '10px Baloo Bhaijaan 2';
+      ctx.fillText('Blended CPL ' + blendedCPL.toFixed(2) + ' SAR', left + 6, yPos - 4);
+      ctx.restore();
+    }
+  }]
+});
+</script>
+</body>
+</html>
