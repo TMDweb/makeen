@@ -490,6 +490,102 @@
       .platform-totals { gap: 14px; }
       table { font-size: .82rem; }
       th, td { padding: 10px 10px; }
+
+      /* Tables scroll horizontally on tablets too — desktop layout doesn't fit */
+      .tbl-wrap, .tbl-wrap.solo {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tbl-wrap table { min-width: 720px; }
+    }
+
+    /* ── MOBILE (≤640px) ── */
+    @media(max-width:640px){
+      body { padding: 24px 14px 56px; }
+
+      /* Hero */
+      .hero { padding: 24px 20px; border-radius: 18px; margin-bottom: 18px; }
+      .hero-grid { gap: 18px; }
+      .hero h1 { font-size: 1.7rem; max-width: none; }
+      .hero .sub { font-size: .9rem; max-width: none; margin-top: 10px; }
+      .hero-meta { gap: 8px; margin-top: 16px; }
+      .hero-stat { padding: 14px; border-radius: 14px; }
+      .hero-stat-tile { padding: 10px 11px 9px; }
+      .hero-stat-tile .t-val { font-size: 1.2rem; }
+      .hero-stat-tile .t-sub { font-size: .64rem; }
+      .badge-ar, .pill { font-size: .68rem; }
+
+      /* Context note */
+      .context-note { padding: 14px 16px; font-size: .82rem; line-height: 1.65; }
+
+      /* KPI cards */
+      .kpi-row { gap: 10px; margin-bottom: 18px; }
+      .kpi { padding: 16px 16px 14px; }
+      .kpi-val { font-size: 1.55rem; }
+      .kpi-lbl { font-size: .62rem; }
+      .kpi-sub { font-size: .68rem; }
+
+      /* Section title */
+      .stitle { font-size: .66rem; margin: 24px 0 10px; }
+
+      /* Platform header strip — stack vertically, totals as 2x2 grid */
+      .platform-strip {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+      }
+      .platform-info h3 { font-size: .98rem; }
+      .platform-info .meta-line { font-size: .74rem; line-height: 1.45; }
+      .platform-totals {
+        margin-inline-start: 0;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px 14px;
+      }
+      .pt-block { text-align: start; }
+      .pt-block .pt-val { font-size: .96rem; }
+      .pt-block .pt-lbl { font-size: .6rem; }
+
+      /* Tables — tighter cell sizing (scroll wrapper inherits from 900px breakpoint) */
+      th, td { padding: 9px 10px; font-size: .78rem; }
+      th { font-size: .62rem; padding: 10px 10px; }
+      .project-cell .proj-ar { font-size: .82rem; }
+      .project-cell .proj-en { font-size: .68rem; }
+      .pname-ar { font-size: .74rem; }
+      .chip { font-size: .62rem; padding: 2px 8px; }
+      .mini-bg { width: 60px; }
+
+      /* Inactive platform card — stack */
+      .inactive-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px;
+        gap: 12px;
+      }
+      .inactive-card .ic-status { margin-inline-start: 0; }
+      .inactive-card .ic-info p { font-size: .8rem; }
+
+      /* Charts */
+      .chart-card { padding: 14px 14px 12px; }
+      .chart-wrap { height: 220px; }
+      .chart-wrap.tall { height: 260px; }
+
+      /* Footer */
+      .footer { font-size: .68rem; line-height: 1.7; padding-top: 16px; margin-top: 32px; }
+    }
+
+    /* ── SMALL PHONES (≤380px) ── */
+    @media(max-width:380px){
+      body { padding: 20px 12px 48px; }
+      .hero { padding: 22px 16px; }
+      .hero h1 { font-size: 1.5rem; }
+      .hero-stat-row { gap: 8px; }
+      .hero-stat-tile .t-val { font-size: 1.1rem; }
+      .kpi-row { grid-template-columns: 1fr; }
+      .kpi-val { font-size: 1.7rem; }
     }
   </style>
 </head>
