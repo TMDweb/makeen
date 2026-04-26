@@ -25,53 +25,210 @@
       --snap:    #fffc00;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     body {
       font-family: 'Baloo Bhaijaan 2', sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
       padding: 48px 32px 80px;
+      font-variant-numeric: tabular-nums;
     }
     .page { max-width: 1180px; margin: 0 auto; }
 
-    /* ── HEADER ── */
-    .header {
-      background: var(--navy);
-      border-radius: 18px;
-      padding: 32px 36px;
-      margin-bottom: 28px;
-      display: flex;
-      justify-content: space-between;
+    /* ── ENTER STAGGER ── */
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .stagger > * {
+      opacity: 0;
+      animation: riseIn .55s cubic-bezier(0.2, 0, 0, 1) forwards;
+    }
+    .stagger > *:nth-child(1) { animation-delay: .04s; }
+    .stagger > *:nth-child(2) { animation-delay: .12s; }
+    .stagger > *:nth-child(3) { animation-delay: .20s; }
+    .stagger > *:nth-child(4) { animation-delay: .28s; }
+    .stagger > *:nth-child(5) { animation-delay: .36s; }
+    .stagger > *:nth-child(6) { animation-delay: .44s; }
+    @media (prefers-reduced-motion: reduce) {
+      .stagger > * { opacity: 1; animation: none; }
+    }
+
+    h1, h2, h3 { text-wrap: balance; }
+    p, .sub, .ic-info p { text-wrap: pretty; }
+
+    /* ── HEADER (HERO) ── */
+    .hero {
+      position: relative;
+      background:
+        radial-gradient(1100px 420px at 88% -10%, rgba(255,196,9,0.18), transparent 60%),
+        radial-gradient(800px 360px at 12% 110%, rgba(74,125,176,0.22), transparent 60%),
+        linear-gradient(155deg, #11132a 0%, #0c0e1d 60%, #060713 100%);
+      border-radius: 22px;
+      padding: 36px 40px;
+      margin-bottom: 22px;
+      overflow: hidden;
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.04) inset,
+        0 1px 2px rgba(12,14,29,0.06),
+        0 8px 24px -8px rgba(12,14,29,0.18),
+        0 24px 48px -16px rgba(12,14,29,0.12);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(700px 280px at 70% 30%, #000 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 36px;
       align-items: center;
     }
-    .header h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--yellow);
-      line-height: 1.1;
-    }
-    .header .sub {
-      color: rgba(255,255,255,0.55);
-      font-size: 0.95rem;
-      margin-top: 5px;
-    }
-    .header-right { text-align: right; }
-    .rdate {
-      color: rgba(255,255,255,0.35);
-      font-size: .8rem;
-      margin-top: 8px;
+    .hero-left { min-width: 0; }
+    .eyebrow-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
     }
     .badge-ar {
-      display: inline-block;
-      background: rgba(255,196,9,0.15);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,196,9,0.12);
       color: var(--yellow);
-      border: 1px solid rgba(255,196,9,0.4);
+      border: 1px solid rgba(255,196,9,0.32);
       border-radius: 999px;
-      padding: 4px 12px;
+      padding: 5px 12px 5px 10px;
       font-size: .72rem;
       font-weight: 700;
       letter-spacing: .04em;
-      margin-bottom: 6px;
+      box-shadow: 0 1px 0 rgba(255,196,9,0.10) inset;
+    }
+    .badge-ar .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 10px rgba(255,196,9,0.8); }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: rgba(255,255,255,0.72);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .pill svg { width: 12px; height: 12px; opacity: .85; }
+    .hero h1 {
+      font-size: clamp(2rem, 3.4vw, 2.6rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.04;
+      letter-spacing: -0.01em;
+      max-width: 18ch;
+    }
+    .hero h1 .accent { color: var(--yellow); }
+    .hero .sub {
+      color: rgba(255,255,255,0.62);
+      font-size: 0.96rem;
+      margin-top: 12px;
+      max-width: 52ch;
+      line-height: 1.55;
+    }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+    .hero-meta .pill.live { color: #c4f5cf; background: rgba(58,138,134,0.18); border-color: rgba(116,210,196,0.35); }
+    .hero-meta .pill.live .dot { width:6px;height:6px;border-radius:50%;background:#74e896;box-shadow:0 0 8px #74e896; }
+
+    /* Hero stat panel (right side) */
+    .hero-stat {
+      position: relative;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      backdrop-filter: blur(8px);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.05) inset,
+        0 8px 24px -10px rgba(0,0,0,0.4);
+    }
+    .hero-stat-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+    .hero-stat-head .lbl {
+      font-size: .64rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+    .hero-stat-head .rdate {
+      color: rgba(255,255,255,0.45);
+      font-size: .72rem;
+    }
+    .hero-stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .hero-stat-tile {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 11px;
+      padding: 12px 12px 10px;
+      transition: background .25s cubic-bezier(0.2,0,0,1), transform .25s cubic-bezier(0.2,0,0,1), border-color .25s cubic-bezier(0.2,0,0,1);
+    }
+    .hero-stat-tile:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,196,9,0.25);
+      transform: translateY(-1px);
+    }
+    .hero-stat-tile .t-lbl {
+      font-size: .62rem;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 4px;
+    }
+    .hero-stat-tile .t-val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+    .hero-stat-tile .t-sub {
+      font-size: .68rem;
+      color: rgba(255,255,255,0.42);
+      margin-top: 2px;
+    }
+    .hero-stat-tile.spend .t-val { color: var(--yellow); }
+    .hero-stat-tile.leads .t-val { color: #b8e6e0; }
+    .hero-stat-tile.clicks .t-val { color: #b8d4ef; }
+
+    @media(max-width:900px){
+      .hero { padding: 28px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 22px; }
     }
 
     /* ── CONTEXT NOTE ── */
@@ -97,11 +254,22 @@
     }
     .kpi {
       background: var(--card);
-      border: 1px solid var(--border);
       border-radius: 14px;
       padding: 22px 22px 18px;
       position: relative;
       overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(12,14,29,0.04),
+        0 1px 2px rgba(12,14,29,0.04),
+        0 4px 12px -4px rgba(12,14,29,0.06);
+      transition: transform .25s cubic-bezier(0.2,0,0,1), box-shadow .25s cubic-bezier(0.2,0,0,1);
+    }
+    .kpi:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 0 1px rgba(12,14,29,0.06),
+        0 2px 4px rgba(12,14,29,0.05),
+        0 12px 28px -8px rgba(12,14,29,0.10);
     }
     .kpi::before {
       content: '';
@@ -152,9 +320,12 @@
       margin-bottom: 0;
       padding: 14px 22px;
       background: var(--card);
-      border: 1px solid var(--border);
       border-radius: 14px 14px 0 0;
-      border-bottom: 0;
+      box-shadow:
+        0 0 0 1px rgba(12,14,29,0.04),
+        0 1px 2px rgba(12,14,29,0.03);
+      position: relative;
+      z-index: 1;
     }
     .platform-icon {
       width: 36px; height: 36px;
@@ -186,12 +357,23 @@
     /* ── TABLE WRAPPER ── */
     .tbl-wrap {
       background: var(--card);
-      border: 1px solid var(--border);
       border-radius: 0 0 14px 14px;
       overflow: hidden;
       margin-bottom: 8px;
+      box-shadow:
+        0 0 0 1px rgba(12,14,29,0.04),
+        0 1px 2px rgba(12,14,29,0.03),
+        0 8px 24px -10px rgba(12,14,29,0.08);
     }
-    .tbl-wrap.solo { border-radius: 14px; }
+    .tbl-wrap.solo {
+      border-radius: 14px;
+      box-shadow:
+        0 0 0 1px rgba(12,14,29,0.04),
+        0 1px 2px rgba(12,14,29,0.03),
+        0 8px 24px -10px rgba(12,14,29,0.08);
+    }
+    td { font-variant-numeric: tabular-nums; }
+    tfoot td { font-variant-numeric: tabular-nums; }
     table { width: 100%; border-collapse: collapse; }
     thead tr { background: var(--navy); }
     th {
@@ -310,25 +492,65 @@
 <body>
 <div class="page">
 
-  <!-- HEADER -->
-  <div class="header">
-    <div>
-      <span class="badge-ar">مكين · MAKEEN</span>
-      <h1>Campaign Spend Report</h1>
-      <div class="sub">Spend &amp; results by campaign &nbsp;·&nbsp; Apr 1 – Apr 26, 2026 (26 days)</div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid stagger">
+
+      <div class="hero-left">
+        <div class="eyebrow-row">
+          <span class="badge-ar"><span class="dot"></span>مكين · MAKEEN</span>
+          <span class="pill">Real Estate</span>
+          <span class="pill">Campaign Performance</span>
+        </div>
+        <h1>Media <span class="accent">Spend</span> &amp; Results<br/>by Campaign</h1>
+        <p class="sub">A delivery-only view of every campaign that ran across Meta, Snapchat and Google Ads — broken out by real estate project, with native CPL and CPC.</p>
+        <div class="hero-meta">
+          <span class="pill live"><span class="dot"></span>Apr 1 – Apr 26, 2026 · 26 days</span>
+          <span class="pill">3 active platforms</span>
+          <span class="pill">8 projects</span>
+          <span class="pill">SAR · pegged 3.75/USD</span>
+        </div>
+      </div>
+
+      <aside class="hero-stat" aria-label="At-a-glance totals">
+        <div class="hero-stat-head">
+          <span class="lbl">At a glance</span>
+          <span class="rdate">Apr 26, 2026</span>
+        </div>
+        <div class="hero-stat-row">
+          <div class="hero-stat-tile">
+            <div class="t-lbl">Campaigns</div>
+            <div class="t-val">18</div>
+            <div class="t-sub">delivered</div>
+          </div>
+          <div class="hero-stat-tile spend">
+            <div class="t-lbl">Spend</div>
+            <div class="t-val">90,774</div>
+            <div class="t-sub">SAR · $24,206</div>
+          </div>
+          <div class="hero-stat-tile leads">
+            <div class="t-lbl">Leads</div>
+            <div class="t-val">4,251</div>
+            <div class="t-sub">CPL 15.36 SAR</div>
+          </div>
+          <div class="hero-stat-tile clicks">
+            <div class="t-lbl">Clicks</div>
+            <div class="t-val">4,042</div>
+            <div class="t-sub">CPC 6.30 SAR</div>
+          </div>
+        </div>
+      </aside>
+
     </div>
-    <div class="header-right">
-      <div class="rdate">Report date: April 26, 2026</div>
-    </div>
-  </div>
+  </section>
 
   <!-- CONTEXT NOTE -->
   <div class="context-note">
-    <strong>Scope:</strong> This report is filtered to campaigns that <strong>actually delivered</strong> (had impressions/spend) during Apr 1–26, 2026, broken down by platform and by real estate project. Paused or zero-delivery campaigns are excluded. Figures are presented in Saudi Riyals (SAR) at the pegged rate of 3.75 SAR per USD; native USD values from each ad platform are kept in the muted right column. This report does <em>not</em> compare against a target/PO budget — it focuses on what each campaign spent and what it produced.
+    <strong>Scope:</strong> Filtered to campaigns that actually delivered (had impressions/spend) during Apr 1–26, 2026. Paused or zero-spend campaigns are excluded. <strong>No PO/target benchmark</strong> — this report focuses on what each campaign spent and produced, not pacing against a plan. Native USD values are kept in the muted right column of each table.
   </div>
 
   <!-- KPI CARDS -->
-  <div class="kpi-row">
+  <div class="kpi-row stagger">
     <div class="kpi k-yellow">
       <div class="kpi-lbl">Delivered Campaigns</div>
       <div class="kpi-val y">18</div>
@@ -407,7 +629,7 @@
           <td class="r" style="color:var(--muted)">$1,913.36</td>
         </tr>
         <tr>
-          <td><div class="project-cell"><div class="proj-ar">مشروع سما مكين</div><div class="proj-en">Sama Makeen — Leads Campaign</div></div></td>
+          <td><div class="project-cell"><div class="proj-ar">سنا مكين</div><div class="proj-en">Sana Makeen — Leads Campaign</div></div></td>
           <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
           <td class="r">404</td>
           <td class="r">5,445.00</td>
@@ -749,7 +971,7 @@
           <td class="r" style="color:var(--teal-dk);font-weight:700">16.84</td>
         </tr>
         <tr>
-          <td><div class="project-cell"><div class="proj-ar">سنا / سما مكين</div><div class="proj-en">Sana / Sama Makeen *</div></div></td>
+          <td><div class="project-cell"><div class="proj-ar">سنا مكين</div><div class="proj-en">Sana Makeen</div></div></td>
           <td class="c">Meta · Snap</td>
           <td class="r">2,624.44</td>
           <td class="r">5,445.00</td>
@@ -854,7 +1076,7 @@
     </table>
   </div>
   <div class="context-note" style="margin-top:14px;">
-    <strong>* Note on سنا / سما:</strong> Meta uses the campaign label "سنا مكين" (Sana) while Snapchat uses "سما مكين" (Sama). These appear to be naming variants of the same project; if they are distinct projects please flag and the rollup will be split. <strong>Note on Google Ads:</strong> The two delivered Google Search campaigns are account-wide traffic / top-page campaigns (not project-specific), so their <strong>25,443 SAR</strong> spend and 4,042 site clicks are reported separately and not split per project above.
+    <strong>Note on Google Ads:</strong> The two delivered Google Search campaigns are account-wide traffic / top-page campaigns (not project-specific), so their <strong>25,443 SAR</strong> spend and 4,042 site clicks are reported separately and not split per project above.
   </div>
 
   <!-- ───────────────── CHARTS ───────────────── -->
@@ -899,7 +1121,7 @@ const SNAP_DK = '#b08900';
 const projectLabels = [
   'طليعة المشرقية',
   'مكين 72',
-  'سنا / سما مكين',
+  'سنا مكين',
   'مكين 85',
   'مكين 63',
   'مكين 64',
@@ -1009,7 +1231,7 @@ new Chart(document.getElementById('platformPie').getContext('2d'), {
 
 // ── CHART 3: Blended CPL by Project ──────────────────────────────────────
 const cplLabels = [
-  'مكين 85','مشرقية','سنا/سما','مكين 72',
+  'مكين 85','مشرقية','سنا','مكين 72',
   'مكين 63','مكين 80','مكين 64','مكين 68'
 ];
 const cplVals = [10.12, 12.10, 13.74, 16.84, 38.53, 51.40, 54.90, 65.56];
