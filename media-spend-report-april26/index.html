@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Makeen · Campaign Spend Report (Apr 1–26, 2026)</title>
+  <title>تقرير إنفاق حملات مكين (1–26 أبريل 2026)</title>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
   <style>
@@ -274,9 +274,11 @@
     .kpi::before {
       content: '';
       position: absolute;
-      top: 0; left: 0;
+      top: 0;
+      inset-inline-start: 0;
       width: 4px; height: 100%;
-      border-radius: 14px 0 0 14px;
+      border-start-start-radius: 14px;
+      border-end-start-radius: 14px;
     }
     .kpi.k-yellow::before { background: var(--yellow); }
     .kpi.k-navy::before   { background: var(--navy); }
@@ -346,7 +348,7 @@
     .platform-info h3 { font-size: 1.05rem; font-weight: 800; color: var(--navy); }
     .platform-info .meta-line { font-size: .78rem; color: var(--muted); margin-top: 2px; }
     .platform-totals {
-      margin-left: auto;
+      margin-inline-start: auto;
       display: flex;
       gap: 24px;
       align-items: center;
@@ -379,7 +381,7 @@
     thead tr { background: var(--navy); }
     th {
       padding: 12px 16px;
-      text-align: left;
+      text-align: start;
       font-size: .68rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -387,7 +389,8 @@
       color: rgba(255,255,255,.7);
       white-space: nowrap;
     }
-    th.r, td.r { text-align: right; }
+    th.r, td.r { text-align: right; font-variant-numeric: tabular-nums; }
+    td.r { unicode-bidi: plaintext; }
     th.c, td.c { text-align: center; }
     td {
       padding: 13px 16px;
@@ -448,7 +451,7 @@
       max-width: 720px;
     }
     .inactive-card .ic-status {
-      margin-left: auto;
+      margin-inline-start: auto;
       flex-shrink: 0;
     }
 
@@ -500,44 +503,44 @@
       <div class="hero-left">
         <div class="eyebrow-row">
           <span class="badge-ar"><span class="dot"></span>مكين · MAKEEN</span>
-          <span class="pill">Real Estate</span>
-          <span class="pill">Campaign Performance</span>
+          <span class="pill">عقاري</span>
+          <span class="pill">أداء الحملات</span>
         </div>
-        <h1>Media <span class="accent">Spend</span> &amp; Results<br/>by Campaign</h1>
-        <p class="sub">A delivery-only view of every campaign that ran across Meta, Snapchat and Google Ads, broken out by real estate project, with native CPL and CPC.</p>
+        <h1><span class="accent">الإنفاق الإعلامي</span> والنتائج<br/>حسب الحملة</h1>
+        <p class="sub">عرض مقتصر على الحملات التي حققت ظهوراً فعلياً عبر Meta وSnapchat وGoogle Ads وX، مفصّل حسب المشروع العقاري، مع تكلفة العميل المحتمل (CPL) وتكلفة النقرة (CPC) من كل منصة.</p>
         <div class="hero-meta">
-          <span class="pill live"><span class="dot"></span>Apr 1 – Apr 26, 2026 · 26 days</span>
-          <span class="pill">4 active platforms</span>
-          <span class="pill">8 projects</span>
-          <span class="pill">SAR · pegged 3.75/USD</span>
+          <span class="pill live"><span class="dot"></span>1 – 26 أبريل 2026 · 26 يوماً</span>
+          <span class="pill">4 منصات نشطة</span>
+          <span class="pill">8 مشاريع</span>
+          <span class="pill">ر.س · سعر صرف ثابت 3.75/USD</span>
         </div>
       </div>
 
-      <aside class="hero-stat" aria-label="At-a-glance totals">
+      <aside class="hero-stat" aria-label="إجماليات نظرة سريعة">
         <div class="hero-stat-head">
-          <span class="lbl">At a glance</span>
-          <span class="rdate">Apr 26, 2026</span>
+          <span class="lbl">نظرة سريعة</span>
+          <span class="rdate">26 أبريل 2026</span>
         </div>
         <div class="hero-stat-row">
           <div class="hero-stat-tile">
-            <div class="t-lbl">Campaigns</div>
+            <div class="t-lbl">الحملات</div>
             <div class="t-val">21</div>
-            <div class="t-sub">delivered</div>
+            <div class="t-sub">محققة الظهور</div>
           </div>
           <div class="hero-stat-tile spend">
-            <div class="t-lbl">Spend</div>
+            <div class="t-lbl">الإنفاق</div>
             <div class="t-val">98,072</div>
-            <div class="t-sub">SAR · $26,152</div>
+            <div class="t-sub">ر.س · $26,152</div>
           </div>
           <div class="hero-stat-tile leads">
-            <div class="t-lbl">Leads</div>
+            <div class="t-lbl">العملاء</div>
             <div class="t-val">4,251</div>
-            <div class="t-sub">CPL 15.37 SAR</div>
+            <div class="t-sub">CPL 15.37 ر.س</div>
           </div>
           <div class="hero-stat-tile clicks">
-            <div class="t-lbl">Clicks</div>
+            <div class="t-lbl">النقرات</div>
             <div class="t-val">12,753</div>
-            <div class="t-sub">CPC 2.57 SAR</div>
+            <div class="t-sub">CPC 2.57 ر.س</div>
           </div>
         </div>
       </aside>
@@ -547,47 +550,47 @@
 
   <!-- CONTEXT NOTE -->
   <div class="context-note">
-    <strong>Scope:</strong> Filtered to campaigns that actually delivered (had impressions/spend) during Apr 1–26, 2026. Paused or zero-spend campaigns are excluded. <strong>No PO/target benchmark.</strong> This report focuses on what each campaign spent and produced, not pacing against a plan. Native USD values are kept in the muted right column of each table.
+    <strong>النطاق:</strong> مقتصر على الحملات التي حققت ظهوراً (impressions/spend) فعلياً خلال الفترة من 1 إلى 26 أبريل 2026؛ الحملات الموقوفة أو ذات الإنفاق الصفري مستبعدة. <strong>لا توجد مقارنة بميزانية مستهدفة (PO/target benchmark).</strong> يركّز هذا التقرير على ما أنفقته كل حملة وما حققته من نتائج، لا على التزامها بالخطة. قيم الدولار الأصلية معروضة في العمود الباهت من كل جدول.
   </div>
 
   <!-- KPI CARDS -->
   <div class="kpi-row stagger">
     <div class="kpi k-yellow">
-      <div class="kpi-lbl">Delivered Campaigns</div>
+      <div class="kpi-lbl">الحملات المحققة للظهور</div>
       <div class="kpi-val y">21</div>
       <div class="kpi-sub">8 Snap &middot; 8 Meta &middot; 3 X &middot; 2 Google</div>
     </div>
     <div class="kpi k-navy">
-      <div class="kpi-lbl">Total Spend (Apr 1–26)</div>
+      <div class="kpi-lbl">إجمالي الإنفاق (1–26 أبريل)</div>
       <div class="kpi-val n">98,072</div>
-      <div class="kpi-sub">SAR &middot; $26,152 USD &middot; 4 active platforms</div>
+      <div class="kpi-sub">ر.س &middot; $26,152 USD &middot; 4 منصات نشطة</div>
     </div>
     <div class="kpi k-teal">
-      <div class="kpi-lbl">Total Leads (Meta + Snap)</div>
+      <div class="kpi-lbl">إجمالي العملاء المحتملين (Meta + Snap)</div>
       <div class="kpi-val t">4,251</div>
-      <div class="kpi-sub">Form leads &middot; blended CPL 15.37 SAR</div>
+      <div class="kpi-sub">نماذج عملاء &middot; CPL مدمج 15.37 ر.س</div>
     </div>
     <div class="kpi k-blue">
-      <div class="kpi-lbl">Total Clicks (Google + X)</div>
+      <div class="kpi-lbl">إجمالي النقرات (Google + X)</div>
       <div class="kpi-val p">12,753</div>
-      <div class="kpi-sub">Search + link clicks &middot; blended CPC 2.57 SAR</div>
+      <div class="kpi-sub">نقرات Search + روابط &middot; CPC مدمج 2.57 ر.س</div>
     </div>
   </div>
 
   <!-- ───────────────── SNAPCHAT ───────────────── -->
-  <div class="stitle">Platform 1 · Snapchat Ads (largest spend)</div>
+  <div class="stitle">المنصة 1 · Snapchat Ads (الأعلى إنفاقاً)</div>
 
   <div class="platform-strip">
     <div class="platform-icon snap">S</div>
     <div class="platform-info">
-      <h3>Snapchat · Lead Generation Campaigns</h3>
-      <div class="meta-line">8 campaigns delivered · 1 ad account (TTP · Makeen Ad Account)</div>
+      <h3>Snapchat · حملات توليد العملاء المحتملين</h3>
+      <div class="meta-line">8 حملات محققة للظهور · حساب إعلاني واحد (TTP · Makeen Ad Account)</div>
     </div>
     <div class="platform-totals">
-      <div class="pt-block"><div class="pt-lbl">Spend</div><div class="pt-val">39,951 SAR</div></div>
-      <div class="pt-block"><div class="pt-lbl">Leads</div><div class="pt-val">2,727</div></div>
-      <div class="pt-block"><div class="pt-lbl">Avg. CPL</div><div class="pt-val">14.65 SAR</div></div>
-      <div class="pt-block"><div class="pt-lbl">Impr.</div><div class="pt-val">1,450,749</div></div>
+      <div class="pt-block"><div class="pt-lbl">الإنفاق</div><div class="pt-val">39,951 ر.س</div></div>
+      <div class="pt-block"><div class="pt-lbl">العملاء</div><div class="pt-val">2,727</div></div>
+      <div class="pt-block"><div class="pt-lbl">متوسط CPL</div><div class="pt-val">14.65 ر.س</div></div>
+      <div class="pt-block"><div class="pt-lbl">الظهور</div><div class="pt-val">1,450,749</div></div>
     </div>
   </div>
 
@@ -595,21 +598,21 @@
     <table>
       <thead>
         <tr>
-          <th>Campaign / Project</th>
-          <th class="c">Status</th>
-          <th class="r">Leads</th>
-          <th class="r">Spend (SAR)</th>
-          <th class="r">CPL (SAR)</th>
-          <th class="r">Impr.</th>
-          <th class="r">Clicks</th>
-          <th class="r">eCPC (SAR)</th>
-          <th class="r">Spend (USD)</th>
+          <th>الحملة / المشروع</th>
+          <th class="c">الحالة</th>
+          <th class="r">العملاء</th>
+          <th class="r">الإنفاق (ر.س)</th>
+          <th class="r">CPL (ر.س)</th>
+          <th class="r">الظهور</th>
+          <th class="r">النقرات</th>
+          <th class="r">eCPC (ر.س)</th>
+          <th class="r">الإنفاق (USD)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">طليعة المشرقية</div><div class="proj-en">Talee'at Al Mushriqiyah · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="c"><span class="chip chip-cap">بلغت سقف الإنفاق</span></td>
           <td class="r">1,319</td>
           <td class="r">14,479.99</td>
           <td class="r" style="color:var(--teal-dk);font-weight:700">10.98</td>
@@ -620,7 +623,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع مكين 72</div><div class="proj-en">Makeen 72 · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-off">Inactive</span></td>
+          <td class="c"><span class="chip chip-off">غير نشطة</span></td>
           <td class="r">505</td>
           <td class="r">7,175.10</td>
           <td class="r" style="color:var(--teal-dk);font-weight:700">14.21</td>
@@ -631,7 +634,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">سنا مكين</div><div class="proj-en">Sana Makeen · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="c"><span class="chip chip-cap">بلغت سقف الإنفاق</span></td>
           <td class="r">404</td>
           <td class="r">5,445.00</td>
           <td class="r" style="color:var(--teal-dk);font-weight:700">13.48</td>
@@ -642,7 +645,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع مكين 85</div><div class="proj-en">Makeen 85 · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="c"><span class="chip chip-cap">بلغت سقف الإنفاق</span></td>
           <td class="r">338</td>
           <td class="r">3,750.00</td>
           <td class="r" style="color:var(--teal-dk);font-weight:700">11.09</td>
@@ -653,7 +656,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع مكين 63 · حي العارض</div><div class="proj-en">Makeen 63 (Al Arid) · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="c"><span class="chip chip-cap">بلغت سقف الإنفاق</span></td>
           <td class="r">77</td>
           <td class="r">3,345.00</td>
           <td class="r">43.44</td>
@@ -664,7 +667,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مكين 68 · حي الريان</div><div class="proj-en">Makeen 68 (Al Rayyan) · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="c"><span class="chip chip-cap">بلغت سقف الإنفاق</span></td>
           <td class="r">40</td>
           <td class="r">2,850.00</td>
           <td class="r">71.25</td>
@@ -675,7 +678,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع مكين 64 · حي العارض</div><div class="proj-en">Makeen 64 (Al Arid) · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="c"><span class="chip chip-cap">بلغت سقف الإنفاق</span></td>
           <td class="r">30</td>
           <td class="r">2,066.25</td>
           <td class="r">68.88</td>
@@ -686,7 +689,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع مكين 80</div><div class="proj-en">Makeen 80 · Leads Campaign (Copy)</div></div></td>
-          <td class="c"><span class="chip chip-cap">Spend Cap Reached</span></td>
+          <td class="c"><span class="chip chip-cap">بلغت سقف الإنفاق</span></td>
           <td class="r">14</td>
           <td class="r">840.00</td>
           <td class="r">60.00</td>
@@ -698,7 +701,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td>SNAPCHAT TOTAL · 8 campaigns</td>
+          <td>إجمالي SNAPCHAT · 8 حملات</td>
           <td class="c"></td>
           <td class="r">2,727</td>
           <td class="r">39,951.34</td>
@@ -713,19 +716,19 @@
   </div>
 
   <!-- ───────────────── META / FACEBOOK ───────────────── -->
-  <div class="stitle">Platform 2 · Meta (Facebook + Instagram)</div>
+  <div class="stitle">المنصة 2 · Meta (Facebook + Instagram)</div>
 
   <div class="platform-strip">
     <div class="platform-icon meta">f</div>
     <div class="platform-info">
-      <h3>Meta · Lead Generation Campaigns</h3>
-      <div class="meta-line">8 campaigns delivered · 1 ad account (TTP | Makeen)</div>
+      <h3>Meta · حملات توليد العملاء المحتملين</h3>
+      <div class="meta-line">8 حملات محققة للظهور · حساب إعلاني واحد (TTP | Makeen)</div>
     </div>
     <div class="platform-totals">
-      <div class="pt-block"><div class="pt-lbl">Spend</div><div class="pt-val">25,380 SAR</div></div>
-      <div class="pt-block"><div class="pt-lbl">Leads</div><div class="pt-val">1,524</div></div>
-      <div class="pt-block"><div class="pt-lbl">Avg. CPL</div><div class="pt-val">16.65 SAR</div></div>
-      <div class="pt-block"><div class="pt-lbl">Reach</div><div class="pt-val">493,125</div></div>
+      <div class="pt-block"><div class="pt-lbl">الإنفاق</div><div class="pt-val">25,380 ر.س</div></div>
+      <div class="pt-block"><div class="pt-lbl">العملاء</div><div class="pt-val">1,524</div></div>
+      <div class="pt-block"><div class="pt-lbl">متوسط CPL</div><div class="pt-val">16.65 ر.س</div></div>
+      <div class="pt-block"><div class="pt-lbl">الوصول</div><div class="pt-val">493,125</div></div>
     </div>
   </div>
 
@@ -733,20 +736,20 @@
     <table>
       <thead>
         <tr>
-          <th>Campaign / Project</th>
-          <th class="c">Status</th>
-          <th class="r">Leads</th>
-          <th class="r">Spend (SAR)</th>
-          <th class="r">CPL (SAR)</th>
-          <th class="r">Impr.</th>
-          <th class="r">Reach</th>
-          <th class="r">Spend (USD)</th>
+          <th>الحملة / المشروع</th>
+          <th class="c">الحالة</th>
+          <th class="r">العملاء</th>
+          <th class="r">الإنفاق (ر.س)</th>
+          <th class="r">CPL (ر.س)</th>
+          <th class="r">الظهور</th>
+          <th class="r">الوصول</th>
+          <th class="r">الإنفاق (USD)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">طليعة المشرقية</div><div class="proj-en">Talee'at Al Mushriqiyah · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-off">Off (Delivered)</span></td>
+          <td class="c"><span class="chip chip-off">موقوفة (حققت ظهوراً)</span></td>
           <td class="r">755</td>
           <td class="r">10,611.19</td>
           <td class="r" style="color:var(--teal-dk);font-weight:700">14.05</td>
@@ -756,7 +759,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع مكين 72</div><div class="proj-en">Makeen 72 · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-off">Off (Delivered)</span></td>
+          <td class="c"><span class="chip chip-off">موقوفة (حققت ظهوراً)</span></td>
           <td class="r">241</td>
           <td class="r">5,384.66</td>
           <td class="r">22.34</td>
@@ -766,7 +769,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">سنا مكين</div><div class="proj-en">Sana Makeen · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="c"><span class="chip chip-active">نشطة</span></td>
           <td class="r">183</td>
           <td class="r">2,624.44</td>
           <td class="r" style="color:var(--teal-dk);font-weight:700">14.34</td>
@@ -776,7 +779,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع مكين 85</div><div class="proj-en">Makeen 85 · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-off">Off (Delivered)</span></td>
+          <td class="c"><span class="chip chip-off">موقوفة (حققت ظهوراً)</span></td>
           <td class="r">218</td>
           <td class="r">1,874.81</td>
           <td class="r" style="color:var(--teal-dk);font-weight:700">8.60</td>
@@ -786,7 +789,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع مكين 63</div><div class="proj-en">Makeen 63 · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="c"><span class="chip chip-active">نشطة</span></td>
           <td class="r">57</td>
           <td class="r">1,817.96</td>
           <td class="r">31.89</td>
@@ -796,7 +799,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع مكين 64</div><div class="proj-en">Makeen 64 · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="c"><span class="chip chip-active">نشطة</span></td>
           <td class="r">35</td>
           <td class="r">1,502.48</td>
           <td class="r">42.93</td>
@@ -806,7 +809,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع مكين 80</div><div class="proj-en">Makeen 80 · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="c"><span class="chip chip-active">نشطة</span></td>
           <td class="r">27</td>
           <td class="r">1,267.24</td>
           <td class="r">46.93</td>
@@ -816,7 +819,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مكين 68 · حي الريان</div><div class="proj-en">Makeen 68 (Al Rayyan) · Leads Campaign</div></div></td>
-          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="c"><span class="chip chip-active">نشطة</span></td>
           <td class="r">8</td>
           <td class="r">296.96</td>
           <td class="r">37.12</td>
@@ -827,7 +830,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td>META TOTAL · 8 campaigns</td>
+          <td>إجمالي META · 8 حملات</td>
           <td class="c"></td>
           <td class="r">1,524</td>
           <td class="r">25,379.74</td>
@@ -841,19 +844,19 @@
   </div>
 
   <!-- ───────────────── GOOGLE ADS ───────────────── -->
-  <div class="stitle">Platform 3 · Google Ads</div>
+  <div class="stitle">المنصة 3 · Google Ads</div>
 
   <div class="platform-strip">
     <div class="platform-icon google">G</div>
     <div class="platform-info">
-      <h3>Google Ads · Search (Website Traffic)</h3>
-      <div class="meta-line">2 campaigns delivered · 1 ad account (TTP · Makeen Ad Account)</div>
+      <h3>Google Ads · Search (زيارات الموقع)</h3>
+      <div class="meta-line">2 حملات محققة للظهور · حساب إعلاني واحد (TTP · Makeen Ad Account)</div>
     </div>
     <div class="platform-totals">
-      <div class="pt-block"><div class="pt-lbl">Spend</div><div class="pt-val">25,443 SAR</div></div>
-      <div class="pt-block"><div class="pt-lbl">Clicks</div><div class="pt-val">4,042</div></div>
-      <div class="pt-block"><div class="pt-lbl">Avg. CPC</div><div class="pt-val">6.30 SAR</div></div>
-      <div class="pt-block"><div class="pt-lbl">Impr.</div><div class="pt-val">53,607</div></div>
+      <div class="pt-block"><div class="pt-lbl">الإنفاق</div><div class="pt-val">25,443 ر.س</div></div>
+      <div class="pt-block"><div class="pt-lbl">النقرات</div><div class="pt-val">4,042</div></div>
+      <div class="pt-block"><div class="pt-lbl">متوسط CPC</div><div class="pt-val">6.30 ر.س</div></div>
+      <div class="pt-block"><div class="pt-lbl">الظهور</div><div class="pt-val">53,607</div></div>
     </div>
   </div>
 
@@ -862,20 +865,20 @@
       <thead>
         <tr>
           <th>Campaign</th>
-          <th class="c">Status</th>
-          <th class="c">Type</th>
-          <th class="r">Clicks</th>
-          <th class="r">Impr.</th>
+          <th class="c">الحالة</th>
+          <th class="c">النوع</th>
+          <th class="r">النقرات</th>
+          <th class="r">الظهور</th>
           <th class="r">CTR</th>
-          <th class="r">Spend (SAR)</th>
-          <th class="r">Avg. CPC (SAR)</th>
-          <th class="r">Spend (USD)</th>
+          <th class="r">الإنفاق (ر.س)</th>
+          <th class="r">متوسط CPC (ر.س)</th>
+          <th class="r">الإنفاق (USD)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><div class="pname">Website Traffic Search · CPC · April · $2,666</div><div class="pname-ar" dir="ltr" style="color:var(--muted);font-size:.72rem;">Account-wide brand &amp; project traffic</div></td>
-          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="c"><span class="chip chip-active">نشطة</span></td>
           <td class="c">Search</td>
           <td class="r">2,121</td>
           <td class="r">25,985</td>
@@ -886,7 +889,7 @@
         </tr>
         <tr>
           <td><div class="pname">Website Traffic Search · Top Page · April · $2,666</div><div class="pname-ar" dir="ltr" style="color:var(--muted);font-size:.72rem;">Top-of-page impression-share campaign</div></td>
-          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="c"><span class="chip chip-active">نشطة</span></td>
           <td class="c">Search</td>
           <td class="r">1,921</td>
           <td class="r">27,622</td>
@@ -898,7 +901,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td>GOOGLE TOTAL · 2 campaigns</td>
+          <td>إجمالي GOOGLE · 2 حملات</td>
           <td class="c"></td>
           <td class="c"></td>
           <td class="r">4,042</td>
@@ -913,19 +916,19 @@
   </div>
 
   <!-- ───────────────── X (TWITTER) ADS ───────────────── -->
-  <div class="stitle">Platform 4 · X (Twitter) Ads</div>
+  <div class="stitle">المنصة 4 · X (Twitter) Ads</div>
 
   <div class="platform-strip">
     <div class="platform-icon x">𝕏</div>
     <div class="platform-info">
-      <h3>X · Reach Campaigns (impression-based)</h3>
-      <div class="meta-line">3 campaigns delivered · objective: Reach · data window Apr 5–26 (campaigns started Apr 12)</div>
+      <h3>X · حملات Reach (مبنية على الظهور)</h3>
+      <div class="meta-line">3 حملات محققة للظهور · الهدف: Reach · نافذة البيانات 5–26 أبريل (الحملات انطلقت في 12 أبريل)</div>
     </div>
     <div class="platform-totals">
-      <div class="pt-block"><div class="pt-lbl">Spend</div><div class="pt-val">7,298 SAR</div></div>
-      <div class="pt-block"><div class="pt-lbl">Impr.</div><div class="pt-val">7.14M</div></div>
-      <div class="pt-block"><div class="pt-lbl">Clicks</div><div class="pt-val">8,711</div></div>
-      <div class="pt-block"><div class="pt-lbl">Avg. CPC</div><div class="pt-val">0.84 SAR</div></div>
+      <div class="pt-block"><div class="pt-lbl">الإنفاق</div><div class="pt-val">7,298 ر.س</div></div>
+      <div class="pt-block"><div class="pt-lbl">الظهور</div><div class="pt-val">7.14M</div></div>
+      <div class="pt-block"><div class="pt-lbl">النقرات</div><div class="pt-val">8,711</div></div>
+      <div class="pt-block"><div class="pt-lbl">متوسط CPC</div><div class="pt-val">0.84 ر.س</div></div>
     </div>
   </div>
 
@@ -933,21 +936,21 @@
     <table>
       <thead>
         <tr>
-          <th>Campaign / Project</th>
-          <th class="c">Status</th>
-          <th class="c">Objective</th>
-          <th class="r">Impr.</th>
-          <th class="r">Clicks</th>
+          <th>الحملة / المشروع</th>
+          <th class="c">الحالة</th>
+          <th class="c">الهدف</th>
+          <th class="r">الظهور</th>
+          <th class="r">النقرات</th>
           <th class="r">CTR</th>
-          <th class="r">Spend (SAR)</th>
-          <th class="r">CPC (SAR)</th>
-          <th class="r">Spend (USD)</th>
+          <th class="r">الإنفاق (ر.س)</th>
+          <th class="r">CPC (ر.س)</th>
+          <th class="r">الإنفاق (USD)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">المشرقية</div><div class="proj-en">Al Mushriqiyah · Reach (legacy paused)</div></div></td>
-          <td class="c"><span class="chip chip-off">Off (Delivered)</span></td>
+          <td class="c"><span class="chip chip-off">موقوفة (حققت ظهوراً)</span></td>
           <td class="c">Reach</td>
           <td class="r">2,886,931</td>
           <td class="r">3,791</td>
@@ -958,7 +961,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع المشرقية</div><div class="proj-en">Al Mushriqiyah · Reach Campaign</div></div></td>
-          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="c"><span class="chip chip-active">نشطة</span></td>
           <td class="c">Reach</td>
           <td class="r">2,097,004</td>
           <td class="r">2,118</td>
@@ -969,7 +972,7 @@
         </tr>
         <tr>
           <td><div class="project-cell"><div class="proj-ar">مشروع مكين 72</div><div class="proj-en">Makeen 72 · Reach Campaign</div></div></td>
-          <td class="c"><span class="chip chip-active">Active</span></td>
+          <td class="c"><span class="chip chip-active">نشطة</span></td>
           <td class="c">Reach</td>
           <td class="r">2,156,681</td>
           <td class="r">2,802</td>
@@ -981,7 +984,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td>X TOTAL · 3 campaigns</td>
+          <td>إجمالي X · 3 حملات</td>
           <td class="c"></td>
           <td class="c"></td>
           <td class="r">7,140,616</td>
@@ -995,36 +998,36 @@
     </table>
   </div>
   <div class="context-note" style="margin-top:14px;">
-    <strong>Note on X:</strong> X bills this account natively in <strong>SAR</strong> (not USD), so the SAR column is the platform's source value; the USD column is derived at the 3.75 peg for cross-platform parity. Two of three campaigns ("Reach Campaign · مشروع المشرقية" and "Reach Campaign · مشروع مكين 72") launched on Apr 12, so X data covers Apr 12–26 rather than the full 26-day window of the other platforms. The third campaign ("Reach · المشرقية", paused) had carry-over delivery during Apr 5–26. Because X campaigns optimize for Reach (not leads), CPL is not calculated; clicks shown are link clicks, not lead form completions.
+    <strong>ملاحظة حول X:</strong> تُحاسِب X هذا الحساب بالريال السعودي (<strong>SAR</strong>) أصلاً وليس بالدولار، لذا فإن عمود الريال هو القيمة الأصلية من المنصة؛ أما عمود الدولار فمشتق بسعر صرف ثابت 3.75 لأغراض المقارنة بين المنصات. حملتان من أصل ثلاث ("Reach Campaign · مشروع المشرقية" و"Reach Campaign · مشروع مكين 72") انطلقتا في 12 أبريل، لذا تغطي بيانات X الفترة من 12 إلى 26 أبريل بدلاً من نافذة الـ26 يوماً الكاملة لبقية المنصات. الحملة الثالثة ("Reach · المشرقية" الموقوفة) كان لها أثر إعلامي متبقٍّ خلال 5 إلى 26 أبريل. ولأن حملات X تستهدف الوصول (Reach) لا العملاء المحتملين، فإن CPL غير محسوب؛ والنقرات المعروضة هي نقرات روابط (link clicks)، لا إكمال نماذج عملاء.
   </div>
 
   <!-- ───────────────── INACTIVE PLATFORMS ───────────────── -->
-  <div class="stitle">Platforms not currently running</div>
+  <div class="stitle">منصات غير نشطة حالياً</div>
 
   <div class="inactive-card">
     <div class="platform-icon tiktok">TT</div>
     <div class="ic-info">
       <h3>TikTok Ads</h3>
-      <p>No paid campaigns are currently running on TikTok during this reporting window. Spend for Apr 1–26, 2026 = <strong>0 SAR</strong>. The platform is included here for completeness; re-activation can be planned in the next media cycle if priorities shift.</p>
+      <p>لا توجد حملات مدفوعة على TikTok خلال هذه الفترة. إجمالي الإنفاق للفترة من 1 إلى 26 أبريل 2026 = <strong>0 ر.س</strong>. المنصة مدرجة هنا للاكتمال؛ يمكن التخطيط لإعادة تفعيلها في الدورة الإعلامية القادمة عند تغيّر الأولويات.</p>
     </div>
-    <div class="ic-status"><span class="chip chip-paused">Not Running</span></div>
+    <div class="ic-status"><span class="chip chip-paused">غير نشطة</span></div>
   </div>
 
   <!-- ───────────────── PROJECT-LEVEL ROLLUP (META + SNAPCHAT + X) ───────────────── -->
-  <div class="stitle">Project-level Rollup · Total paid spend by real estate project (Meta + Snap + X)</div>
+  <div class="stitle">تجميع على مستوى المشروع · إجمالي الإنفاق المدفوع حسب المشروع العقاري (Meta + Snap + X)</div>
   <div class="tbl-wrap solo">
     <table>
       <thead>
         <tr>
-          <th>Real Estate Project</th>
-          <th class="c">Platforms</th>
+          <th>المشروع العقاري</th>
+          <th class="c">المنصات</th>
           <th class="r">Meta</th>
           <th class="r">Snap</th>
           <th class="r">X</th>
-          <th class="r">Total Spend (SAR)</th>
-          <th class="r">% of Total</th>
-          <th class="r">Leads</th>
-          <th class="r">Lead-gen CPL (SAR) <sup>†</sup></th>
+          <th class="r">إجمالي الإنفاق (ر.س)</th>
+          <th class="r">% من الإجمالي</th>
+          <th class="r">العملاء</th>
+          <th class="r">CPL لحملات العملاء (ر.س) <sup>†</sup></th>
         </tr>
       </thead>
       <tbody>
@@ -1159,7 +1162,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td>TOTAL · 8 projects</td>
+          <td>الإجمالي · 8 مشاريع</td>
           <td class="c"></td>
           <td class="r">25,379.74</td>
           <td class="r">39,951.34</td>
@@ -1173,32 +1176,32 @@
     </table>
   </div>
   <div class="context-note" style="margin-top:14px;">
-    <strong><sup>†</sup> Lead-gen CPL</strong> uses Meta + Snapchat spend only (4,251 leads / 65,331 SAR = 15.37 SAR). X campaigns run on a Reach objective and do not produce leads, so their spend is shown in the rollup but excluded from the CPL calculation. <strong>Note on Google Ads:</strong> The two delivered Google Search campaigns are account-wide traffic / top-page campaigns (not project-specific), so their <strong>25,443 SAR</strong> spend and 4,042 site clicks are reported separately and not split per project above.
+    <strong><sup>†</sup> CPL لحملات العملاء</strong> يُحتسب باستخدام إنفاق Meta + Snapchat فقط (4,251 عميلاً / 65,331 ر.س = 15.37 ر.س). حملات X تستهدف الوصول (Reach) ولا تُنتج عملاء محتملين، لذا يظهر إنفاقها في التجميع لكنه مستبعد من حساب CPL. <strong>ملاحظة حول Google Ads:</strong> الحملتان المحققتان على Google Search هما حملتا زيارات على مستوى الحساب (وليستا خاصتين بمشروع معيّن)، لذا يُعرض إنفاقهما البالغ <strong>25,443 ر.س</strong> و4,042 نقرة بشكل منفصل ولا يُقسَّمان حسب المشروع أعلاه.
   </div>
 
   <!-- ───────────────── CHARTS ───────────────── -->
-  <div class="stitle">Visual Analysis</div>
+  <div class="stitle">تحليل بصري</div>
   <div class="chart-row">
     <div class="chart-card">
-      <div class="chart-lbl">Total Spend by Project · Meta + Snap + X (SAR)</div>
+      <div class="chart-lbl">إجمالي الإنفاق حسب المشروع · Meta + Snap + X (ر.س)</div>
       <div class="chart-wrap tall"><canvas id="projectBar"></canvas></div>
     </div>
     <div class="chart-card">
-      <div class="chart-lbl">Spend Mix by Platform</div>
+      <div class="chart-lbl">توزيع الإنفاق حسب المنصة</div>
       <div class="chart-wrap tall"><canvas id="platformPie"></canvas></div>
     </div>
   </div>
 
   <div class="chart-row" style="grid-template-columns: 1fr;">
     <div class="chart-card">
-      <div class="chart-lbl">Cost per Lead by Project · Meta + Snapchat blended (SAR, lower is better)</div>
+      <div class="chart-lbl">تكلفة العميل المحتمل حسب المشروع · Meta + Snapchat مدمج (ر.س، الأقل أفضل)</div>
       <div class="chart-wrap"><canvas id="cplBar"></canvas></div>
     </div>
   </div>
 
   <!-- FOOTER -->
   <div class="footer">
-    Makeen Campaign Spend Report &nbsp;&middot;&nbsp; Apr 1 – Apr 26, 2026 &nbsp;&middot;&nbsp; Prepared April 26, 2026 &nbsp;&middot;&nbsp; Currency: SAR (USD shown in muted columns) &nbsp;&middot;&nbsp; Scope: campaigns with delivery only
+    تقرير إنفاق حملات مكين &nbsp;&middot;&nbsp; 1 – 26 أبريل 2026 &nbsp;&middot;&nbsp; أُعدّ في 26 أبريل 2026 &nbsp;&middot;&nbsp; العملة: ر.س (USD في الأعمدة الباهتة) &nbsp;&middot;&nbsp; النطاق: الحملات المحققة للظهور فقط
   </div>
 
 </div><!-- /page -->
@@ -1274,7 +1277,7 @@ new Chart(document.getElementById('projectBar').getContext('2d'), {
       },
       tooltip: {
         callbacks: {
-          label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toLocaleString(undefined,{maximumFractionDigits:2})} SAR`
+          label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toLocaleString(undefined,{maximumFractionDigits:2})} ر.س`
         }
       }
     },
@@ -1327,7 +1330,7 @@ new Chart(document.getElementById('platformPie').getContext('2d'), {
           label: ctx => {
             const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
             const pct = (ctx.raw/total*100).toFixed(1);
-            return ` ${ctx.label}: ${ctx.raw.toLocaleString(undefined,{maximumFractionDigits:0})} SAR (${pct}%)`;
+            return ` ${ctx.label}: ${ctx.raw.toLocaleString(undefined,{maximumFractionDigits:0})} ر.س (${pct}%)`;
           }
         }
       }
@@ -1348,7 +1351,7 @@ new Chart(document.getElementById('cplBar').getContext('2d'), {
   data: {
     labels: cplLabels,
     datasets: [{
-      label: 'Blended CPL (SAR)',
+      label: 'CPL مدمج (ر.س)',
       data: cplVals,
       backgroundColor: cplVals.map(v => v < blendedCPL ? 'rgba(58,138,134,0.7)' : 'rgba(74,125,176,0.55)'),
       borderColor:     cplVals.map(v => v < blendedCPL ? TDARK : BLUE),
@@ -1363,7 +1366,7 @@ new Chart(document.getElementById('cplBar').getContext('2d'), {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: ctx => ` ${ctx.raw.toFixed(2)} SAR per lead (Meta + Snap blended)`
+          label: ctx => ` ${ctx.raw.toFixed(2)} ر.س لكل عميل (Meta + Snap مدمج)`
         }
       }
     },
@@ -1376,7 +1379,7 @@ new Chart(document.getElementById('cplBar').getContext('2d'), {
         ticks: {
           color:'#7c7f96',
           font:{ family:'Baloo Bhaijaan 2', size:11 },
-          callback: v => v + ' SAR'
+          callback: v => v + ' ر.س'
         },
         grid: { color:'rgba(0,0,0,0.05)' }
       }
@@ -1398,7 +1401,7 @@ new Chart(document.getElementById('cplBar').getContext('2d'), {
       ctx.setLineDash([]);
       ctx.fillStyle = 'rgba(12,14,29,0.55)';
       ctx.font = '10px Baloo Bhaijaan 2';
-      ctx.fillText('Blended CPL ' + blendedCPL.toFixed(2) + ' SAR', left + 6, yPos - 4);
+      ctx.fillText('CPL مدمج ' + blendedCPL.toFixed(2) + ' ر.س', left + 6, yPos - 4);
       ctx.restore();
     }
   }]
