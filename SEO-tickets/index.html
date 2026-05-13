@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Makeen SEO Tickets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c0e1d;
+      --gold: #ffc409;
+      --rose: #cc5f73;
+      --teal: #96c7c3;
+      --bg: #ffffff;
+      --surface: #f5f6f8;
+      --border: #d8dbe3;
+      --text: #0c0e1d;
+      --text-muted: #5c5f72;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Baloo Bhaijaan 2', 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.7;
+    }
+    .banner { background: var(--navy); padding: 48px 0; }
+    .banner-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .home-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.6); text-decoration: none;
+      font-size: 15px; margin-bottom: 18px; transition: color 0.2s;
+    }
+    .home-link:hover { color: var(--gold); }
+    .banner h1 { font-size: 38px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .banner p { color: rgba(255,255,255,0.7); font-size: 17px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 48px 24px; }
+    .ticket-grid { display: grid; gap: 18px; }
+    .ticket-card {
+      display: block; padding: 24px 28px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 4px solid var(--gold);
+      border-radius: 10px; text-decoration: none; color: var(--text);
+      transition: transform 0.15s, box-shadow 0.15s, border-left-color 0.15s;
+    }
+    .ticket-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(12,14,29,0.08);
+      border-left-color: var(--rose);
+    }
+    .ticket-num {
+      display: inline-block; font-size: 13px; font-weight: 700;
+      color: var(--rose); letter-spacing: 0.5px; text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .ticket-title { font-size: 20px; font-weight: 600; color: var(--navy); }
+    .footer {
+      background: var(--navy); color: rgba(255,255,255,0.5);
+      text-align: center; padding: 28px 24px; font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div class="banner-inner">
+      <h1>Makeen SEO Tickets</h1>
+      <p>Audit and fix tickets for asasmakeen.com</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="ticket-grid">
+      <a href="ticket-001-duplicate-urls/" class="ticket-card">
+        <div class="ticket-num">Ticket #001</div>
+        <div class="ticket-title">Duplicate URL Versions for Each Page</div>
+      </a>
+      <a href="ticket-002-h1-tags/" class="ticket-card">
+        <div class="ticket-num">Ticket #002</div>
+        <div class="ticket-title">H1 Tag Issues Across the Entire Site</div>
+      </a>
+      <a href="ticket-003-hreflang-tags/" class="ticket-card">
+        <div class="ticket-num">Ticket #003</div>
+        <div class="ticket-title">Missing Hreflang Tags Across the Entire Site</div>
+      </a>
+      <a href="ticket-004-blog-image-handling/" class="ticket-card">
+        <div class="ticket-num">Ticket #004</div>
+        <div class="ticket-title">Blog Image Handling Issues</div>
+      </a>
+      <a href="ticket-005-xml-sitemap/" class="ticket-card">
+        <div class="ticket-num">Ticket #005</div>
+        <div class="ticket-title">Redoing the XML Sitemap, From Scratch</div>
+      </a>
+      <a href="ticket-006-robots-txt/" class="ticket-card">
+        <div class="ticket-num">Ticket #006</div>
+        <div class="ticket-title">Robots.txt Consolidation Across Subdomains</div>
+      </a>
+      <a href="ticket-007-public-url-redirects/" class="ticket-card">
+        <div class="ticket-num">Ticket #007</div>
+        <div class="ticket-title">Strip /public/ Path Segment &amp; 301 Redirect</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">Makeen SEO · Asas Makeen</div>
+</body>
+</html>

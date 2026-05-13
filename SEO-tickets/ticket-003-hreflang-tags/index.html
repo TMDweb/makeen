@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket #003 - Missing Hreflang Tags Across the Entire Site</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c0e1d;
+      --gold: #ffc409;
+      --rose: #cc5f73;
+      --teal: #96c7c3;
+      --bg: #ffffff;
+      --surface: #f5f6f8;
+      --surface-2: #edeef2;
+      --border: #d8dbe3;
+      --text: #0c0e1d;
+      --text-muted: #5c5f72;
+      --gold-bg: rgba(255, 196, 9, 0.12);
+      --gold-border: rgba(255, 196, 9, 0.45);
+      --rose-bg: rgba(204, 95, 115, 0.10);
+      --rose-border: rgba(204, 95, 115, 0.35);
+      --teal-bg: rgba(150, 199, 195, 0.18);
+      --teal-border: rgba(150, 199, 195, 0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Baloo Bhaijaan 2', 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 0;
+    }
+
+    /* ── Top Banner ── */
+    .banner {
+      background: var(--navy);
+      padding: 36px 0;
+    }
+
+    .banner-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .ticket-badge {
+      display: inline-block;
+      background: var(--rose);
+      color: #fff;
+      padding: 4px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .banner h1 {
+      font-size: 34px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.3;
+      margin-bottom: 18px;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .meta-label {
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .meta-value {
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+    }
+
+    .priority-high {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* ── Arabic Summary ── */
+    .ar-summary {
+      background: var(--surface);
+      border-top: 3px solid var(--gold);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      direction: rtl;
+      font-family: 'Baloo Bhaijaan 2', 'Noto Sans Arabic', 'Segoe UI', Tahoma, Arial, sans-serif;
+    }
+
+    .ar-summary-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .ar-summary h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+
+    .ar-summary p {
+      font-size: 18px;
+      line-height: 2;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .ar-summary p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ar-summary strong {
+      color: var(--rose);
+    }
+
+    /* ── Container ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 36px 24px 60px;
+    }
+
+    /* ── Section Headings ── */
+    section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    h2 .emoji {
+      margin-right: 8px;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 24px 0 12px;
+    }
+
+    p {
+      font-size: 17px;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    /* ── Summary Box ── */
+    .summary-box {
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-border);
+      border-radius: 10px;
+      padding: 22px 26px;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    /* ── Stats Row ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--rose);
+      line-height: 1.1;
+    }
+
+    .stat-number.green { color: #3d7a73; }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Issue Cards ── */
+    .issue-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .issue-card-header {
+      padding: 16px 22px;
+      font-weight: 700;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .issue-card-body {
+      padding: 18px 22px;
+      background: var(--bg);
+    }
+
+    .issue-critical .issue-card-header {
+      background: var(--rose-bg);
+      color: var(--rose);
+      border-bottom: 1px solid var(--rose-border);
+    }
+
+    .issue-warning .issue-card-header {
+      background: var(--gold-bg);
+      color: #9a7400;
+      border-bottom: 1px solid var(--gold-border);
+    }
+
+    .issue-info .issue-card-header {
+      background: var(--teal-bg);
+      color: #3d7a73;
+      border-bottom: 1px solid var(--teal-border);
+    }
+
+    .issue-card-body p {
+      margin-bottom: 10px;
+    }
+
+    .issue-card-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ── Tables ── */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    th {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 600;
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+
+    td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:nth-child(even) {
+      background: var(--surface);
+    }
+
+    .tag-good {
+      display: inline-block;
+      background: #dcf5e7;
+      color: #1a7a3a;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .tag-bad {
+      display: inline-block;
+      background: var(--rose-bg);
+      color: var(--rose);
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .tag-missing {
+      display: inline-block;
+      background: #fce4e4;
+      color: #b91c1c;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ── Code Blocks ── */
+    .code-block {
+      background: #1a1d2e;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+
+    .code-block-header {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .code-block pre {
+      padding: 22px 24px;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #e2e8f0;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    .code-comment { color: #6b7394; }
+    .code-keyword { color: #c792ea; }
+    .code-string { color: #c3e88d; }
+    .code-tag { color: #f07178; }
+    .code-attr { color: #ffcb6b; }
+    .code-value { color: #89ddff; }
+    .code-correct { color: var(--teal); }
+    .code-wrong { color: var(--rose); }
+
+    /* ── Highlight boxes ── */
+    .highlight-box {
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 16px 0;
+    }
+
+    .highlight-rose {
+      background: var(--rose-bg);
+      border: 1px solid var(--rose-border);
+    }
+
+    .highlight-gold {
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-border);
+    }
+
+    .highlight-teal {
+      background: var(--teal-bg);
+      border: 1px solid var(--teal-border);
+    }
+
+    /* ── Checklist ── */
+    .checklist {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 16px;
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .checklist li::before {
+      content: '\2610';
+      font-size: 24px;
+      flex-shrink: 0;
+      color: var(--teal);
+    }
+
+    .check-main {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .check-detail {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Impact List ── */
+    .impact-list {
+      list-style: none;
+      margin: 14px 0;
+    }
+
+    .impact-list li {
+      padding: 8px 0 8px 30px;
+      position: relative;
+      font-size: 16px;
+    }
+
+    .impact-list li::before {
+      content: '\26A0';
+      position: absolute;
+      left: 0;
+      top: 8px;
+    }
+
+    /* ── Comparison ── */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0;
+    }
+
+    .comparison-bad, .comparison-good {
+      border-radius: 10px;
+      padding: 18px 22px;
+    }
+
+    .comparison-bad {
+      background: var(--rose-bg);
+      border: 1px solid var(--rose-border);
+    }
+
+    .comparison-good {
+      background: #dcf5e7;
+      border: 1px solid #a3e0ba;
+    }
+
+    .comparison-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .comparison-bad .comparison-label { color: var(--rose); }
+    .comparison-good .comparison-label { color: #1a7a3a; }
+
+    .comparison-content {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .comparison-note {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── Rule Box ── */
+    .rule-box {
+      background: var(--navy);
+      color: #fff;
+      border-radius: 12px;
+      padding: 28px 30px;
+      margin: 24px 0;
+      text-align: center;
+    }
+
+    .rule-box p {
+      color: rgba(255,255,255,0.92);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    .rule-box .rule-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+      font-weight: 400;
+      margin-top: 8px;
+    }
+
+    /* ── Flowchart ── */
+    .flowchart {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px;
+      margin: 20px 0;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .flow-step:last-child { margin-bottom: 0; }
+
+    .flow-step::after {
+      content: '';
+      position: absolute;
+      left: 17px;
+      top: 40px;
+      width: 2px;
+      height: calc(100% + 4px);
+      background: var(--gold);
+      opacity: 0.4;
+    }
+
+    .flow-step:last-child::after { display: none; }
+
+    .flow-number {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 2px 8px rgba(255, 196, 9, 0.3);
+    }
+
+    .flow-content {
+      padding-top: 5px;
+    }
+
+    .flow-content strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--navy);
+    }
+
+    .flow-content p {
+      font-size: 16px;
+      margin-bottom: 0;
+      color: var(--text-muted);
+    }
+
+    /* ── Diagram ── */
+    .diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .diagram-header {
+      background: var(--navy);
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .diagram-body {
+      padding: 20px;
+    }
+
+    .diagram-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 14px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    .diagram-row:last-child { margin-bottom: 0; }
+
+    .diagram-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .diagram-label {
+      font-family: 'Baloo Bhaijaan 2', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      flex-shrink: 0;
+      min-width: 80px;
+    }
+
+    .diagram-label.label-ar { color: var(--gold); }
+    .diagram-label.label-en { color: var(--teal); }
+    .diagram-label.label-x { color: var(--rose); }
+
+    .diagram-url {
+      color: var(--text-muted);
+      word-break: break-all;
+    }
+
+    .ar-text {
+      font-family: 'Baloo Bhaijaan 2', 'Noto Sans Arabic', 'Segoe UI', Tahoma, Arial, sans-serif;
+      direction: rtl;
+      unicode-bidi: isolate;
+    }
+
+    /* ── Visual Pair ── */
+    .pair-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+
+    .pair-box {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 28px;
+      text-align: center;
+      min-width: 200px;
+    }
+
+    .pair-box.box-ar {
+      border-color: var(--gold-border);
+      background: var(--gold-bg);
+    }
+
+    .pair-box.box-en {
+      border-color: var(--teal-border);
+      background: var(--teal-bg);
+    }
+
+    .pair-box .pair-lang {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .pair-box.box-ar .pair-lang { color: #9a7400; }
+    .pair-box.box-en .pair-lang { color: #3d7a73; }
+
+    .pair-box .pair-url {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 14px;
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    .pair-arrow {
+      font-size: 28px;
+      color: var(--text-muted);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 30px 24px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .banner h1 { font-size: 24px; }
+      .stats-row { grid-template-columns: 1fr; }
+      .comparison { grid-template-columns: 1fr; }
+      .meta-row { flex-direction: column; gap: 8px; }
+      .pair-visual { flex-direction: column; }
+      .pair-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ BANNER ═══════════════════════ -->
+<div class="banner">
+  <div class="banner-inner">
+    <a href="../" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,196,9,0.15);border:1px solid rgba(255,196,9,0.45);color:#ffc409;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.background=&quot;rgba(255,196,9,0.25)&quot;" onmouseout="this.style.background=&quot;rgba(255,196,9,0.15)&quot;">← All SEO Tickets</a>
+    <div class="ticket-badge">SEO Bug - Open</div>
+    <h1>Ticket #003 - Hreflang Tags Are Completely Missing Site-Wide</h1>
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Project:</span>
+        <span class="meta-value">asasmakeen.com</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Priority:</span>
+        <span class="meta-value priority-high">High</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Category:</span>
+        <span class="meta-value">International SEO</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Date:</span>
+        <span class="meta-value">March 15, 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Affects:</span>
+        <span class="meta-value">Every page on the site</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ ARABIC SUMMARY ═══════════════════════ -->
+<div class="ar-summary">
+  <div class="ar-summary-inner">
+    <h2>ملخص المشكلة</h2>
+    <p>موقع مكين يعمل بلغتين (عربي وإنجليزي)، لكنه <strong>لا يخبر محركات البحث بذلك</strong>. لا توجد أي علامات hreflang في أي صفحة على الموقع بالكامل.</p>
+    <p>بدون هذه العلامات، جوجل لا يعرف أن الصفحة العربية والإنجليزية هما نسختان لنفس المحتوى. النتيجة: جوجل قد يعرض النسخة الإنجليزية لمستخدم يبحث بالعربي، أو يعتبر النسختين محتوى مكرر فيضعف ترتيبهما معاً.</p>
+    <p>المطلوب: إضافة وسم <strong>hreflang</strong> في كل صفحة يربط بين النسخة العربية والإنجليزية، بالإضافة لوسم <strong>x-default</strong> للتوجيه التلقائي.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ CONTENT ═══════════════════════ -->
+<div class="container">
+
+  <!-- ── Quick Summary ── -->
+  <section>
+    <div class="summary-box">
+      <p>
+        Makeen's website has full Arabic and English versions, but <strong>not a single page includes hreflang tags</strong>. Hreflang is the standard way to tell Google "this Arabic page has an English equivalent here, and vice versa." Without it, Google treats both versions as separate, unrelated pages competing with each other. This means the site is losing ranking power on both languages and users may be served the wrong language version in search results.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Scale of the Problem ── -->
+  <section>
+    <h2><span class="emoji">📊</span> The Scale of the Problem</h2>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Pages with hreflang tags<br>(should be every page)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Pages with a canonical tag<br>(also missing site-wide)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Pages with html lang<br>attribute set correctly</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number green">3</div>
+        <div class="stat-label">Tags needed per page<br>(ar + en + x-default)</div>
+      </div>
+    </div>
+
+    <p>We verified this on <strong>March 15, 2026</strong> by checking multiple page types: both homepages (<code>/ar</code>, <code>/en</code>), property listing pages, blog posts, and static pages (About, Careers). None of them have any hreflang tags, canonical tags, or a proper <code>lang</code> attribute on the <code>&lt;html&gt;</code> element.</p>
+  </section>
+
+  <!-- ── What Is Hreflang ── -->
+  <section>
+    <h2><span class="emoji">🔍</span> What Is Hreflang and Why Does It Matter</h2>
+
+    <div class="issue-card issue-critical">
+      <div class="issue-card-header">
+        <span>The Problem: Google Doesn't Know AR and EN Pages Are Related</span>
+      </div>
+      <div class="issue-card-body">
+        <p>Right now, when Google crawls <code>asasmakeen.com/ar/about</code> and <code>asasmakeen.com/en/about</code>, it sees two separate pages with no connection between them. It has to guess:</p>
+        <ul class="impact-list">
+          <li>Are these duplicates? Should I only index one of them?</li>
+          <li>Which one should I show to Arabic-speaking users? Which for English?</li>
+          <li>Are they competing with each other for the same keywords?</li>
+        </ul>
+        <p>Hreflang tags answer all of these questions. They tell Google: "This Arabic page and this English page are <strong>language versions of the same content</strong>. Show the Arabic one to Arabic users and the English one to English users."</p>
+      </div>
+    </div>
+
+    <div class="issue-card issue-warning">
+      <div class="issue-card-header">
+        <span>What Happens Without Hreflang (Current Situation)</span>
+      </div>
+      <div class="issue-card-body">
+        <ul class="impact-list">
+          <li><strong>Wrong language in search results</strong> - A user in Riyadh searching in Arabic might see the English version of a property page, and vice versa</li>
+          <li><strong>Duplicate content signals</strong> - Google may treat the AR and EN versions as duplicates and only index one, ignoring the other</li>
+          <li><strong>Split ranking power</strong> - Backlinks and ranking signals pointing to the Arabic page don't help the English page, and vice versa. With hreflang, Google consolidates this value</li>
+          <li><strong>Poor user experience from search</strong> - Users click a search result and land on a page in a language they can't read</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <p>Every page that has a version in another language must declare that relationship using hreflang tags.</p>
+      <p class="rule-sub">For a bilingual AR/EN site like Makeen, every page needs 3 hreflang link tags: one for Arabic, one for English, and one x-default.</p>
+    </div>
+  </section>
+
+  <!-- ── What Needs to Be Added ── -->
+  <section>
+    <h2><span class="emoji">🧩</span> What Each Page Needs</h2>
+
+    <p>Every page on the site needs <strong>three things added</strong> to its <code>&lt;head&gt;</code> section:</p>
+
+    <h3>1. The html lang attribute</h3>
+    <p>The <code>&lt;html&gt;</code> tag itself must declare the page language.</p>
+
+    <div class="comparison">
+      <div class="comparison-bad">
+        <div class="comparison-label">Current (no lang)</div>
+        <div class="comparison-content">&lt;html&gt;</div>
+        <div class="comparison-note">Google has to guess the language</div>
+      </div>
+      <div class="comparison-good">
+        <div class="comparison-label">Correct</div>
+        <div class="comparison-content">&lt;html lang="ar" dir="rtl"&gt;</div>
+        <div class="comparison-note">Arabic pages get lang="ar" dir="rtl"<br>English pages get lang="en" dir="ltr"</div>
+      </div>
+    </div>
+
+    <h3>2. Three hreflang link tags in the &lt;head&gt;</h3>
+    <p>These tell search engines how the Arabic and English versions of each page are connected.</p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>📄</span> Example: Homepage /ar
+      </div>
+      <pre><span class="code-comment">&lt;!-- On the Arabic homepage (asasmakeen.com/ar) --&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"ar"</span>        <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar"</span> <span class="code-tag">/&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"en"</span>        <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/en"</span> <span class="code-tag">/&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"x-default"</span> <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar"</span> <span class="code-tag">/&gt;</span></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>📄</span> Example: Homepage /en
+      </div>
+      <pre><span class="code-comment">&lt;!-- On the English homepage (asasmakeen.com/en) --&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"ar"</span>        <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar"</span> <span class="code-tag">/&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"en"</span>        <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/en"</span> <span class="code-tag">/&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"x-default"</span> <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar"</span> <span class="code-tag">/&gt;</span></pre>
+    </div>
+
+    <div class="highlight-gold">
+      <p><strong>Key point:</strong> Both the Arabic AND the English page must contain the <strong>same set of 3 tags</strong>. The tags are identical on both versions. This is how Google confirms the relationship is real (each page vouches for the other).</p>
+    </div>
+
+    <h3>3. The x-default tag explained</h3>
+    <p>The <code>x-default</code> tag tells Google: "If the user's language doesn't match Arabic or English, send them here." For Makeen, this should point to the Arabic version since the primary audience is in Saudi Arabia.</p>
+  </section>
+
+  <!-- ── Real Examples ── -->
+  <section>
+    <h2><span class="emoji">📋</span> Real Examples from Makeen</h2>
+
+    <h3>Property Page: Makeen 51 (ID: 38)</h3>
+    <div class="pair-visual">
+      <div class="pair-box box-ar">
+        <div class="pair-lang">Arabic Version</div>
+        <div class="pair-url">/ar/u/pu/3/38/<span class="ar-text">مكين-51-مجمعات-شرق-الرياض</span></div>
+      </div>
+      <span class="pair-arrow">&#x21C4;</span>
+      <div class="pair-box box-en">
+        <div class="pair-lang">English Version</div>
+        <div class="pair-url">/en/u/pu/3/38/makeen-51-east-riyadh-compounds</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>📄</span> Tags needed on BOTH the AR and EN versions of this page
+      </div>
+      <pre><span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"ar"</span>
+      <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar/u/pu/3/38/%D9%85%D9%83%D9%8A%D9%86-51-%D9%85%D8%AC%D9%85%D8%B9%D8%A7%D8%AA-%D8%B4%D8%B1%D9%82-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6"</span> <span class="code-tag">/&gt;</span>
+
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"en"</span>
+      <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/en/u/pu/3/38/makeen-51-east-riyadh-compounds"</span> <span class="code-tag">/&gt;</span>
+
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"x-default"</span>
+      <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar/u/pu/3/38/%D9%85%D9%83%D9%8A%D9%86-51-%D9%85%D8%AC%D9%85%D8%B9%D8%A7%D8%AA-%D8%B4%D8%B1%D9%82-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6"</span> <span class="code-tag">/&gt;</span></pre>
+    </div>
+
+    <h3>Blog Post: Housing Support (ID: 166)</h3>
+    <div class="pair-visual">
+      <div class="pair-box box-ar">
+        <div class="pair-lang">Arabic Version</div>
+        <div class="pair-url">/ar/blogs/d/166/<span class="ar-text">شروط-الدعم-السكني-للرجال</span></div>
+      </div>
+      <span class="pair-arrow">&#x21C4;</span>
+      <div class="pair-box box-en">
+        <div class="pair-lang">English Version</div>
+        <div class="pair-url">/en/blogs/d/166/housing-support-for-men</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>📄</span> Tags needed on BOTH the AR and EN versions of this blog post
+      </div>
+      <pre><span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"ar"</span>
+      <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar/blogs/d/166/%D8%B4%D8%B1%D9%88%D8%B7-%D8%A7%D9%84%D8%AF%D8%B9%D9%85-%D8%A7%D9%84%D8%B3%D9%83%D9%86%D9%8A-%D9%84%D9%84%D8%B1%D8%AC%D8%A7%D9%84"</span> <span class="code-tag">/&gt;</span>
+
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"en"</span>
+      <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/en/blogs/d/166/housing-support-for-men"</span> <span class="code-tag">/&gt;</span>
+
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"x-default"</span>
+      <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar/blogs/d/166/%D8%B4%D8%B1%D9%88%D8%B7-%D8%A7%D9%84%D8%AF%D8%B9%D9%85-%D8%A7%D9%84%D8%B3%D9%83%D9%86%D9%8A-%D9%84%D9%84%D8%B1%D8%AC%D8%A7%D9%84"</span> <span class="code-tag">/&gt;</span></pre>
+    </div>
+
+    <h3>Static Page: About</h3>
+    <div class="pair-visual">
+      <div class="pair-box box-ar">
+        <div class="pair-lang">Arabic Version</div>
+        <div class="pair-url">/ar/about</div>
+      </div>
+      <span class="pair-arrow">&#x21C4;</span>
+      <div class="pair-box box-en">
+        <div class="pair-lang">English Version</div>
+        <div class="pair-url">/en/about</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>📄</span> Tags needed on BOTH /ar/about and /en/about
+      </div>
+      <pre><span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"ar"</span>        <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar/about"</span> <span class="code-tag">/&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"en"</span>        <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/en/about"</span> <span class="code-tag">/&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"x-default"</span> <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar/about"</span> <span class="code-tag">/&gt;</span></pre>
+    </div>
+  </section>
+
+  <!-- ── Common Mistakes ── -->
+  <section>
+    <h2><span class="emoji">⚠️</span> Common Mistakes to Avoid</h2>
+
+    <div class="issue-card issue-critical">
+      <div class="issue-card-header">
+        <span>Mistake 1: Adding hreflang only on one version</span>
+      </div>
+      <div class="issue-card-body">
+        <p>If the Arabic page has hreflang tags pointing to the English page, but the English page does NOT have hreflang tags pointing back to the Arabic page, <strong>Google will ignore both</strong>. The tags must be reciprocal (present on both sides).</p>
+      </div>
+    </div>
+
+    <div class="issue-card issue-warning">
+      <div class="issue-card-header">
+        <span>Mistake 2: Using wrong language codes</span>
+      </div>
+      <div class="issue-card-body">
+        <p>The language codes must follow the ISO 639-1 standard. For Makeen:</p>
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">Wrong</div>
+            <div class="comparison-content">hreflang="arabic"<br>hreflang="ara"<br>hreflang="AR"</div>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">Correct</div>
+            <div class="comparison-content">hreflang="ar"<br>hreflang="en"<br>hreflang="x-default"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="issue-card issue-warning">
+      <div class="issue-card-header">
+        <span>Mistake 3: Using relative URLs instead of absolute URLs</span>
+      </div>
+      <div class="issue-card-body">
+        <div class="comparison">
+          <div class="comparison-bad">
+            <div class="comparison-label">Wrong</div>
+            <div class="comparison-content">href="/ar/about"</div>
+            <div class="comparison-note">Relative URL - Google requires full URLs</div>
+          </div>
+          <div class="comparison-good">
+            <div class="comparison-label">Correct</div>
+            <div class="comparison-content">href="https://asasmakeen.com/ar/about"</div>
+            <div class="comparison-note">Absolute URL with https://</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="issue-card issue-info">
+      <div class="issue-card-header">
+        <span>Mistake 4: Not including a self-referencing tag</span>
+      </div>
+      <div class="issue-card-body">
+        <p>Each page must include a hreflang tag pointing to <strong>itself</strong>, not just to the other language. So the Arabic page must have both <code>hreflang="ar"</code> (pointing to itself) AND <code>hreflang="en"</code> (pointing to the English version).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── What Needs to Be Done ── -->
+  <section>
+    <h2><span class="emoji">🛠</span> What Needs to Be Done</h2>
+
+    <div class="flowchart">
+      <div class="flow-step">
+        <div class="flow-number">1</div>
+        <div class="flow-content">
+          <strong>Add the lang attribute to the &lt;html&gt; tag</strong>
+          <p>Arabic pages: <code>&lt;html lang="ar" dir="rtl"&gt;</code><br>English pages: <code>&lt;html lang="en" dir="ltr"&gt;</code><br>This is a one-line change in the base layout template.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-number">2</div>
+        <div class="flow-content">
+          <strong>Build the hreflang URL for the alternate language version</strong>
+          <p>For any page being rendered, you already know its URL. To build the alternate URL, swap the language prefix (<code>/ar/</code> to <code>/en/</code> or vice versa) and use the correct slug for that language. The slugs are already stored in the database (one Arabic, one English per page).</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-number">3</div>
+        <div class="flow-content">
+          <strong>Inject the 3 hreflang link tags into the &lt;head&gt;</strong>
+          <p>In the base layout template (the one every page extends), add logic to output the 3 link tags. This should work dynamically for all page types: properties, blogs, static pages.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-number">4</div>
+        <div class="flow-content">
+          <strong>Handle edge cases</strong>
+          <p>Some pages may not have a translated version. If a page exists only in Arabic (no English equivalent), it should still have <code>hreflang="ar"</code> and <code>x-default</code> tags pointing to itself, but no <code>hreflang="en"</code> tag.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Logic Reference</h3>
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>📄</span> Pseudocode - Generating hreflang tags
+      </div>
+      <pre><span class="code-comment">// In the base layout template, inside &lt;head&gt;:</span>
+
+<span class="code-keyword">currentLang</span>  = request.language          <span class="code-comment">// "ar" or "en"</span>
+<span class="code-keyword">currentURL</span>   = request.fullCanonicalURL    <span class="code-comment">// absolute URL of this page</span>
+<span class="code-keyword">alternateLang</span> = (currentLang == "ar") ? "en" : "ar"
+
+<span class="code-comment">// Build the alternate URL</span>
+<span class="code-comment">// For dynamic pages (property, blog): swap prefix + use correct slug</span>
+<span class="code-keyword">if</span> page.hasTranslation(alternateLang):
+    <span class="code-keyword">alternateURL</span> = buildURL(alternateLang, page.slugFor(alternateLang))
+<span class="code-keyword">else</span>:
+    <span class="code-keyword">alternateURL</span> = null  <span class="code-comment">// no translation exists</span>
+
+<span class="code-comment">// Output the tags</span>
+<span class="code-correct">output: &lt;link rel="alternate" hreflang="{currentLang}" href="{currentURL}" /&gt;</span>
+
+<span class="code-keyword">if</span> alternateURL:
+    <span class="code-correct">output: &lt;link rel="alternate" hreflang="{alternateLang}" href="{alternateURL}" /&gt;</span>
+
+<span class="code-comment">// x-default always points to the Arabic version (primary market)</span>
+<span class="code-keyword">defaultURL</span> = (currentLang == "ar") ? currentURL : alternateURL
+<span class="code-correct">output: &lt;link rel="alternate" hreflang="x-default" href="{defaultURL}" /&gt;</span></pre>
+    </div>
+
+    <div class="highlight-gold">
+      <p><strong>Important note about Ticket #001:</strong> Once the duplicate URL fix from Ticket #001 is deployed (so each page only has 2 URLs instead of 4), the hreflang tags should point to the <strong>correct canonical URLs only</strong>. The Arabic hreflang must use the Arabic slug, and the English hreflang must use the English slug. Never point hreflang to a URL that redirects.</p>
+    </div>
+  </section>
+
+  <!-- ── All Page Types ── -->
+  <section>
+    <h2><span class="emoji">📋</span> Page Types That Need Hreflang</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Page Type</th>
+            <th>AR URL Pattern</th>
+            <th>EN URL Pattern</th>
+            <th>How to Build Alternate URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Homepage</strong></td>
+            <td>/ar</td>
+            <td>/en</td>
+            <td>Static mapping</td>
+          </tr>
+          <tr>
+            <td><strong>Property Pages</strong></td>
+            <td>/ar/u/pu/3/{id}/{ar-slug}</td>
+            <td>/en/u/pu/3/{id}/{en-slug}</td>
+            <td>Same ID, swap language prefix + use slug for that language from database</td>
+          </tr>
+          <tr>
+            <td><strong>Unit Pages</strong></td>
+            <td>/ar/u/pu/4/{id}/{ar-slug}</td>
+            <td>/en/u/pu/4/{id}/{en-slug}</td>
+            <td>Same as property pages</td>
+          </tr>
+          <tr>
+            <td><strong>Blog Posts</strong></td>
+            <td>/ar/blogs/d/{id}/{ar-slug}</td>
+            <td>/en/blogs/d/{id}/{en-slug}</td>
+            <td>Same ID, swap prefix + slug</td>
+          </tr>
+          <tr>
+            <td><strong>Static Pages</strong><br>(About, Careers, Contact, Investor Relations)</td>
+            <td>/ar/about<br>/ar/careers<br>/ar/contact-us<br>/ar/investor-relations</td>
+            <td>/en/about<br>/en/careers<br>/en/contact-us<br>/en/investor-relations</td>
+            <td>Swap /ar/ to /en/ (path stays the same)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Bonus: Canonical Tags ── -->
+  <section>
+    <h2><span class="emoji">🔗</span> While You're at It: Add Canonical Tags Too</h2>
+
+    <p>The site is also missing <strong>canonical tags</strong> on every page. Since you'll be editing the <code>&lt;head&gt;</code> section to add hreflang, this is the perfect time to add canonicals as well. It's one extra line per page.</p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>📄</span> Add this alongside the hreflang tags
+      </div>
+      <pre><span class="code-comment">&lt;!-- Canonical tag: tells Google which URL is the "official" version --&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"canonical"</span> <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar/about"</span> <span class="code-tag">/&gt;</span>
+
+<span class="code-comment">&lt;!-- Hreflang tags: language versions --&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"ar"</span>        <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar/about"</span> <span class="code-tag">/&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"en"</span>        <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/en/about"</span> <span class="code-tag">/&gt;</span>
+<span class="code-tag">&lt;link</span> <span class="code-attr">rel</span>=<span class="code-string">"alternate"</span> <span class="code-attr">hreflang</span>=<span class="code-string">"x-default"</span> <span class="code-attr">href</span>=<span class="code-value">"https://asasmakeen.com/ar/about"</span> <span class="code-tag">/&gt;</span></pre>
+    </div>
+
+    <p>The canonical tag should always point to the <strong>current page's own URL</strong> (the clean, correct version). It tells Google "this is the official URL for this content, ignore any other variations you may have found."</p>
+
+    <div class="highlight-teal">
+      <p><strong>Why add canonical now?</strong> Canonicals and hreflang work together. Google recommends using both. The canonical tag handles duplicates within the same language (e.g., if a page is accessible with and without a trailing slash), while hreflang handles the cross-language relationship. Adding them together is more effective than adding them separately.</p>
+    </div>
+  </section>
+
+  <!-- ── Complete Head Example ── -->
+  <section>
+    <h2><span class="emoji">💻</span> Complete &lt;head&gt; Example After Fix</h2>
+
+    <p>Here's what the full <code>&lt;head&gt;</code> section should look like for an Arabic property page after implementing this ticket:</p>
+
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>📄</span> Complete &lt;head&gt; - Arabic property page (Makeen 68, ID: 48)
+      </div>
+      <pre><span class="code-tag">&lt;html</span> <span class="code-attr">lang</span>=<span class="code-string">"ar"</span> <span class="code-attr">dir</span>=<span class="code-string">"rtl"</span><span class="code-tag">&gt;</span>
+<span class="code-tag">&lt;head&gt;</span>
+  <span class="code-tag">&lt;meta</span> <span class="code-attr">charset</span>=<span class="code-string">"UTF-8"</span><span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;title&gt;</span>شقق حي الريان بالرياض بمشروع مكين 68 | شركة أساس مكين<span class="code-tag">&lt;/title&gt;</span>
+
+  <span class="code-comment">&lt;!-- Canonical: this page's own clean URL --&gt;</span>
+  <span class="code-correct">&lt;link rel="canonical" href="https://asasmakeen.com/ar/u/pu/3/48/%D9%85%D9%83%D9%8A%D9%86-68" /&gt;</span>
+
+  <span class="code-comment">&lt;!-- Hreflang: connect AR and EN versions --&gt;</span>
+  <span class="code-correct">&lt;link rel="alternate" hreflang="ar"        href="https://asasmakeen.com/ar/u/pu/3/48/%D9%85%D9%83%D9%8A%D9%86-68" /&gt;</span>
+  <span class="code-correct">&lt;link rel="alternate" hreflang="en"        href="https://asasmakeen.com/en/u/pu/3/48/makeen-68-al-rayan-apartments" /&gt;</span>
+  <span class="code-correct">&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/ar/u/pu/3/48/%D9%85%D9%83%D9%8A%D9%86-68" /&gt;</span>
+
+  <span class="code-comment">&lt;!-- Rest of head tags... --&gt;</span>
+<span class="code-tag">&lt;/head&gt;</span></pre>
+    </div>
+  </section>
+
+  <!-- ── Done Criteria ── -->
+  <section>
+    <h2><span class="emoji">✅</span> How to Know This Is Done</h2>
+    <ul class="checklist">
+      <li>
+        <div>
+          <div class="check-main">Every page has <code>lang</code> and <code>dir</code> attributes on the <code>&lt;html&gt;</code> tag</div>
+          <div class="check-detail">Arabic pages: lang="ar" dir="rtl" | English pages: lang="en" dir="ltr"</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">Every page has 3 hreflang link tags in the &lt;head&gt;</div>
+          <div class="check-detail">hreflang="ar", hreflang="en", and hreflang="x-default" (pointing to the Arabic version)</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">The hreflang tags are identical on both the AR and EN version of each page</div>
+          <div class="check-detail">Check any page pair: the same 3 link tags should appear on both sides</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">All hreflang href values use absolute URLs (starting with https://)</div>
+          <div class="check-detail">No relative paths like /ar/about - must be https://asasmakeen.com/ar/about</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">Every page has a canonical tag pointing to its own clean URL</div>
+          <div class="check-detail">The canonical href should be the exact same URL as the page's own hreflang entry</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">Hreflang URLs use only the correct slug for each language</div>
+          <div class="check-detail">The hreflang="ar" tag uses the Arabic slug, hreflang="en" uses the English slug. No cross-language slugs.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">This works across all page types: homepage, properties, units, blogs, static pages</div>
+          <div class="check-detail">Test at least one page from each type</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── Quick Test ── -->
+  <section>
+    <h2><span class="emoji">🧪</span> Quick Test We Can Run Right Now</h2>
+    <p>Open any page on the site, right-click, and select "View Page Source" (Ctrl+U). Then search for <code>hreflang</code>:</p>
+
+    <div class="highlight-rose">
+      <p><strong>Right now:</strong> You will find zero results. The word "hreflang" does not appear in the source of any page on the site.</p>
+      <p><strong>After the fix:</strong> Every page should have exactly 3 lines containing "hreflang".</p>
+    </div>
+
+    <p>You can also use curl to verify:</p>
+    <div class="code-block">
+      <div class="code-block-header">
+        <span>🖥️</span> Terminal - Check for hreflang
+      </div>
+      <pre><span class="code-comment"># Check the Arabic homepage for hreflang tags</span>
+curl -s https://asasmakeen.com/ar | grep -i "hreflang"
+
+<span class="code-comment"># Currently returns nothing.</span>
+<span class="code-comment"># After fix, should return 3 lines:</span>
+<span class="code-comment">#   &lt;link rel="alternate" hreflang="ar" href="https://asasmakeen.com/ar" /&gt;</span>
+<span class="code-comment">#   &lt;link rel="alternate" hreflang="en" href="https://asasmakeen.com/en" /&gt;</span>
+<span class="code-comment">#   &lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/ar" /&gt;</span>
+
+<span class="code-comment"># Check the English homepage - should return the SAME 3 lines</span>
+curl -s https://asasmakeen.com/en | grep -i "hreflang"
+
+<span class="code-comment"># Check a property page</span>
+curl -s "https://asasmakeen.com/en/u/pu/3/38/makeen-51-east-riyadh-compounds" \
+  | grep -i "hreflang"</pre>
+    </div>
+  </section>
+
+  <!-- ── Questions ── -->
+  <section>
+    <h2><span class="emoji">❓</span> Questions Before We Start</h2>
+    <ul class="checklist">
+      <li>
+        <div>
+          <div class="check-main">Is there a shared base layout template that all pages extend?</div>
+          <div class="check-detail">If yes, the hreflang/canonical logic only needs to be added once in that template. If each page type has its own layout, we'll need to add it to each one.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">Does the rendering context know the current page's alternate language URL?</div>
+          <div class="check-detail">We need access to both the Arabic and English slugs when rendering any page. Is this data available in the template context, or does it need to be added?</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">Are there any pages that exist in only one language (no translation)?</div>
+          <div class="check-detail">If yes, we need to handle those as a special case (hreflang only for the language that exists + x-default).</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+</div>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<div class="footer">
+  Makeen SEO Team - Ticket #003 - March 2026
+</div>
+
+</body>
+</html>

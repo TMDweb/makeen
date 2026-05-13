@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket #007 - Strip /public/ Path Segment & 301 Redirect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c0e1d;
+      --gold: #ffc409;
+      --rose: #cc5f73;
+      --teal: #96c7c3;
+      --bg: #ffffff;
+      --surface: #f5f6f8;
+      --surface-2: #edeef2;
+      --border: #d8dbe3;
+      --text: #0c0e1d;
+      --text-muted: #5c5f72;
+      --gold-bg: rgba(255, 196, 9, 0.12);
+      --gold-border: rgba(255, 196, 9, 0.45);
+      --rose-bg: rgba(204, 95, 115, 0.10);
+      --rose-border: rgba(204, 95, 115, 0.35);
+      --teal-bg: rgba(150, 199, 195, 0.18);
+      --teal-border: rgba(150, 199, 195, 0.5);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Baloo Bhaijaan 2', 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.7;
+    }
+    .banner { background: var(--navy); padding: 36px 0; }
+    .banner-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .ticket-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(204, 95, 115, 0.2);
+      border: 1px solid rgba(204, 95, 115, 0.5);
+      color: #f0a0b0; padding: 4px 14px; border-radius: 20px;
+      font-size: 15px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 16px;
+    }
+    .ticket-badge::before {
+      content: ''; width: 8px; height: 8px; background: var(--rose);
+      border-radius: 50%; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    .banner h1 { font-size: 34px; font-weight: 700; margin-bottom: 14px; color: #fff; }
+    .meta-row { display:flex; gap:24px; flex-wrap:wrap; font-size:16px; color:rgba(255,255,255,.55); }
+    .meta-item { display:flex; align-items:center; gap:6px; }
+    .meta-value { color: rgba(255,255,255,.9); font-weight:600; }
+    .priority-critical { color: var(--rose); font-weight:700; }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 36px 24px; }
+    section { margin-bottom: 44px; }
+    h2 {
+      font-size: 26px; font-weight: 700; margin-bottom: 16px;
+      padding-bottom: 10px; border-bottom: 2px solid var(--gold);
+      color: var(--navy);
+    }
+    h2 .emoji { margin-right: 8px; }
+    h3 { font-size: 20px; font-weight: 700; margin: 22px 0 10px; color: var(--navy); }
+    h4 { font-size: 18px; font-weight: 700; margin: 16px 0 8px; color: var(--navy); }
+    p { margin-bottom: 14px; color: var(--text); font-size: 17px; }
+    .muted { color: var(--text-muted); }
+    strong { color: var(--navy); font-weight: 700; }
+
+    .summary-box {
+      background: var(--gold-bg); border: 1px solid var(--gold-border);
+      border-left: 4px solid var(--gold); border-radius: 8px;
+      padding: 24px; margin-bottom: 24px;
+    }
+    .summary-box p { font-size: 18px; margin-bottom: 0; }
+
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px; text-align: center;
+    }
+    .stat-number {
+      font-size: 44px; font-weight: 800; color: var(--rose);
+      display: block; line-height: 1.1;
+    }
+    .stat-number.green { color: var(--teal); }
+    .stat-label { font-size: 15px; color: var(--text-muted); margin-top: 6px; }
+
+    .data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 15px; }
+    .data-table th {
+      background: var(--navy); padding: 12px 14px; text-align: left;
+      font-weight: 600; font-size: 13px; text-transform: uppercase;
+      letter-spacing: 0.5px; color: rgba(255,255,255,.8);
+    }
+    .data-table th:first-child { border-radius: 8px 0 0 0; }
+    .data-table th:last-child { border-radius: 0 8px 0 0; }
+    .data-table td {
+      padding: 12px 14px; border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: var(--surface); }
+    .data-table .mono { font-family: 'SF Mono','Fira Code','Courier New',monospace; font-size: 13px; word-break: break-all; }
+
+    .status-pill {
+      display: inline-block; padding: 2px 10px; border-radius: 12px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+    }
+    .pill-ok { background: var(--teal-bg); color:#4a8e88; border:1px solid var(--teal-border); }
+    .pill-bad { background: var(--rose-bg); color: var(--rose); border:1px solid var(--rose-border); }
+    .pill-warn { background: var(--gold-bg); color:#b8960a; border:1px solid var(--gold-border); }
+
+    .code-block {
+      background: var(--navy); border: 1px solid #2a2d40;
+      border-radius: 10px; overflow-x: auto; margin: 16px 0;
+    }
+    .code-block-header {
+      background: rgba(255,255,255,.06); padding: 10px 18px;
+      font-size: 14px; font-weight: 600; color: rgba(255,255,255,.6);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display:flex; align-items:center; gap:8px;
+    }
+    .code-block pre {
+      padding: 18px; font-family: 'SF Mono','Fira Code','Courier New',monospace;
+      font-size: 14px; line-height: 1.6; color: #e2e4ef;
+      white-space: pre; overflow-x: auto;
+    }
+    .code-comment { color: rgba(255,255,255,.35); }
+    .code-correct { color: var(--teal); }
+    .code-wrong { color: var(--rose); }
+    .code-key { color: var(--gold); }
+    .code-string { color: #a8d8ea; }
+
+    .alert {
+      border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+      font-size: 16px; display: flex; align-items: flex-start; gap: 14px;
+    }
+    .alert-icon { font-size: 26px; flex-shrink: 0; line-height: 1; }
+    .alert-warning { background: var(--gold-bg); border: 1px solid var(--gold-border); color: var(--text); }
+    .alert-warning strong { color: var(--navy); }
+    .alert-danger { background: var(--rose-bg); border: 1px solid var(--rose-border); color: var(--text); }
+    .alert-danger strong { color: var(--rose); }
+    .alert-info { background: var(--teal-bg); border: 1px solid var(--teal-border); color: var(--text); }
+    .alert-info strong { color: var(--navy); }
+
+    .issue-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 22px; margin: 16px 0;
+    }
+    .issue-card h4 { margin-top: 0; }
+    .severity-badge {
+      display:inline-block; padding: 2px 10px; border-radius: 12px;
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; margin-right: 8px;
+    }
+    .severity-critical { background: var(--rose-bg); color: var(--rose); border:1px solid var(--rose-border); }
+    .severity-high { background: var(--gold-bg); color:#b8960a; border:1px solid var(--gold-border); }
+    .severity-medium { background: var(--teal-bg); color:#4a8e88; border:1px solid var(--teal-border); }
+
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      padding: 14px 18px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 10px;
+      margin-bottom: 10px; display: flex; align-items: flex-start;
+      gap: 14px; font-size: 16px;
+    }
+    .checklist li::before {
+      content: '\2610'; font-size: 24px; flex-shrink: 0; color: var(--teal);
+    }
+    .check-main { font-weight: 600; color: var(--text); }
+    .check-detail { font-size: 15px; color: var(--text-muted); margin-top: 4px; }
+
+    code {
+      background: var(--surface-2); padding: 2px 7px; border-radius: 5px;
+      font-family: 'SF Mono','Fira Code','Courier New',monospace;
+      font-size: 15px; color: var(--navy); border: 1px solid var(--border);
+    }
+
+    hr { border: none; border-top: 2px solid var(--gold); margin: 36px 0; opacity: 0.3; }
+
+    .footer {
+      text-align: center; padding: 28px; color: var(--text-muted);
+      font-size: 15px; background: var(--surface); border-top: 1px solid var(--border);
+    }
+    .footer p:first-child { font-weight: 600; color: var(--navy); }
+
+    .ar-text {
+      font-family: 'Baloo Bhaijaan 2','Noto Sans Arabic','Segoe UI',Tahoma,Arial,sans-serif;
+      direction: rtl; unicode-bidi: isolate;
+    }
+    .ar-summary {
+      background: var(--surface); border-top: 3px solid var(--gold);
+      border-bottom: 1px solid var(--border); padding: 32px 24px;
+      text-align: center; direction: rtl;
+      font-family: 'Baloo Bhaijaan 2','Noto Sans Arabic','Segoe UI',Tahoma,Arial,sans-serif;
+    }
+    .ar-summary-inner { max-width: 720px; margin: 0 auto; }
+    .ar-summary h2 { font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 16px; border: none; padding: 0; }
+    .ar-summary p { font-size: 18px; line-height: 2; color: var(--text); margin-bottom: 12px; }
+    .ar-summary strong { color: var(--rose); }
+
+    .sticky-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(12, 14, 29, 0.96);
+      backdrop-filter: saturate(1.4) blur(10px);
+      -webkit-backdrop-filter: saturate(1.4) blur(10px);
+      border-bottom: 1px solid rgba(255, 196, 9, 0.25);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .sticky-nav-inner {
+      max-width: 900px; margin: 0 auto; padding: 0 24px;
+      display: flex; gap: 4px; overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .sticky-nav-inner::-webkit-scrollbar { display: none; }
+    .sticky-nav a {
+      flex-shrink: 0;
+      color: rgba(255,255,255,0.7); text-decoration: none;
+      font-size: 13px; font-weight: 600;
+      padding: 14px 14px; border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .sticky-nav a:hover { color: var(--gold); border-bottom-color: rgba(255,196,9,0.5); }
+    section[id] { scroll-margin-top: 70px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ BANNER ═══════════════════════ -->
+<div class="banner">
+  <div class="banner-inner">
+    <a href="../" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,196,9,0.15);border:1px solid rgba(255,196,9,0.45);color:#ffc409;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,196,9,0.25)'" onmouseout="this.style.background='rgba(255,196,9,0.15)'">← All SEO Tickets</a>
+    <div class="ticket-badge">Critical SEO Bug - Open</div>
+    <h1>Ticket #007 - Strip <code style="background:rgba(255,255,255,.1);color:#ffc409;border:none;">/public/</code> Path Segment &amp; 301 Redirect</h1>
+    <div class="meta-row">
+      <div class="meta-item"><span>Project:</span><span class="meta-value">asasmakeen.com</span></div>
+      <div class="meta-item"><span>Priority:</span><span class="meta-value priority-critical">Critical</span></div>
+      <div class="meta-item"><span>Category:</span><span class="meta-value">Duplicate Content &amp; Canonical</span></div>
+      <div class="meta-item"><span>Date:</span><span class="meta-value">May 13, 2026</span></div>
+      <div class="meta-item"><span>Reporter:</span><span class="meta-value">Leen Mahrawan</span></div>
+      <div class="meta-item"><span>Assignee:</span><span class="meta-value">Abdo (dev, Makeen)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ ARABIC SUMMARY ═══════════════════════ -->
+<div class="ar-summary">
+  <div class="ar-summary-inner">
+    <h2>ملخص المشكلة</h2>
+    <p>كل رابط يحتوي على <code>/public/</code> في المسار يجب <strong>حذفه</strong> وإعادة توجيهه <strong>301 permanent</strong> إلى الرابط الصحيح بدون <code>/public/</code>. لو الحذف من الكود مش ممكن، يكفي إعداد التحويل الدائم على مستوى السيرفر (nginx أو .htaccess).</p>
+    <p>المشكلة موجودة في <strong>214 رابط</strong> حسب تقرير الـ dev، ومثال مباشر: <code>https://www.asasmakeen.com/public/ar</code> يجب أن يحوّل إلى <code>https://asasmakeen.com/ar</code>. التحقق المباشر اليوم يؤكد أن النسختين تردان بنفس المحتوى وبكود <strong>HTTP 200</strong>، وأن وسم <code>canonical</code> على نسخة <code>/public/</code> يشير إلى نفسه، مما يضاعف الفهرسة.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ STICKY NAV ═══════════════════════ -->
+<nav class="sticky-nav">
+  <div class="sticky-nav-inner">
+    <a href="#summary">Summary</a>
+    <a href="#scale">Scale</a>
+    <a href="#rootcause">Root Cause</a>
+    <a href="#urls">URL List</a>
+    <a href="#fix">Fix</a>
+    <a href="#verify">Verify</a>
+    <a href="#priority">Priority</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ CONTENT ═══════════════════════ -->
+<div class="container">
+
+  <!-- Quick Summary -->
+  <section id="summary">
+    <div class="summary-box">
+      <p>
+        Every URL containing <code>/public/</code> must be removed from the application and 301-redirected to the canonical URL without <code>/public/</code>. If the application can't drop the path entirely, a server-level rewrite alone is acceptable. Reported by Leen Mahrawan on May 13, 2026, citing <strong>214 affected URLs</strong> from the dev report. The <a href="https://drive.google.com/open?id=1YPxp27037aTqZbMH8z_Rjkzyqlh_w63w&amp;usp=drive_fs" target="_blank" style="color:var(--rose);">URL list lives in this Drive sheet</a>; today's GSC failing-URL export contains 36 of them as a verified subset.
+      </p>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section id="scale">
+    <h2><span class="emoji">📊</span> The Scale of the Problem</h2>
+    <div class="stats-grid">
+      <div class="stat-card"><span class="stat-number">214</span><div class="stat-label">URLs in dev report<br>(per Leen Mahrawan)</div></div>
+      <div class="stat-card"><span class="stat-number">36</span><div class="stat-label">verified <code>/public/</code> URLs<br>in today's GSC export</div></div>
+      <div class="stat-card"><span class="stat-number">200</span><div class="stat-label">HTTP code returned<br>by every <code>/public/</code> URL</div></div>
+      <div class="stat-card"><span class="stat-number">2x</span><div class="stat-label">indexable copies<br>of every page</div></div>
+    </div>
+  </section>
+
+  <!-- Root cause -->
+  <section id="rootcause">
+    <h2><span class="emoji">🔬</span> Root Cause &amp; Live Verification</h2>
+    <p>Laravel's document root is the <code>public/</code> directory. When the web server (nginx or Apache) does not enforce that <code>/public/...</code> requests are blocked or redirected, every page becomes reachable via <strong>two URLs</strong>: the canonical one (without <code>/public/</code>) and the duplicate (with <code>/public/</code>). Both render successfully and both are indexable.</p>
+
+    <h3>Live test (May 13, 2026)</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>URL</th><th>HTTP</th><th>Body size</th><th>Self-canonical</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">https://asasmakeen.com/public/en/about</td>
+          <td><span class="status-pill pill-bad">200</span></td>
+          <td>178,711 bytes</td>
+          <td class="mono">href="...<span style="color:var(--rose);">/public/</span>en/about"</td>
+        </tr>
+        <tr>
+          <td class="mono">https://asasmakeen.com/en/about</td>
+          <td><span class="status-pill pill-ok">200</span></td>
+          <td>177,808 bytes</td>
+          <td class="mono">href=".../en/about"</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-danger">
+      <span class="alert-icon">🚨</span>
+      <div>
+        <strong>The canonical tag on <code>/public/</code> URLs points back to itself, not to the clean URL.</strong> So Google is being told both versions are "the original." Each <code>/public/</code> page therefore competes with its clean twin for ranking, splits internal link equity, and inflates the indexable footprint of the site.
+      </div>
+    </div>
+
+    <div class="alert alert-info">
+      <span class="alert-icon">📘</span>
+      <div>
+        <strong>Why this matters more than a normal duplicate:</strong> a single 301 at the server tier resolves all 214 URLs at once. There is no per-page work and no application code change required if the rewrite is added at nginx/Apache. The fix is intentionally low-effort and high-impact.
+      </div>
+    </div>
+  </section>
+
+  <!-- URL List -->
+  <section id="urls">
+    <h2><span class="emoji">📄</span> Affected URLs (Verified Sample)</h2>
+    <p>Full list of 214 URLs is in the Drive sheet linked above. Below are the 36 URLs from today's GSC failing-URL export that contain <code>/public/</code>. Every one of these maps cleanly to the same path with <code>/public/</code> removed.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Current (bad)</th><th>Target (canonical, after 301)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="mono">https://www.asasmakeen.com/public/ar</td><td class="mono">https://asasmakeen.com/ar</td></tr>
+        <tr><td class="mono">https://www.asasmakeen.com/public/ar/home</td><td class="mono">https://asasmakeen.com/ar/home</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en</td><td class="mono">https://asasmakeen.com/en</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/home</td><td class="mono">https://asasmakeen.com/en/home</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/about</td><td class="mono">https://asasmakeen.com/en/about</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/ar/about</td><td class="mono">https://asasmakeen.com/ar/about</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/contact-us</td><td class="mono">https://asasmakeen.com/en/contact-us</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/careers</td><td class="mono">https://asasmakeen.com/en/careers</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/ar/careers</td><td class="mono">https://asasmakeen.com/ar/careers</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/faqs</td><td class="mono">https://asasmakeen.com/en/faqs</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/inquiry</td><td class="mono">https://asasmakeen.com/en/inquiry</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/ipo</td><td class="mono">https://asasmakeen.com/en/ipo</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/ar/ipo</td><td class="mono">https://asasmakeen.com/ar/ipo</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/investors-relations</td><td class="mono">https://asasmakeen.com/en/investors-relations</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/ar/investors-relations</td><td class="mono">https://asasmakeen.com/ar/investors-relations</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/ar/media-center</td><td class="mono">https://asasmakeen.com/ar/media-center</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/u/pu/3/10/makeen-37-residential-units-in-riyadh</td><td class="mono">https://asasmakeen.com/en/u/pu/3/10/makeen-37-residential-units-in-riyadh</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/u/pu/3/38/makeen-51-east-riyadh-compounds</td><td class="mono">https://asasmakeen.com/en/u/pu/3/38/makeen-51-east-riyadh-compounds</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/u/pu/3/52/apartments-for-sale-in-al-rimal</td><td class="mono">https://asasmakeen.com/en/u/pu/3/52/apartments-for-sale-in-al-rimal</td></tr>
+        <tr><td class="mono">https://www.asasmakeen.com/public/en/u/pu/2/6/makeen-31-al-yarmuk-neighborhood-apartments-in-riyadh</td><td class="mono">https://asasmakeen.com/en/u/pu/2/6/makeen-31-al-yarmuk-neighborhood-apartments-in-riyadh</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/blogs/d/63/rental-apartments-in-riyadh</td><td class="mono">https://asasmakeen.com/en/blogs/d/63/rental-apartments-in-riyadh</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/blogs/d/68/10-tips-to-buy-the-perfect-townhouse-in-riyadh</td><td class="mono">https://asasmakeen.com/en/blogs/d/68/10-tips-to-buy-the-perfect-townhouse-in-riyadh</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/blogs/d/73/a-comprehensive-guide-to-real-estate-development</td><td class="mono">https://asasmakeen.com/en/blogs/d/73/a-comprehensive-guide-to-real-estate-development</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/blogs/d/123/asas-makeen-celebrates-the-renewal-of-the-iso-9001-certificate</td><td class="mono">https://asasmakeen.com/en/blogs/d/123/asas-makeen-celebrates-the-renewal-of-the-iso-9001-certificate</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/blogs/d/128/asas-makeen-intends-to-launch-a-hotel-chain-to-promote-the-luxury-hospitality-sector-in-the-kingdom</td><td class="mono">https://asasmakeen.com/en/blogs/d/128/asas-makeen-intends-to-launch-a-hotel-chain-to-promote-the-luxury-hospitality-sector-in-the-kingdom</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/blogs/d/183/apartments-for-rent-in-al-arid-district</td><td class="mono">https://asasmakeen.com/en/blogs/d/183/apartments-for-rent-in-al-arid-district</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/blogs/d/201/10-cashback-offer-on-select-projects-in-asas-makeen-in-north-and-east-riyadh-residential-opportunity-in-quality-projects</td><td class="mono">https://asasmakeen.com/en/blogs/d/201/...</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/news/d/102/visit-of-abdullah-al-majed-chairman-of-al-nassr-club-and-shurfah-holding</td><td class="mono">https://asasmakeen.com/en/news/d/102/...</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/news/d/112/sheikh-badr-bin-mohammed-al-rajhi-visit-asas-makeen-cityscape-global</td><td class="mono">https://asasmakeen.com/en/news/d/112/...</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/news/d/122/asas-makeen-acquires-land-riyadh-100-million</td><td class="mono">https://asasmakeen.com/en/news/d/122/...</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/news/d/125/launching-asas-makeen-company-in-the-parallel-market</td><td class="mono">https://asasmakeen.com/en/news/d/125/...</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/news/d/129/asas-makeen-achieves-first-class-contractor-classification-to-enhance-its-role-in-urban-development-in-saudi-arabia</td><td class="mono">https://asasmakeen.com/en/news/d/129/...</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/news/d/137/real-estate-developer-qualification-certificate-asas-makeen</td><td class="mono">https://asasmakeen.com/en/news/d/137/...</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/news/d/157/signing-of-memorandum-of-understanding-with-abdulaziz-and-saad-al-mujil-trading-and-investment-company</td><td class="mono">https://asasmakeen.com/en/news/d/157/...</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/en/news/d/160/strategic-partnership-between-asas-makeen-and-first-avenue-for-real-estate-development-to-implement-a-promising-residential-project</td><td class="mono">https://asasmakeen.com/en/news/d/160/...</td></tr>
+        <tr><td class="mono">https://asasmakeen.com/public/uploads/policies/quality_policy_ar.pdf</td><td class="mono">https://asasmakeen.com/uploads/policies/quality_policy_ar.pdf</td></tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-warning">
+      <span class="alert-icon">⚠️</span>
+      <div>
+        <strong>Pattern, not list.</strong> A single rewrite rule resolves all 214. The full list above is for QA spot-checks, not a per-URL config.
+      </div>
+    </div>
+  </section>
+
+  <!-- Fix -->
+  <section id="fix">
+    <h2><span class="emoji">🛠</span> The Fix</h2>
+
+    <h3>Preferred — server-level 301 (one rule, covers everything)</h3>
+
+    <h4>nginx</h4>
+    <div class="code-block">
+      <div class="code-block-header"><span>📄</span> nginx server block</div>
+      <pre><span class="code-comment"># Strip /public/ from the URL and 301 to the clean path.</span>
+<span class="code-comment"># Place inside the server { } block, before the catch-all location.</span>
+<span class="code-key">location</span> <span class="code-string">~ ^/public/(.*)$</span> {
+    <span class="code-key">return</span> <span class="code-correct">301</span> <span class="code-string">https://asasmakeen.com/$1$is_args$args</span>;
+}</pre>
+    </div>
+
+    <h4>Apache (.htaccess)</h4>
+    <div class="code-block">
+      <div class="code-block-header"><span>📄</span> .htaccess at the docroot</div>
+      <pre><span class="code-key">RewriteEngine</span> <span class="code-string">On</span>
+<span class="code-comment"># 301 any request that begins with /public/ to the same path without it.</span>
+<span class="code-key">RewriteCond</span> <span class="code-string">%{REQUEST_URI} ^/public/(.*)$</span>
+<span class="code-key">RewriteRule</span> <span class="code-string">^public/(.*)$ https://asasmakeen.com/$1 [R=301,L]</span></pre>
+    </div>
+
+    <div class="alert alert-info">
+      <span class="alert-icon">📘</span>
+      <div>
+        <strong>Host normalization is bundled.</strong> Both rules redirect to the apex (<code>https://asasmakeen.com</code>), which collapses the <code>www</code> variants from the GSC list (<code>www.asasmakeen.com/public/ar</code> → <code>asasmakeen.com/ar</code>) into a single hop. The existing <code>www → apex</code> redirect documented in <a href="../ticket-006-robots-txt/" style="color:var(--rose);">Ticket #006</a> already handles requests that arrive without <code>/public/</code>, so no double-redirect chain is created.
+      </div>
+    </div>
+
+    <h3>Acceptable fallback — application-level 301</h3>
+    <p>If the dev team can't add a server-level rule, Laravel can handle it in middleware:</p>
+    <div class="code-block">
+      <div class="code-block-header"><span>📄</span> app/Http/Middleware/StripPublicPrefix.php</div>
+      <pre><span class="code-key">public function</span> <span class="code-string">handle</span>($request, Closure $next)
+{
+    <span class="code-key">if</span> (<span class="code-string">str_starts_with</span>($request-&gt;getPathInfo(), <span class="code-string">'/public/'</span>)) {
+        $clean = <span class="code-string">substr</span>($request-&gt;getPathInfo(), <span class="code-correct">7</span>); <span class="code-comment">// drop "/public"</span>
+        <span class="code-key">return</span> <span class="code-string">redirect</span>(<span class="code-string">'https://asasmakeen.com'</span> . $clean, <span class="code-correct">301</span>);
+    }
+    <span class="code-key">return</span> $next($request);
+}</pre>
+    </div>
+
+    <div class="alert alert-warning">
+      <span class="alert-icon">⚠️</span>
+      <div>
+        <strong>Why server-level is preferred:</strong> the application-level redirect still boots Laravel for every <code>/public/</code> hit, which is wasted CPU on requests that exist only to be redirected away. nginx/Apache rewrites short-circuit before PHP runs.
+      </div>
+    </div>
+
+    <h3>Also fix the canonical tag on legacy URLs (defensive)</h3>
+    <p>The 301 alone will deindex the <code>/public/</code> URLs over the next few crawls. As a belt-and-suspenders, the SPA template currently emits <code>&lt;link rel="canonical" href="...<strong>/public/</strong>..."&gt;</code> when the request path includes <code>/public/</code>. Once the 301 is in place this code path is unreachable, but if the redirect is rolled out gradually, harden the template to always emit the canonical without the prefix:</p>
+    <div class="code-block">
+      <div class="code-block-header"><span>📄</span> Blade template (or wherever canonical is rendered)</div>
+      <pre>&lt;<span class="code-key">link</span> <span class="code-key">rel</span>=<span class="code-string">"canonical"</span>
+      <span class="code-key">href</span>=<span class="code-string">"{{ str_replace('/public/', '/', url()-&gt;current()) }}"</span> /&gt;</pre>
+    </div>
+  </section>
+
+  <!-- Verify -->
+  <section id="verify">
+    <h2><span class="emoji">✅</span> How to Know This Is Done</h2>
+    <ul class="checklist">
+      <li><div><div class="check-main"><code>curl -I https://asasmakeen.com/public/ar</code> returns <code>HTTP/2 301</code> with <code>location: https://asasmakeen.com/ar</code></div><div class="check-detail">Currently returns 200 — this is the regression test.</div></div></li>
+      <li><div><div class="check-main">Same test passes for <code>www.asasmakeen.com/public/ar</code> in a single hop to <code>asasmakeen.com/ar</code></div><div class="check-detail">No 2-hop chain (avoid <code>www/public</code> → <code>www</code> → <code>apex</code>).</div></div></li>
+      <li><div><div class="check-main">Spot-check 5 random URLs from the Drive list with <code>curl -ILs</code></div><div class="check-detail">Pick one each from <code>/ar/</code>, <code>/en/</code>, <code>/blogs/</code>, <code>/news/</code>, <code>/uploads/</code>.</div></div></li>
+      <li><div><div class="check-main">Final destination of every redirect returns <code>HTTP/2 200</code> (no chain to a 404)</div></div></li>
+      <li><div><div class="check-main">GSC "Page indexing" report shows <code>/public/*</code> URLs migrating from "Indexed" to "Page with redirect" within 4 weeks</div><div class="check-detail">Re-run the GSC failing-URL export at month-end and confirm the 36-URL slice has dropped to 0.</div></div></li>
+      <li><div><div class="check-main">No new <code>/public/</code> internal links in the codebase</div><div class="check-detail"><code>grep -rn "/public/" resources/ app/</code> in the Laravel repo should return only legitimate file paths, not user-facing URL builders.</div></div></li>
+    </ul>
+  </section>
+
+  <!-- Priority -->
+  <section id="priority">
+    <h2><span class="emoji">📋</span> Implementation Priority</h2>
+    <table class="data-table">
+      <thead>
+        <tr><th>#</th><th>Task</th><th>Owner</th><th>Effort</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1</strong></td><td>Add nginx (or .htaccess) <code>/public/*</code> → clean URL 301 rule</td><td>Abdo</td><td>Low (one rule)</td></tr>
+        <tr><td><strong>2</strong></td><td>Deploy and curl-verify the 36 sample URLs</td><td>Abdo + SEO</td><td>Low (10 min QA)</td></tr>
+        <tr><td><strong>3</strong></td><td>Submit canonical URLs to GSC for re-crawl (<a href="https://search.google.com/search-console" target="_blank" style="color:var(--rose);">URL Inspection &gt; Request indexing</a>) for the top 10 affected pages</td><td>SEO</td><td>Low</td></tr>
+        <tr><td><strong>4</strong></td><td>Harden Blade canonical template (defensive)</td><td>Abdo</td><td>Low (one line)</td></tr>
+        <tr><td><strong>5</strong></td><td>Re-export GSC failing URLs in 4 weeks and confirm <code>/public/*</code> count = 0</td><td>SEO</td><td>Low</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="footer">
+    <p>Makeen SEO Task Ticket #007 - Generated May 13, 2026</p>
+    <p>asasmakeen.com - SEO Remediation Project</p>
+  </div>
+</div>
+
+</body>
+</html>

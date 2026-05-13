@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket #006 - Robots.txt Consolidation Across Subdomains</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c0e1d;
+      --gold: #ffc409;
+      --rose: #cc5f73;
+      --teal: #96c7c3;
+      --bg: #ffffff;
+      --surface: #f5f6f8;
+      --surface-2: #edeef2;
+      --border: #d8dbe3;
+      --text: #0c0e1d;
+      --text-muted: #5c5f72;
+      --gold-bg: rgba(255, 196, 9, 0.12);
+      --gold-border: rgba(255, 196, 9, 0.45);
+      --rose-bg: rgba(204, 95, 115, 0.10);
+      --rose-border: rgba(204, 95, 115, 0.35);
+      --teal-bg: rgba(150, 199, 195, 0.18);
+      --teal-border: rgba(150, 199, 195, 0.5);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Baloo Bhaijaan 2', 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.7;
+    }
+    .banner { background: var(--navy); padding: 36px 0; }
+    .banner-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .ticket-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(204, 95, 115, 0.2);
+      border: 1px solid rgba(204, 95, 115, 0.5);
+      color: #f0a0b0; padding: 4px 14px; border-radius: 20px;
+      font-size: 15px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 16px;
+    }
+    .ticket-badge::before {
+      content: ''; width: 8px; height: 8px; background: var(--rose);
+      border-radius: 50%; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    .banner h1 { font-size: 34px; font-weight: 700; margin-bottom: 14px; color: #fff; }
+    .meta-row { display:flex; gap:24px; flex-wrap:wrap; font-size:16px; color:rgba(255,255,255,.55); }
+    .meta-item { display:flex; align-items:center; gap:6px; }
+    .meta-value { color: rgba(255,255,255,.9); font-weight:600; }
+    .priority-critical { color: var(--rose); font-weight:700; }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 36px 24px; }
+    section { margin-bottom: 44px; }
+    h2 {
+      font-size: 26px; font-weight: 700; margin-bottom: 16px;
+      padding-bottom: 10px; border-bottom: 2px solid var(--gold);
+      color: var(--navy);
+    }
+    h2 .emoji { margin-right: 8px; }
+    h3 { font-size: 20px; font-weight: 700; margin: 22px 0 10px; color: var(--navy); }
+    h4 { font-size: 18px; font-weight: 700; margin: 16px 0 8px; color: var(--navy); }
+    p { margin-bottom: 14px; color: var(--text); font-size: 17px; }
+    .muted { color: var(--text-muted); }
+    strong { color: var(--navy); font-weight: 700; }
+
+    .summary-box {
+      background: var(--gold-bg); border: 1px solid var(--gold-border);
+      border-left: 4px solid var(--gold); border-radius: 8px;
+      padding: 24px; margin-bottom: 24px;
+    }
+    .summary-box p { font-size: 18px; margin-bottom: 0; }
+
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px; text-align: center;
+    }
+    .stat-number {
+      font-size: 44px; font-weight: 800; color: var(--rose);
+      display: block; line-height: 1.1;
+    }
+    .stat-number.green { color: var(--teal); }
+    .stat-label { font-size: 15px; color: var(--text-muted); margin-top: 6px; }
+
+    .data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 15px; }
+    .data-table th {
+      background: var(--navy); padding: 12px 14px; text-align: left;
+      font-weight: 600; font-size: 13px; text-transform: uppercase;
+      letter-spacing: 0.5px; color: rgba(255,255,255,.8);
+    }
+    .data-table th:first-child { border-radius: 8px 0 0 0; }
+    .data-table th:last-child { border-radius: 0 8px 0 0; }
+    .data-table td {
+      padding: 12px 14px; border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: var(--surface); }
+    .data-table .mono { font-family: 'SF Mono','Fira Code','Courier New',monospace; font-size: 13px; }
+
+    .status-pill {
+      display: inline-block; padding: 2px 10px; border-radius: 12px;
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+    }
+    .pill-ok { background: var(--teal-bg); color:#4a8e88; border:1px solid var(--teal-border); }
+    .pill-bad { background: var(--rose-bg); color: var(--rose); border:1px solid var(--rose-border); }
+    .pill-warn { background: var(--gold-bg); color:#b8960a; border:1px solid var(--gold-border); }
+
+    .code-block {
+      background: var(--navy); border: 1px solid #2a2d40;
+      border-radius: 10px; overflow-x: auto; margin: 16px 0;
+    }
+    .code-block-header {
+      background: rgba(255,255,255,.06); padding: 10px 18px;
+      font-size: 14px; font-weight: 600; color: rgba(255,255,255,.6);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display:flex; align-items:center; gap:8px;
+    }
+    .code-block pre {
+      padding: 18px; font-family: 'SF Mono','Fira Code','Courier New',monospace;
+      font-size: 14px; line-height: 1.6; color: #e2e4ef;
+      white-space: pre; overflow-x: auto;
+    }
+    .code-comment { color: rgba(255,255,255,.35); }
+    .code-correct { color: var(--teal); }
+    .code-wrong { color: var(--rose); }
+    .code-key { color: var(--gold); }
+    .code-string { color: #a8d8ea; }
+
+    .alert {
+      border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+      font-size: 16px; display: flex; align-items: flex-start; gap: 14px;
+    }
+    .alert-icon { font-size: 26px; flex-shrink: 0; line-height: 1; }
+    .alert-warning { background: var(--gold-bg); border: 1px solid var(--gold-border); color: var(--text); }
+    .alert-warning strong { color: var(--navy); }
+    .alert-danger { background: var(--rose-bg); border: 1px solid var(--rose-border); color: var(--text); }
+    .alert-danger strong { color: var(--rose); }
+    .alert-info { background: var(--teal-bg); border: 1px solid var(--teal-border); color: var(--text); }
+    .alert-info strong { color: var(--navy); }
+    .alert-status { margin-top: 14px; }
+
+    .verification-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px; margin: 18px 0 24px;
+    }
+    .verification-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 18px;
+    }
+    .verification-card p { margin: 8px 0 0; font-size: 15px; color: var(--text-muted); }
+    .verification-label {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      font-size: 16px; font-weight: 700; color: var(--navy);
+    }
+    .status-checklist { list-style: none; padding: 0; margin: 14px 0 0; }
+    .status-checklist li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 14px; border: 1px solid var(--border);
+      background: var(--surface); border-radius: 10px; margin-bottom: 10px;
+    }
+    .status-checklist li::before {
+      content: '\2022'; color: var(--gold); font-size: 20px; line-height: 1.2;
+      flex-shrink: 0;
+    }
+
+    .issue-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 22px; margin: 16px 0;
+    }
+    .issue-card h4 { margin-top: 0; }
+    .severity-badge {
+      display:inline-block; padding: 2px 10px; border-radius: 12px;
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; margin-right: 8px;
+    }
+    .severity-critical { background: var(--rose-bg); color: var(--rose); border:1px solid var(--rose-border); }
+    .severity-high { background: var(--gold-bg); color:#b8960a; border:1px solid var(--gold-border); }
+    .severity-medium { background: var(--teal-bg); color:#4a8e88; border:1px solid var(--teal-border); }
+
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      padding: 14px 18px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 10px;
+      margin-bottom: 10px; display: flex; align-items: flex-start;
+      gap: 14px; font-size: 16px;
+    }
+    .checklist li::before {
+      content: '\2610'; font-size: 24px; flex-shrink: 0; color: var(--teal);
+    }
+    .check-main { font-weight: 600; color: var(--text); }
+    .check-detail { font-size: 15px; color: var(--text-muted); margin-top: 4px; }
+
+    code {
+      background: var(--surface-2); padding: 2px 7px; border-radius: 5px;
+      font-family: 'SF Mono','Fira Code','Courier New',monospace;
+      font-size: 15px; color: var(--navy); border: 1px solid var(--border);
+    }
+
+    hr { border: none; border-top: 2px solid var(--gold); margin: 36px 0; opacity: 0.3; }
+
+    .footer {
+      text-align: center; padding: 28px; color: var(--text-muted);
+      font-size: 15px; background: var(--surface); border-top: 1px solid var(--border);
+    }
+    .footer p:first-child { font-weight: 600; color: var(--navy); }
+
+    .ar-text {
+      font-family: 'Baloo Bhaijaan 2','Noto Sans Arabic','Segoe UI',Tahoma,Arial,sans-serif;
+      direction: rtl; unicode-bidi: isolate;
+    }
+    .ar-summary {
+      background: var(--surface); border-top: 3px solid var(--gold);
+      border-bottom: 1px solid var(--border); padding: 32px 24px;
+      text-align: center; direction: rtl;
+      font-family: 'Baloo Bhaijaan 2','Noto Sans Arabic','Segoe UI',Tahoma,Arial,sans-serif;
+    }
+    .ar-summary-inner { max-width: 720px; margin: 0 auto; }
+    .ar-summary h2 { font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 16px; border: none; padding: 0; }
+    .ar-summary p { font-size: 18px; line-height: 2; color: var(--text); margin-bottom: 12px; }
+    .ar-summary strong { color: var(--rose); }
+
+    /* Sticky in-page nav */
+    .sticky-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(12, 14, 29, 0.96);
+      backdrop-filter: saturate(1.4) blur(10px);
+      -webkit-backdrop-filter: saturate(1.4) blur(10px);
+      border-bottom: 1px solid rgba(255, 196, 9, 0.25);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .sticky-nav-inner {
+      max-width: 900px; margin: 0 auto; padding: 0 24px;
+      display: flex; gap: 4px; overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .sticky-nav-inner::-webkit-scrollbar { display: none; }
+    .sticky-nav a {
+      flex-shrink: 0;
+      color: rgba(255,255,255,0.7); text-decoration: none;
+      font-size: 13px; font-weight: 600;
+      padding: 14px 14px; border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .sticky-nav a:hover { color: var(--gold); border-bottom-color: rgba(255,196,9,0.5); }
+    section[id] { scroll-margin-top: 70px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ BANNER ═══════════════════════ -->
+<div class="banner">
+  <div class="banner-inner">
+    <a href="../" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,196,9,0.15);border:1px solid rgba(255,196,9,0.45);color:#ffc409;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,196,9,0.25)'" onmouseout="this.style.background='rgba(255,196,9,0.15)'">← All SEO Tickets</a>
+    <div class="ticket-badge">Critical SEO Bug - Open</div>
+    <h1>Ticket #006 - Robots.txt Consolidation Across Subdomains &amp; Staging</h1>
+    <div class="meta-row">
+      <div class="meta-item"><span>Project:</span><span class="meta-value">asasmakeen.com</span></div>
+      <div class="meta-item"><span>Priority:</span><span class="meta-value priority-critical">Critical</span></div>
+      <div class="meta-item"><span>Category:</span><span class="meta-value">Crawl Budget &amp; Indexing</span></div>
+      <div class="meta-item"><span>Date:</span><span class="meta-value">April 7, 2026</span></div>
+      <div class="meta-item"><span>Affects:</span><span class="meta-value">9 hostnames, 13 robots.txt entries</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ ARABIC SUMMARY ═══════════════════════ -->
+<div class="ar-summary">
+  <div class="ar-summary-inner">
+    <h2>ملخص المشكلة</h2>
+    <p>يوجد <strong>13 ملف robots.txt</strong> مختلف يظهر في Google Search Console، موزع على النطاق الرئيسي ونطاقاته الفرعية (staging وبوابات العملاء والنماذج). معظمها إما <strong>مفقود تماما</strong> (السيرفر يرد صفحة HTML بدل ملف نصي) أو <strong>يسمح بالزحف الكامل</strong> على بيئة التجربة (staging)، مما يستنزف ميزانية الزحف ويُعرّض بيانات البوابات للفهرسة.</p>
+    <p>المطلوب: تحويلات 301 إلى <strong>https://asasmakeen.com</strong> (بدون www) مفعّلة بالفعل ولا تحتاج تغييرًا. المتبقي: إنشاء ملف robots.txt حقيقي لكل نطاق فرعي يفتقده، ومنع الزحف بالكامل على staging والبوابات الداخلية مع إضافة هيدر <code>X-Robots-Tag: noindex</code>.</p>
+    <p><strong>ipo.asasmakeen.com</strong> يبقى كما هو. <strong>mashriqya.asasmakeen.com</strong> يبقى يعمل كموقع منفصل لكن مع إضافة وسم <code>&lt;link rel="canonical"&gt;</code> يشير إلى الصفحة الـ canonical على النطاق الرئيسي: <code>https://asasmakeen.com/ar/u/pu/3/51/طليعة-المشرقية-الرياض</code>، حتى يفهم Google أن النسخة الأصلية موجودة على النطاق الرئيسي.</p>
+  </div>
+</div>
+
+<div style="max-width:900px;margin:32px auto;padding:0 24px;">
+  <img src="https://brief.cleanshot.cloud/media/140749/EJgyleRisatF9S9SLta0pkIAGNO4sYmwT4QkJyWN.jpeg" alt="Robots.txt audit screenshot" style="width:100%;height:auto;border-radius:8px;box-shadow:0 4px 16px rgba(12,14,29,0.12);border:1px solid var(--border);display:block;" />
+</div>
+
+<!-- ═══════════════════════ STICKY NAV ═══════════════════════ -->
+<nav class="sticky-nav">
+  <div class="sticky-nav-inner">
+    <a href="#summary">Summary</a>
+    <a href="#status">Live Status</a>
+    <a href="#hosts">Hosts</a>
+    <a href="#issues">Issues</a>
+    <a href="#decisions">Decisions</a>
+    <a href="#files">Target Files</a>
+    <a href="#verify">Verify</a>
+    <a href="#validate">Validation</a>
+    <a href="#priority">Priority</a>
+    <a href="#rules">Google Rules</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ CONTENT ═══════════════════════ -->
+<div class="container">
+
+  <!-- Quick Summary -->
+  <section id="summary">
+    <div class="summary-box">
+      <p>
+        Google Search Console reports <strong>13 separate robots.txt files</strong> across the asasmakeen.com ecosystem. <strong>Host canonicalization is already correct</strong>: every <code>http://</code> and <code>www</code> variant 301-redirects to <code>https://asasmakeen.com</code> (re-verified live). The 13 GSC rows are historical artifacts that will collapse as Google re-crawls. The real problems are: four subdomains (<code>mashriqya.</code>, <code>forms.</code>, <code>apps.</code>, <code>prt.</code>) don't return a real robots.txt at all (the server returns the SPA HTML shell with a 200 status), and two staging hosts (<code>stage.</code> and <code>s.</code>) are fully open to crawlers because their <code>Disallow:</code> value is empty (= allow everything).
+      </p>
+    </div>
+    <div class="alert alert-warning">
+      <span class="alert-icon">🧪</span>
+      <div><strong>Live verification update:</strong> Re-checked without cache on <strong>April 12, 2026</strong>. The ticket is <strong>partially implemented</strong>: some robots.txt files were added, but several required lines and whole sections are still missing from production.</div>
+    </div>
+  </section>
+
+  <section id="status">
+    <h2><span class="emoji">🩺</span> Live Verification Status</h2>
+    <p>These statuses reflect the live site as fetched on <strong>April 12, 2026</strong> using <code>Cache-Control: no-cache</code>, <code>Pragma: no-cache</code>, and cache-busting query strings on the key <code>robots.txt</code> endpoints.</p>
+
+    <!-- ── Overall progress header ── -->
+    <div style="display:flex;align-items:center;gap:28px;background:linear-gradient(135deg,var(--navy),#161933);border-radius:14px;padding:28px 32px;margin:20px 0 28px;color:#fff;flex-wrap:wrap;">
+      <div style="text-align:center;min-width:100px;">
+        <div style="font-size:56px;font-weight:800;line-height:1;color:var(--rose);">4</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.5);margin-top:4px;">of 22 checks</div>
+      </div>
+      <div style="flex:1;min-width:200px;">
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:8px;">
+          <span style="color:rgba(255,255,255,.6);">Overall Ticket Completion</span>
+          <span style="color:var(--rose);">18%</span>
+        </div>
+        <div style="background:rgba(255,255,255,.1);border-radius:8px;height:14px;overflow:hidden;">
+          <div style="width:18%;height:100%;background:linear-gradient(90deg,var(--rose),#e87a8e);border-radius:8px;transition:width 0.6s;"></div>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:12px;font-size:12px;flex-wrap:wrap;">
+          <span><span style="display:inline-block;width:8px;height:8px;background:var(--teal);border-radius:50%;margin-right:4px;"></span><span style="color:rgba(255,255,255,.6);">Done: 4</span></span>
+          <span><span style="display:inline-block;width:8px;height:8px;background:var(--gold);border-radius:50%;margin-right:4px;"></span><span style="color:rgba(255,255,255,.6);">Partial: 2</span></span>
+          <span><span style="display:inline-block;width:8px;height:8px;background:var(--rose);border-radius:50%;margin-right:4px;"></span><span style="color:rgba(255,255,255,.6);">Not done: 16</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 1. Main domain robots.txt ── -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+        <div style="font-size:18px;font-weight:700;color:var(--navy);">Main Domain robots.txt</div>
+        <span class="status-pill pill-warn">1 of 8 Done</span>
+      </div>
+      <p style="margin-bottom:14px;font-size:15px;color:var(--text-muted);">The file exists and is served as <code>text/plain</code>, but only the <code>Sitemap:</code> line was added. The full replacement from the ticket was not applied.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;font-size:13px;">
+        <div style="background:var(--navy);color:rgba(255,255,255,.6);padding:8px 14px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid rgba(255,255,255,.1);">Check</div>
+        <div style="background:var(--navy);color:rgba(255,255,255,.6);padding:8px 14px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid rgba(255,255,255,.1);">Result</div>
+
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);">Add <code>Sitemap:</code> directive</div>
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);"><span class="status-pill pill-ok">Done</span> Present at end of file</div>
+
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(204,95,115,0.04);">Remove 17 dead <code>/public/*</code> rules</div>
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(204,95,115,0.04);"><span class="status-pill pill-bad">Not done</span> All 17 lines still present</div>
+
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);">Remove 6 per-engine User-agent blocks <a href="#files" style="font-size:12px;color:var(--rose);font-weight:600;text-decoration:none;border:1px solid var(--rose-border);padding:2px 8px;border-radius:10px;margin-left:6px;white-space:nowrap;">See correct file &darr;</a></div>
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);"><span class="status-pill pill-bad">Not done</span> Googlebot, Bingbot, Slurp, DuckDuckBot, Baiduspider, YandexBot + Crawl-delay all still live</div>
+
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(204,95,115,0.04);">Remove AhrefsBot block</div>
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(204,95,115,0.04);"><span class="status-pill pill-bad">Not done</span></div>
+
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);">Remove Screaming Frog block</div>
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);"><span class="status-pill pill-bad">Not done</span></div>
+
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(204,95,115,0.04);">Remove deprecated <code>Host:</code> directive</div>
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(204,95,115,0.04);"><span class="status-pill pill-bad">Not done</span></div>
+
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);">Add <code>Allow: /*.webp$</code></div>
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);"><span class="status-pill pill-bad">Not done</span></div>
+
+        <div style="padding:10px 14px;">Remove SemrushBot block</div>
+        <div style="padding:10px 14px;"><span class="status-pill pill-bad">Not done</span> Still blocking in production</div>
+      </div>
+      <div class="alert alert-danger" style="margin-top:14px;margin-bottom:0;">
+        <span class="alert-icon" style="font-size:18px;">⚡</span>
+        <div style="font-size:14px;"><strong>Impact of keeping per-engine blocks:</strong> Googlebot, Bingbot, and 4 other crawlers each match their own <code>User-agent:</code> group (which only says <code>Allow: /</code>) and <strong>completely ignore</strong> the <code>User-agent: *</code> block with all the disallows. Every sensitive path (<code>/admin/</code>, <code>/dashboard/</code>, <code>/login</code>, <code>/api/</code>, <code>/.env</code>) is currently wide open to every major search engine.</div>
+      </div>
+    </div>
+
+    <!-- ── 2. Blocked subdomains: per-host breakdown ── -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;flex-wrap:wrap;">
+        <div style="font-size:18px;font-weight:700;color:var(--navy);">Blocked Subdomains (5 hosts)</div>
+        <span class="status-pill pill-warn">2 of 10 Done</span>
+      </div>
+      <p style="margin-bottom:14px;font-size:15px;color:var(--text-muted);">The ticket requires a two-step deindex process: <strong>Step 1</strong> deploy <code>X-Robots-Tag: noindex, nofollow</code> header + keep robots.txt open, <strong>Step 2</strong> switch to <code>Disallow: /</code> after 2-4 weeks. Three hosts jumped directly to Step 2, skipping Step 1 entirely.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:12px;margin-bottom:18px;">
+        <!-- stage -->
+        <div style="border:2px solid var(--rose-border);border-radius:10px;padding:16px;text-align:center;background:var(--rose-bg);">
+          <div style="font-size:14px;font-weight:700;color:var(--navy);font-family:'SF Mono','Fira Code',monospace;">stage.</div>
+          <div style="margin:10px 0 6px;"><span class="status-pill pill-bad">Open</span></div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">robots.txt: <code>Disallow:</code> (empty)<br>X-Robots-Tag: absent<br><span style="color:var(--rose);font-weight:600;">Fully crawlable</span></div>
+        </div>
+        <!-- s -->
+        <div style="border:2px solid var(--gold-border);border-radius:10px;padding:16px;text-align:center;background:var(--gold-bg);">
+          <div style="font-size:14px;font-weight:700;color:var(--navy);font-family:'SF Mono','Fira Code',monospace;">s.</div>
+          <div style="margin:10px 0 6px;"><span class="status-pill pill-warn">Step skipped</span></div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">robots.txt: <code>Disallow: /</code> <span style="color:var(--teal);">&#10003;</span><br>X-Robots-Tag: absent<br><span style="color:#b8960a;font-weight:600;">Jumped to Step 2</span></div>
+        </div>
+        <!-- forms -->
+        <div style="border:2px solid var(--gold-border);border-radius:10px;padding:16px;text-align:center;background:var(--gold-bg);">
+          <div style="font-size:14px;font-weight:700;color:var(--navy);font-family:'SF Mono','Fira Code',monospace;">forms.</div>
+          <div style="margin:10px 0 6px;"><span class="status-pill pill-warn">Step skipped</span></div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">robots.txt: <code>Disallow: /</code> <span style="color:var(--teal);">&#10003;</span><br>X-Robots-Tag: absent<br><span style="color:#b8960a;font-weight:600;">Jumped to Step 2</span></div>
+        </div>
+        <!-- apps -->
+        <div style="border:2px solid var(--gold-border);border-radius:10px;padding:16px;text-align:center;background:var(--gold-bg);">
+          <div style="font-size:14px;font-weight:700;color:var(--navy);font-family:'SF Mono','Fira Code',monospace;">apps.</div>
+          <div style="margin:10px 0 6px;"><span class="status-pill pill-warn">Step skipped</span></div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">robots.txt: <code>Disallow: /</code> <span style="color:var(--teal);">&#10003;</span><br>X-Robots-Tag: absent<br><span style="color:#b8960a;font-weight:600;">Jumped to Step 2</span></div>
+        </div>
+        <!-- prt -->
+        <div style="border:2px solid var(--rose-border);border-radius:10px;padding:16px;text-align:center;background:var(--rose-bg);">
+          <div style="font-size:14px;font-weight:700;color:var(--navy);font-family:'SF Mono','Fira Code',monospace;">prt.</div>
+          <div style="margin:10px 0 6px;"><span class="status-pill pill-bad">Broken</span></div>
+          <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">robots.txt: 302 redirect to HTML<br>X-Robots-Tag: absent<br><span style="color:var(--rose);font-weight:600;">SPA still catches /robots.txt</span></div>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,rgba(204,95,115,0.06),rgba(255,196,9,0.06));border:1px solid var(--rose-border);border-left:4px solid var(--rose);border-radius:8px;padding:16px 20px;font-size:14px;">
+        <div style="font-weight:700;color:var(--rose);margin-bottom:6px;">Why the step-skip matters</div>
+        <div style="color:var(--text);line-height:1.7;">If you block crawlers with <code>Disallow: /</code> before deploying the <code>X-Robots-Tag: noindex</code> header, Google's crawlers cannot reach the pages to see the noindex signal. URLs already in the index stay there indefinitely as orphaned results. For <code>s</code>, <code>forms</code>, and <code>apps</code>, the fix is to <strong>temporarily revert</strong> robots.txt to <code>Disallow:</code> (empty), deploy the <code>X-Robots-Tag</code> header, wait 2-4 weeks for Google to process the noindex, then switch back to <code>Disallow: /</code>.</div>
+      </div>
+    </div>
+
+    <!-- ── 3. X-Robots-Tag header rollout ── -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+        <div style="font-size:18px;font-weight:700;color:var(--navy);">X-Robots-Tag Header Rollout</div>
+        <span class="status-pill pill-bad">0 of 5 Done</span>
+      </div>
+      <p style="margin-bottom:14px;font-size:15px;color:var(--text-muted);">The header <code>X-Robots-Tag: noindex, nofollow</code> was required on all 5 blocked hosts. None returned it.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="display:inline-flex;align-items:center;gap:6px;background:var(--rose-bg);border:1px solid var(--rose-border);color:var(--rose);padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;font-family:'SF Mono','Fira Code',monospace;"><span style="font-size:14px;">&#10007;</span> stage</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;background:var(--rose-bg);border:1px solid var(--rose-border);color:var(--rose);padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;font-family:'SF Mono','Fira Code',monospace;"><span style="font-size:14px;">&#10007;</span> s</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;background:var(--rose-bg);border:1px solid var(--rose-border);color:var(--rose);padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;font-family:'SF Mono','Fira Code',monospace;"><span style="font-size:14px;">&#10007;</span> forms</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;background:var(--rose-bg);border:1px solid var(--rose-border);color:var(--rose);padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;font-family:'SF Mono','Fira Code',monospace;"><span style="font-size:14px;">&#10007;</span> apps</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;background:var(--rose-bg);border:1px solid var(--rose-border);color:var(--rose);padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;font-family:'SF Mono','Fira Code',monospace;"><span style="font-size:14px;">&#10007;</span> prt</span>
+      </div>
+    </div>
+
+    <!-- ── 4. Mashriqya ── -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+        <div style="font-size:18px;font-weight:700;color:var(--navy);">Mashriqya Subdomain</div>
+        <span class="status-pill pill-bad">0 of 3 Done</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;font-size:13px;">
+        <div style="background:var(--navy);color:rgba(255,255,255,.6);padding:8px 14px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid rgba(255,255,255,.1);">Check</div>
+        <div style="background:var(--navy);color:rgba(255,255,255,.6);padding:8px 14px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid rgba(255,255,255,.1);">Result</div>
+
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);">Serve <code>robots.txt</code> as <code>text/plain</code></div>
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);"><span class="status-pill pill-bad">Fail</span> Returns <code>text/html</code> (SPA shell)</div>
+
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(204,95,115,0.04);">Content: <code>User-agent: * / Disallow: /api/</code></div>
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(204,95,115,0.04);"><span class="status-pill pill-bad">Fail</span> No valid robots directives in response</div>
+
+        <div style="padding:10px 14px;">Add <code>&lt;link rel="canonical"&gt;</code> to main-domain page</div>
+        <div style="padding:10px 14px;"><span class="status-pill pill-bad">Fail</span> <code>grep canonical</code> returns empty on raw HTML</div>
+      </div>
+      <div style="margin-top:12px;padding:12px 16px;background:rgba(150,199,195,0.1);border:1px solid var(--teal-border);border-radius:8px;font-size:13px;color:var(--text-muted);line-height:1.6;">
+        <strong style="color:var(--navy);">Context:</strong> Mashriqya is an nginx-served static SPA (<code>Last-Modified: Dec 17, 2025</code>). The robots.txt route must be added to the nginx config as a <code>location = /robots.txt</code> block <em>before</em> the SPA catch-all <code>try_files</code>. The canonical tag must be baked into the build-time HTML, not injected by JavaScript.
+      </div>
+    </div>
+
+    <!-- ── 5. IPO + Redirects (done) ── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;">
+          <div style="font-size:18px;font-weight:700;color:var(--navy);">Canonical Redirects</div>
+          <span class="status-pill pill-ok">Done</span>
+        </div>
+        <p style="font-size:14px;color:var(--text-muted);margin:0;line-height:1.6;"><code>http://</code> and <code>www</code> variants still converge on <code>https://asasmakeen.com</code> via 301. The <code>http://www</code> chain is 2 hops (minor, not blocking).</p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;">
+          <div style="font-size:18px;font-weight:700;color:var(--navy);">IPO Subdomain</div>
+          <span class="status-pill pill-ok">Done</span>
+        </div>
+        <p style="font-size:14px;color:var(--text-muted);margin:0;line-height:1.6;">WordPress robots.txt is correct: blocks <code>/wp-admin/</code>, allows <code>admin-ajax.php</code>, includes sitemap. No changes were needed.</p>
+      </div>
+    </div>
+
+    <!-- ── 6. Search index cleanup ── -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;">
+        <div style="font-size:18px;font-weight:700;color:var(--navy);">Search Index Cleanup</div>
+        <span class="status-pill pill-bad">Not started</span>
+      </div>
+      <p style="font-size:14px;color:var(--text-muted);margin:0;line-height:1.6;">A live <code>site:stage.asasmakeen.com</code> search still returns indexed URLs. Until the <code>X-Robots-Tag</code> header is deployed and crawlers can process it, these URLs will remain in the index. The GSC robots.txt report is also expected to still show the full 13 entries since consolidation is incomplete.</p>
+    </div>
+
+    <!-- ── Area summary bar ── -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px;margin-top:24px;">
+      <div style="text-align:center;padding:14px 10px;border-radius:10px;background:var(--gold-bg);border:1px solid var(--gold-border);">
+        <div style="font-size:28px;font-weight:800;color:#b8960a;">1/8</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Main robots.txt</div>
+      </div>
+      <div style="text-align:center;padding:14px 10px;border-radius:10px;background:var(--rose-bg);border:1px solid var(--rose-border);">
+        <div style="font-size:28px;font-weight:800;color:var(--rose);">0/5</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">X-Robots-Tag</div>
+      </div>
+      <div style="text-align:center;padding:14px 10px;border-radius:10px;background:var(--gold-bg);border:1px solid var(--gold-border);">
+        <div style="font-size:28px;font-weight:800;color:#b8960a;">2/5</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Subdomain files</div>
+      </div>
+      <div style="text-align:center;padding:14px 10px;border-radius:10px;background:var(--rose-bg);border:1px solid var(--rose-border);">
+        <div style="font-size:28px;font-weight:800;color:var(--rose);">0/3</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Mashriqya</div>
+      </div>
+      <div style="text-align:center;padding:14px 10px;border-radius:10px;background:var(--teal-bg);border:1px solid var(--teal-border);">
+        <div style="font-size:28px;font-weight:800;color:#4a8e88;">1/1</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Redirects + IPO</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section id="scale">
+    <h2><span class="emoji">📊</span> The Scale of the Problem</h2>
+    <div class="stats-grid">
+      <div class="stat-card"><span class="stat-number">13</span><div class="stat-label">robots.txt entries<br>in GSC</div></div>
+      <div class="stat-card"><span class="stat-number">4</span><div class="stat-label">hosts with NO real<br>robots.txt file</div></div>
+      <div class="stat-card"><span class="stat-number">2</span><div class="stat-label">staging hosts open<br>to full crawling</div></div>
+      <div class="stat-card"><span class="stat-number">5</span><div class="stat-label">hosts to fully<br>block from search</div></div>
+    </div>
+    <div class="alert alert-info">
+      <span class="alert-icon">📍</span>
+      <div><strong>Current live position:</strong> the original problem size explains the ticket, but the current deployment is no longer exactly in that state. Live now shows <code>s</code>, <code>forms</code>, and <code>apps</code> with real blocking <code>robots.txt</code> files, while <code>mashriqya</code>, <code>prt</code>, and the noindex-header rollout remain incomplete.</div>
+    </div>
+  </section>
+
+  <!-- Host Evaluation Table -->
+  <section id="hosts">
+    <h2><span class="emoji">🔍</span> Host-by-Host Evaluation</h2>
+    <p>Each host was fetched directly. The table below shows the real response for both the root URL and <code>/robots.txt</code>, plus the verdict.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Host</th>
+          <th>Root</th>
+          <th>robots.txt</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">https://asasmakeen.com</td>
+          <td>302 → <code>/en</code></td>
+          <td>Real <code>text/plain</code> file; still old structure + old bot blocks</td>
+          <td><span class="status-pill pill-warn">Partial</span></td>
+        </tr>
+        <tr>
+          <td class="mono">https://www.asasmakeen.com</td>
+          <td>301 → https://asasmakeen.com</td>
+          <td>Redirect already in place ✓</td>
+          <td><span class="status-pill pill-ok">OK</span></td>
+        </tr>
+        <tr>
+          <td class="mono">http://asasmakeen.com</td>
+          <td>301 → https://asasmakeen.com</td>
+          <td>HTTPS upgrade in place ✓</td>
+          <td><span class="status-pill pill-ok">OK</span></td>
+        </tr>
+        <tr>
+          <td class="mono">http://www.asasmakeen.com</td>
+          <td>301 → https://www → https://apex (2 hops)</td>
+          <td>Works, but chained. Could be 1 hop.</td>
+          <td><span class="status-pill pill-warn">Minor</span></td>
+        </tr>
+        <tr>
+          <td class="mono">https://mashriqya.asasmakeen.com</td>
+          <td>200 SPA shell; raw HTML has no canonical tag</td>
+          <td><code>200 text/html</code>; still returns HTML, not <code>text/plain</code></td>
+          <td><span class="status-pill pill-bad">Not Done</span></td>
+        </tr>
+        <tr>
+          <td class="mono">https://s.asasmakeen.com</td>
+          <td>302 → <code>/ar</code></td>
+          <td>Real <code>text/plain</code>; now <code>Disallow: /</code></td>
+          <td><span class="status-pill pill-warn">Partial</span></td>
+        </tr>
+        <tr>
+          <td class="mono">https://stage.asasmakeen.com</td>
+          <td>302 → <code>/ar</code>, final page currently <code>500</code></td>
+          <td>Still <code>User-agent: *</code> + empty <code>Disallow:</code> = allow all</td>
+          <td><span class="status-pill pill-bad">Wrong</span></td>
+        </tr>
+        <tr>
+          <td class="mono">https://forms.asasmakeen.com</td>
+          <td>302 → <code>/ar/forms</code></td>
+          <td>Real <code>text/plain</code>; now <code>Disallow: /</code></td>
+          <td><span class="status-pill pill-warn">Partial</span></td>
+        </tr>
+        <tr>
+          <td class="mono">https://apps.asasmakeen.com</td>
+          <td>200 (Angular SPA portal)</td>
+          <td>Real <code>text/plain</code>; now <code>Disallow: /</code></td>
+          <td><span class="status-pill pill-warn">Partial</span></td>
+        </tr>
+        <tr>
+          <td class="mono">https://prt.asasmakeen.com</td>
+          <td>302 → <code>/ar/forms</code></td>
+          <td><code>302</code> to <code>/robots.txt/forms</code>, then HTML response</td>
+          <td><span class="status-pill pill-bad">Not Done</span></td>
+        </tr>
+        <tr>
+          <td class="mono">https://ipo.asasmakeen.com</td>
+          <td>200 (WordPress)</td>
+          <td>Valid WP robots + sitemap</td>
+          <td><span class="status-pill pill-ok">Keep</span></td>
+        </tr>
+        <tr>
+          <td class="mono">http://ipo.asasmakeen.com</td>
+          <td>301 → https://ipo.asasmakeen.com</td>
+          <td>HTTPS upgrade in place ✓</td>
+          <td><span class="status-pill pill-ok">OK</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-danger">
+      <span class="alert-icon">🚨</span>
+      <div>
+        <strong>Current live summary:</strong> canonical host redirects are still fine, but the deployment is only partially complete. <code>s</code>, <code>forms</code>, and <code>apps</code> improved; <code>mashriqya</code> and <code>prt</code> are still serving the wrong thing on <code>/robots.txt</code>; <code>stage</code> is still effectively open to crawling.
+      </div>
+    </div>
+
+    <div class="alert alert-warning">
+      <span class="alert-icon">⚠️</span>
+      <div>
+        <strong>Still missing on every blocked host tested:</strong> no live response returned <code>X-Robots-Tag: noindex, nofollow</code>. That means the deindex part of the ticket was not deployed, even where a blocking <code>robots.txt</code> file now exists.
+      </div>
+    </div>
+
+    <div class="alert alert-info">
+      <span class="alert-icon">📘</span>
+      <div>
+        <strong>Why GSC sees 13 separate files:</strong> Per Google's documentation, a robots.txt file is only valid for the <strong>exact protocol + host + port combination</strong> it lives on. <code>https://asasmakeen.com</code>, <code>https://www.asasmakeen.com</code>, and every subdomain are treated as completely independent sites for robots.txt purposes. A rule on the main domain has zero effect on any subdomain. This is why every host below needs its own dedicated robots.txt file.
+      </div>
+    </div>
+  </section>
+
+  <!-- Issues -->
+  <section id="issues">
+    <h2><span class="emoji">🔎</span> Complete List of Issues</h2>
+
+    <h3>Critical (4)</h3>
+
+    <div class="issue-card">
+      <h4><span class="severity-badge severity-critical">Critical</span> C2. Staging hosts are fully crawlable</h4>
+      <div class="alert alert-status alert-warning">
+        <span class="alert-icon">📡</span>
+        <div><strong>Live status: Partial.</strong> <code>s.asasmakeen.com/robots.txt</code> now returns <code>Disallow: /</code>, but <code>stage.asasmakeen.com/robots.txt</code> still returns empty <code>Disallow:</code>. Also, neither host returned the required <code>X-Robots-Tag: noindex, nofollow</code> header in live header checks.</div>
+      </div>
+      <p>Both <code>s.asasmakeen.com</code> and <code>stage.asasmakeen.com</code> serve:</p>
+      <div class="code-block">
+        <div class="code-block-header"><span>❌</span> Current (broken)</div>
+        <pre><span class="code-key">User-agent:</span> <span class="code-string">*</span>
+<span class="code-key">Disallow:</span></pre>
+      </div>
+      <p>An empty <code>Disallow:</code> value means "allow everything." Staging is fully open to Google, Bing, and every other crawler, which risks duplicate content against production and exposes unfinished features.</p>
+      <p><strong>Fix:</strong> Follow the two-step deindex sequence in <a href="#files">Section 4</a> (noindex header first, then <code>Disallow: /</code> after 2-4 weeks once Google drops the URLs), and ideally put staging behind HTTP Basic Auth or an IP allowlist.</p>
+    </div>
+
+    <div class="issue-card">
+      <h4><span class="severity-badge severity-critical">Critical</span> C3. Four subdomains return HTML instead of a real robots.txt and leak to search</h4>
+      <div class="alert alert-status alert-warning">
+        <span class="alert-icon">📡</span>
+        <div><strong>Live status: Partial.</strong> <code>forms</code> and <code>apps</code> now serve real <code>text/plain</code> robots files. <code>mashriqya</code> still returns HTML on <code>/robots.txt</code>, and <code>prt</code> still redirects <code>/robots.txt</code> to a non-root HTML response.</div>
+      </div>
+      <p><code>mashriqya.</code>, <code>forms.</code>, <code>apps.</code>, and <code>prt.</code> all respond to <code>/robots.txt</code> with the SPA's <code>index.html</code> shell. Google treats a non-<code>text/plain</code> 200 as "no robots.txt → crawl everything," so these login-gated client tools are fully exposed to indexing.</p>
+      <div class="alert alert-info">
+        <span class="alert-icon">📘</span>
+        <div><strong>Note:</strong> <code>forms.asasmakeen.com</code> and <code>prt.asasmakeen.com</code> return the <strong>exact same 31,785-byte HTML</strong> on every path, including <code>/robots.txt</code>. They are the same application served on two hostnames, not two separate apps. One server config can route both hostnames to the same robots.txt file and noindex middleware.</div>
+      </div>
+      <p><strong>Fix:</strong> Add an explicit server route that returns a real <code>text/plain</code> robots.txt before the catch-all SPA route. For <code>forms.</code>, <code>apps.</code>, <code>prt.</code> use the blocking treatment in Section 4. For <code>mashriqya.</code> use the canonical-tag treatment.</p>
+    </div>
+
+    <div class="issue-card">
+      <h4><span class="severity-badge severity-critical">Critical</span> C5. Per-engine groups bypass every disallow rule for Google, Bing, and 4 other crawlers</h4>
+      <div class="alert alert-status alert-danger">
+        <span class="alert-icon">📡</span>
+        <div><strong>Live status: Not done.</strong> The main production file still contains the crawler-specific groups for <code>Googlebot</code>, <code>Bingbot</code>, <code>Slurp</code>, <code>DuckDuckBot</code>, <code>Baiduspider</code>, and <code>YandexBot</code>.</div>
+      </div>
+      <p>The current main robots.txt has separate <code>User-agent:</code> groups for Googlebot, Bingbot, Slurp, DuckDuckBot, Baiduspider, and YandexBot. Each one looks like this:</p>
+      <div class="code-block">
+        <div class="code-block-header"><span>❌</span> Current (broken)</div>
+        <pre><span class="code-key">User-agent:</span> <span class="code-string">Googlebot</span>
+<span class="code-key">Allow:</span> <span class="code-string">/</span>
+<span class="code-key">Crawl-delay:</span> <span class="code-string">1</span></pre>
+      </div>
+      <p>Per Google's spec, <strong>each crawler picks exactly one group — the one with the most specific user-agent name that matches it — and ignores every other group</strong>. So Googlebot reads its own block (just <code>Allow: /</code> and an ignored <code>Crawl-delay</code>) and <strong>completely ignores the <code>User-agent: *</code> block</strong> with all the disallows.</p>
+      <p><strong>Impact:</strong> Googlebot, Bingbot, Slurp, DuckDuckBot, Baiduspider, and YandexBot are currently allowed to crawl every single path on the site — <code>/admin/</code>, <code>/dashboard/</code>, <code>/login</code>, <code>/api/</code>, <code>/storage/</code>, <code>/.env</code>, <code>/composer.json</code>, all of it. The defensive disallows in the <code>*</code> group only apply to crawlers that don't have their own group, which is essentially nobody important.</p>
+      <p><strong>Fix:</strong> Delete every per-engine <code>User-agent:</code> block. Once they're gone, every crawler falls back to the <code>User-agent: *</code> group and inherits all the disallows. The recommended replacement file in Section 4.1 already does this.</p>
+      <div class="code-block">
+        <div class="code-block-header"><span>✅</span> Fixed (one shared group)</div>
+        <pre><span class="code-key">User-agent:</span> <span class="code-string">*</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/admin/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/dashboard/</span>
+<span class="code-comment"># ... etc. Googlebot, Bingbot, Yandex, etc. all inherit these.</span></pre>
+      </div>
+    </div>
+
+    <div class="issue-card">
+      <h4><span class="severity-badge severity-critical">Critical</span> C4. Main robots.txt has no <code>Sitemap:</code> directive</h4>
+      <div class="alert alert-status alert-info">
+        <span class="alert-icon">📡</span>
+        <div><strong>Live status: Done.</strong> The live main file now includes <code>Sitemap: https://asasmakeen.com/sitemap.xml</code>. This specific missing line has been added.</div>
+      </div>
+      <p>The main site's robots.txt blocks admin/login paths correctly but does not declare where the sitemap lives. Add <code>Sitemap: https://asasmakeen.com/sitemap.xml</code> (<a href="../ticket-005-xml-sitemap/" style="color:var(--rose);">Ticket #005</a> is deployed, so the sitemap is live).</p>
+    </div>
+
+    <h3>High (2)</h3>
+
+    <div class="issue-card">
+      <h4><span class="severity-badge severity-high">High</span> H1. Main robots.txt is bloated with dead <code>/public/*</code> rules</h4>
+      <div class="alert alert-status alert-danger">
+        <span class="alert-icon">📡</span>
+        <div><strong>Live status: Not done.</strong> The live main file still contains the full <code>/public/*</code> block.</div>
+      </div>
+      <p>The file contains dozens of <code>/public/*</code> disallow rules. Laravel serves from <code>/public</code> as the docroot, so those paths don't exist as public URLs. Harmless noise but makes the file hard to audit and adds bytes for no reason. Trim them.</p>
+    </div>
+
+    <div class="issue-card">
+      <h4><span class="severity-badge severity-high">High</span> H2. Main robots.txt blocks Screaming Frog and AhrefsBot</h4>
+      <div class="alert alert-status alert-danger">
+        <span class="alert-icon">📡</span>
+        <div><strong>Live status: Not done.</strong> The live main file still includes both the <code>AhrefsBot</code> and <code>Screaming Frog SEO Spider</code> blocks.</div>
+      </div>
+      <p>The current file contains the following blocks, which prevent the SEO team's own audit tools from crawling the site:</p>
+      <div class="code-block">
+        <div class="code-block-header"><span>❌</span> Current (must be removed)</div>
+        <pre><span class="code-key">User-agent:</span> <span class="code-string">Screaming Frog SEO Spider</span>
+<span class="code-key">Disallow:</span> <span class="code-wrong">/</span>
+
+<span class="code-comment"># Block bad bots</span>
+<span class="code-key">User-agent:</span> <span class="code-string">AhrefsBot</span>
+<span class="code-key">Disallow:</span> <span class="code-wrong">/</span></pre>
+      </div>
+      <p><strong>Impact:</strong> Screaming Frog is the SEO team's primary audit tool. Blocking it means no internal audits, no broken-link checks, no on-page SEO crawls. AhrefsBot powers Ahrefs backlink and competitor data, so blocking it cripples backlink monitoring and rank tracking for the site itself.</p>
+      <p><strong>Fix:</strong> Delete both blocks entirely. Neither is a "bad bot" — they are tools the team relies on.</p>
+    </div>
+
+    <h3>Medium (1)</h3>
+
+    <div class="issue-card">
+      <h4><span class="severity-badge severity-medium">Medium</span> M1. Disallow + noindex silently cancel each other out</h4>
+      <div class="alert alert-status alert-danger">
+        <span class="alert-icon">📡</span>
+        <div><strong>Live status: Not done.</strong> The blocked hosts now using <code>Disallow: /</code> were deployed without the required <code>X-Robots-Tag: noindex, nofollow</code> header, so the deindex sequence in this ticket was not followed.</div>
+      </div>
+      <p>Robots.txt controls <strong>crawling</strong>, not <strong>indexing</strong>. If Google can't crawl a page (because of <code>Disallow</code>), it can't see the <code>noindex</code> header, so already-indexed URLs stay stuck. This is why the staging and portal blocks must be deployed in two steps. See Section 4 for the exact sequence.</p>
+    </div>
+  </section>
+
+  <!-- Decisions -->
+  <section id="decisions">
+    <h2><span class="emoji">🎯</span> Decisions (Already Approved)</h2>
+    <div class="alert alert-warning">
+      <span class="alert-icon">📌</span>
+      <div><strong>Decision status snapshot:</strong> canonical host handling and IPO are done; Mashriqya is not done; the blocked-host strategy is only partially deployed because the <code>X-Robots-Tag</code> header is still missing and <code>stage</code>/<code>prt</code> are still wrong.</div>
+    </div>
+    <ul class="checklist">
+      <li><div><div class="check-main">Canonical host = <code>https://asasmakeen.com</code> (apex, no www, https only)</div><div class="check-detail">All other main-domain variants must 301 to this URL.</div></div></li>
+      <li><div><div class="check-main">Keep <code>ipo.asasmakeen.com</code> as is (WordPress site with valid robots)</div><div class="check-detail">HTTP → HTTPS redirect is already in place.</div></div></li>
+      <li><div><div class="check-main">Keep <code>mashriqya.asasmakeen.com</code> live, add a <code>&lt;link rel="canonical"&gt;</code> tag pointing to the main-domain project page</div><div class="check-detail">Target canonical: <code>https://asasmakeen.com/ar/u/pu/3/51/طليعة-المشرقية-الرياض</code>. Also add a real text/plain robots.txt that allows crawling so Google can read the canonical signal.</div></div></li>
+      <li><div><div class="check-main">Block everything else: <code>stage.</code>, <code>s.</code>, <code>forms.</code>, <code>apps.</code>, <code>prt.</code></div><div class="check-detail">Disallow all + noindex header + ideally Basic Auth on staging.</div></div></li>
+    </ul>
+    <ul class="status-checklist">
+      <li><div><strong>Canonical host decision:</strong> <span class="status-pill pill-ok">Done</span> <br> <span class="muted">Verified live on April 12, 2026.</span></div></li>
+      <li><div><strong>IPO decision:</strong> <span class="status-pill pill-ok">Done</span> <br> <span class="muted">Existing WordPress robots file is still correct.</span></div></li>
+      <li><div><strong>Mashriqya decision:</strong> <span class="status-pill pill-bad">Missing</span> <br> <span class="muted">No canonical tag in raw HTML and no valid text/plain robots file yet.</span></div></li>
+      <li><div><strong>Blocked-host decision:</strong> <span class="status-pill pill-warn">Partial</span> <br> <span class="muted"><code>s</code>, <code>forms</code>, and <code>apps</code> now block in robots.txt, but the noindex header rollout is still missing and <code>stage</code>/<code>prt</code> are still unresolved.</span></div></li>
+    </ul>
+  </section>
+
+  <!-- Target robots.txt files -->
+  <section id="files">
+    <h2><span class="emoji">🛠</span> Target robots.txt Files</h2>
+
+    <h3>1. Main domain — <code>https://asasmakeen.com/robots.txt</code></h3>
+    <p>Drop-in replacement for the current file. Removes the dead <code>/public/*</code> block, the per-engine <code>Googlebot</code>/<code>Bingbot</code> sections (whose <code>Crawl-delay</code> is ignored by Google), the deprecated <code>Host:</code> directive, and the AhrefsBot + Screaming Frog blocks. Keeps all defensive Laravel rules and file-extension safety blocks.</p>
+    <div class="alert alert-warning">
+      <span class="alert-icon">📡</span>
+      <div><strong>Live status: Partial.</strong> The main file now includes the <code>Sitemap:</code> directive, but the exact replacement file is not live yet. Still present in production: the full <code>/public/*</code> block, crawler-specific groups, <code>AhrefsBot</code>, <code>Screaming Frog SEO Spider</code>, and the deprecated <code>Host:</code> line. Also still missing from live: <code>Allow: /*.webp$</code>.</div>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span>📄</span> asasmakeen.com/robots.txt (full replacement)</div>
+      <pre><span class="code-comment"># Robots.txt for Asas Makeen</span>
+<span class="code-comment"># Canonical host: https://asasmakeen.com</span>
+
+<span class="code-key">User-agent:</span> <span class="code-string">*</span>
+
+<span class="code-comment"># Admin and auth (prefix matching is intentional - blocks all variants)</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/dashboard/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/admin/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/login</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/register</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/password/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/email/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/verify-email</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/forgot-password</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/reset-password</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/confirm-password</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/two-factor-challenge</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/user/</span>
+
+<span class="code-comment"># API and internal</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/api/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/api-docs</span>
+
+<span class="code-comment"># Laravel internals (defensive)</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/storage/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/vendor/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/node_modules/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/bootstrap/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/config/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/database/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/resources/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/routes/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/tests/</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/app/</span>
+
+<span class="code-comment"># Temp, cache, and config file extensions (defensive)</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*.log$</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*.tmp$</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*.cache$</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*.bak$</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*.old$</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*.swp$</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*.swo$</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*~</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*.env$</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*.ini$</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*.conf$</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/*.config$</span>
+
+<span class="code-comment"># Project metadata files (defensive)</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/composer.json</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/composer.lock</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/package.json</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/package-lock.json</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/vite.config.js</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/webpack.mix.js</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/artisan</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/phpunit.xml</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/.env</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/.env.example</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/.gitignore</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/README.md</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/CHANGELOG.md</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/LICENSE</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/CONTRIBUTING.md</span>
+
+<span class="code-comment"># Allow important public assets</span>
+<span class="code-key">Allow:</span> <span class="code-string">/sitemap.xml</span>
+<span class="code-key">Allow:</span> <span class="code-string">/favicon.ico</span>
+<span class="code-key">Allow:</span> <span class="code-string">/robots.txt</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.css$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.js$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.png$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.jpg$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.jpeg$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.gif$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.svg$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.ico$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.webp$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.woff$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.woff2$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.ttf$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.eot$</span>
+<span class="code-key">Allow:</span> <span class="code-string">/*.pdf$</span>
+
+<span class="code-comment"># Block scrapers</span>
+<span class="code-key">User-agent:</span> <span class="code-string">MJ12bot</span>
+<span class="code-key">Disallow:</span> <span class="code-wrong">/</span>
+
+<span class="code-key">User-agent:</span> <span class="code-string">DotBot</span>
+<span class="code-key">Disallow:</span> <span class="code-wrong">/</span>
+
+<span class="code-key">User-agent:</span> <span class="code-string">BLEXBot</span>
+<span class="code-key">Disallow:</span> <span class="code-wrong">/</span>
+
+<span class="code-key">User-agent:</span> <span class="code-string">Ezooms</span>
+<span class="code-key">Disallow:</span> <span class="code-wrong">/</span>
+
+<span class="code-key">Sitemap:</span> <span class="code-correct">https://asasmakeen.com/sitemap.xml</span></pre>
+    </div>
+    <div class="alert alert-warning">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Note:</strong> <code>SemrushBot</code> block has been removed (the team uses Semrush). Also added <code>/email/</code> (was in the current file but missing from earlier drafts) and <code>/*.webp$</code> to the asset allow-list since project images are <code>.webp</code>.</div>
+    </div>
+    <h3>2. Mashriqya — canonical tag + real robots.txt</h3>
+    <p>Mashriqya stays live. Add a canonical tag in the SPA's <code>&lt;head&gt;</code> pointing to the main-domain project page, and serve a real text/plain robots.txt that allows crawling (so Google can fetch the page and read the canonical).</p>
+    <div class="alert alert-danger">
+      <span class="alert-icon">📡</span>
+      <div><strong>Live status: Not done.</strong> <code>/robots.txt</code> still returns the SPA HTML shell with <code>Content-Type: text/html</code>, and the initial HTML response still has no canonical tag pointing to <code>https://asasmakeen.com/ar/u/pu/3/51/طليعة-المشرقية-الرياض</code>.</div>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span>📄</span> mashriqya SPA - index.html &lt;head&gt;</div>
+      <pre><span class="code-key">&lt;link</span> <span class="code-string">rel="canonical"</span>
+      <span class="code-string">href="https://asasmakeen.com/ar/u/pu/3/51/طليعة-المشرقية-الرياض"</span> <span class="code-key">/&gt;</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span>📄</span> mashriqya.asasmakeen.com/robots.txt</div>
+      <pre><span class="code-key">User-agent:</span> <span class="code-string">*</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/api/</span></pre>
+    </div>
+    <div class="alert alert-warning">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>SPA caveat:</strong> The canonical tag must be in the initial HTML response (server-rendered or injected at build time), not added later by JavaScript. A post-render canonical is unreliable.</div>
+    </div>
+
+    <h3>3. IPO — <code>https://ipo.asasmakeen.com/robots.txt</code></h3>
+    <p>Keep the existing WordPress robots.txt as is. HTTP → HTTPS redirect is already in place. No changes required.</p>
+    <div class="alert alert-info">
+      <span class="alert-icon">📡</span>
+      <div><strong>Live status: Done.</strong> The production file still matches the expected WordPress setup and includes the sitemap.</div>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span>📄</span> ipo.asasmakeen.com/robots.txt (unchanged)</div>
+      <pre><span class="code-key">User-agent:</span> <span class="code-string">*</span>
+<span class="code-key">Disallow:</span> <span class="code-string">/wp-admin/</span>
+<span class="code-key">Allow:</span> <span class="code-string">/wp-admin/admin-ajax.php</span>
+
+<span class="code-key">Sitemap:</span> <span class="code-correct">https://ipo.asasmakeen.com/wp-sitemap.xml</span></pre>
+    </div>
+
+    <h3>4. Blocked subdomains — <code>stage.</code>, <code>s.</code>, <code>forms.</code>, <code>apps.</code>, <code>prt.</code></h3>
+    <p>All five hosts get the same two-step blocking treatment.</p>
+    <div class="alert alert-warning">
+      <span class="alert-icon">📡</span>
+      <div><strong>Live status: Partial.</strong> <code>s</code>, <code>forms</code>, and <code>apps</code> now return <code>Disallow: /</code>. <code>stage</code> still returns empty <code>Disallow:</code>, and <code>prt</code> still does not serve a valid root robots file. None of the five blocked hosts returned <code>X-Robots-Tag: noindex, nofollow</code> in live response headers.</div>
+    </div>
+
+    <p><strong>Step 1 — Deploy the noindex header first:</strong></p>
+    <div class="code-block">
+      <div class="code-block-header"><span>🌐</span> HTTP response header (deploy first)</div>
+      <pre><span class="code-key">X-Robots-Tag:</span> <span class="code-string">noindex, nofollow</span></pre>
+    </div>
+    <p>While the noindex header is in place, the robots.txt for these hosts must <strong>still allow crawling</strong> so Google can fetch each page, see the header, and drop it from the index:</p>
+    <div class="code-block">
+      <div class="code-block-header"><span>📄</span> Blocked hosts - robots.txt (during deindex window)</div>
+      <pre><span class="code-key">User-agent:</span> <span class="code-string">*</span>
+<span class="code-key">Disallow:</span></pre>
+    </div>
+
+    <div style="margin-top:24px; padding:20px 24px; background:linear-gradient(135deg, rgba(204,95,115,0.08), rgba(255,196,9,0.08)); border-left:4px solid var(--rose); border-radius:8px;">
+      <div style="display:inline-block; background:var(--rose); color:#fff; font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; padding:4px 12px; border-radius:12px; margin-bottom:10px;">⏳ Wait 2-4 weeks</div>
+      <p style="margin:0 0 8px 0; font-size:18px; font-weight:700; color:var(--navy);">Step 2 — Switch to the full block</p>
+      <p style="margin:0 0 14px 0; color:var(--text-muted);">Only after Google has dropped the URLs from the index (verify with <code>site:host.asasmakeen.com</code>), replace the robots.txt with the hard block below. Doing this earlier strands the URLs in the index forever.</p>
+      <div class="code-block" style="margin:0;">
+        <div class="code-block-header"><span>📄</span> Blocked hosts - robots.txt (final, after deindex window)</div>
+        <pre><span class="code-key">User-agent:</span> <span class="code-string">*</span>
+<span class="code-key">Disallow:</span> <span class="code-wrong">/</span></pre>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Acceptance -->
+  <section id="verify">
+    <h2><span class="emoji">✅</span> How to Know This Is Done</h2>
+    <div class="alert alert-warning">
+      <span class="alert-icon">📡</span>
+      <div><strong>Current acceptance status on April 12, 2026:</strong> only some of these checks pass right now. This section is kept as the target acceptance list, with the current live result added inline below.</div>
+    </div>
+    <ul class="checklist">
+      <li><div><div class="check-main"><code>curl https://asasmakeen.com/robots.txt</code> returns the trimmed file with <code>Sitemap:</code> directive <span class="status-pill pill-warn">Partial</span></div><div class="check-detail"><code>Sitemap:</code> exists, but the file is not yet trimmed to the ticket's target version.</div></div></li>
+      <li><div><div class="check-main"><code>curl https://mashriqya.asasmakeen.com/robots.txt</code> returns <code>Content-Type: text/plain</code>, not HTML <span class="status-pill pill-bad">Fail</span></div><div class="check-detail">Live response is still <code>Content-Type: text/html</code>.</div></div></li>
+      <li><div><div class="check-main"><code>curl https://stage.asasmakeen.com/robots.txt</code> returns <code>Disallow: /</code> <span class="status-pill pill-bad">Fail</span></div><div class="check-detail">Only <code>s</code>, <code>forms</code>, and <code>apps</code> currently do. <code>stage</code> still allows crawling and <code>prt</code> still fails root delivery.</div></div></li>
+      <li><div><div class="check-main">All 5 blocked hosts return <code>X-Robots-Tag: noindex, nofollow</code> in response headers <span class="status-pill pill-bad">Fail</span></div><div class="check-detail">No blocked host tested returned this header.</div></div></li>
+      <li><div><div class="check-main">GSC robots.txt report shows only <strong>4 distinct files</strong> instead of 13 after 2-4 weeks <span class="status-pill pill-warn">Pending</span></div><div class="check-detail">Not verifiable from live HTTP alone. Current deployment is still not consolidated enough to expect a clean collapse yet.</div></div></li>
+      <li><div><div class="check-main"><code>curl -s https://mashriqya.asasmakeen.com/ | grep canonical</code> shows the canonical tag pointing to the main domain <span class="status-pill pill-bad">Fail</span></div><div class="check-detail">Still absent from the initial HTML response.</div></div></li>
+      <li><div><div class="check-main">No staging or portal URLs appear in search results <span class="status-pill pill-bad">Fail</span></div><div class="check-detail">A live search check still surfaced an indexed URL on <code>stage.asasmakeen.com</code>.</div></div></li>
+    </ul>
+  </section>
+
+  <!-- Validation -->
+  <section id="validate">
+    <h2><span class="emoji">🧪</span> Quick Validation After Deployment</h2>
+    <div class="alert alert-danger">
+      <span class="alert-icon">📡</span>
+      <div><strong>Live rerun result:</strong> if you run this validation block against production today, it still fails on <code>mashriqya</code>, <code>stage</code>, <code>prt</code>, and the <code>X-Robots-Tag</code> header checks.</div>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span>🖥️</span> Terminal - Validate each host</div>
+      <pre><span class="code-comment"># 1. Main robots.txt has Sitemap directive</span>
+curl -s https://asasmakeen.com/robots.txt | tail -5
+
+<span class="code-comment"># 2. Mashriqya returns text/plain (not HTML)</span>
+curl -sI https://mashriqya.asasmakeen.com/robots.txt | grep -i content-type
+
+<span class="code-comment"># 3. Blocked hosts: noindex header + robots.txt content</span>
+for h in stage s forms apps prt; do
+  echo "== $h =="
+  curl -s  https://$h.asasmakeen.com/robots.txt
+  curl -sI https://$h.asasmakeen.com/ | grep -i x-robots-tag
+done</pre>
+    </div>
+  </section>
+
+  <!-- Implementation priority -->
+  <section id="priority">
+    <h2><span class="emoji">📋</span> Implementation Priority</h2>
+    <div class="alert alert-warning">
+      <span class="alert-icon">📡</span>
+      <div><strong>Priority based on the current live deployment:</strong> the first return-to-dev items are now the missing <code>X-Robots-Tag</code> header, the broken <code>mashriqya</code> and <code>prt</code> <code>robots.txt</code> endpoints, and the still-unfixed main-file cleanup.</div>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr><th>#</th><th>Task</th><th>Resolves</th><th>Effort</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1</strong></td><td>Add <code>X-Robots-Tag: noindex</code> header on 5 blocked hosts</td><td>C3, M1</td><td>Low (middleware)</td></tr>
+        <tr><td><strong>2</strong></td><td>Create real robots.txt on 4 missing hosts (mashriqya, forms, apps, prt)</td><td>C3</td><td>Low (static file + route)</td></tr>
+        <tr><td><strong>3</strong></td><td>Trim main robots.txt + add <code>Sitemap:</code></td><td>C4, H1</td><td>Low (edit file)</td></tr>
+        <tr><td><strong>4</strong></td><td>Fix staging robots.txt (<code>Disallow: /</code>) after Step 1 has been deployed for 2-4 weeks</td><td>C2</td><td>Low</td></tr>
+        <tr><td><strong>5</strong></td><td>Optional: collapse <code>http://www</code> 2-hop chain, upgrade <code>forms.</code> / <code>prt.</code> 307 → 301</td><td>Minor cleanup</td><td>Low</td></tr>
+        <tr><td><strong>6</strong></td><td>Put staging behind HTTP Basic Auth (optional but recommended)</td><td>C2 (strongest)</td><td>Low</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Google rules reference -->
+  <section id="rules">
+    <h2><span class="emoji">📘</span> Google's Hard Rules for Robots.txt</h2>
+    <table class="data-table">
+      <thead>
+        <tr><th>Rule</th><th>Why it matters here</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Must be UTF-8 encoded</td><td>Any BOM or non-UTF-8 bytes will cause Google to skip lines.</td></tr>
+        <tr><td>Must be at the root: <code>/robots.txt</code></td><td>Subfolder files (e.g. <code>/blog/robots.txt</code>) are ignored.</td></tr>
+        <tr><td>File size must be under 500 KB</td><td>Anything beyond 500 KB is truncated. Current main file is 3.1 KB, safe.</td></tr>
+        <tr><td>Valid only for the exact protocol + host + port</td><td>Why we need a separate file on every subdomain. See info box in the host evaluation section above.</td></tr>
+        <tr><td>One directive per line, paths are case-sensitive</td><td><code>/Login</code> and <code>/login</code> are two different rules.</td></tr>
+        <tr><td>Googlebot supports only: <code>User-agent</code>, <code>Disallow</code>, <code>Allow</code>, <code>Sitemap</code></td><td><code>Noindex:</code> in robots.txt has been unsupported since 2019. <code>Crawl-delay</code> is ignored by Google.</td></tr>
+        <tr><td>Wildcard <code>User-agent: *</code> does NOT include Google AdsBot</td><td>If we ever run Google Ads on these domains, AdsBot must be named explicitly to be blocked.</td></tr>
+        <tr><td>For 4xx responses (except 429), Google assumes "no restrictions"</td><td>This is exactly what's happening on <code>apps.</code>, <code>forms.</code>, <code>prt.</code> — the SPA returns a 200 with HTML, which Google reads as "no robots.txt → crawl everything."</td></tr>
+        <tr><td>Disallow only blocks <strong>crawling</strong>, never <strong>indexing</strong></td><td>To deindex, use <code>X-Robots-Tag: noindex</code> header. See M1.</td></tr>
+        <tr><td>In conflicts, Google uses the <strong>least restrictive</strong> rule</td><td>An <code>Allow:</code> can override a broader <code>Disallow:</code> when you need a targeted exception inside a blocked directory.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="footer">
+    <p>Makeen SEO Task Ticket #006 - Generated April 7, 2026, live verification updated April 12, 2026</p>
+    <p>asasmakeen.com - SEO Remediation Project</p>
+  </div>
+</div>
+
+</body>
+</html>
