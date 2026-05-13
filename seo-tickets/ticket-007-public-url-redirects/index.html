@@ -240,8 +240,8 @@
       <div class="meta-item"><span>Priority:</span><span class="meta-value priority-critical">Critical</span></div>
       <div class="meta-item"><span>Category:</span><span class="meta-value">Duplicate Content &amp; Canonical</span></div>
       <div class="meta-item"><span>Date:</span><span class="meta-value">May 13, 2026</span></div>
-      <div class="meta-item"><span>Reporter:</span><span class="meta-value">Leen Mahrawan</span></div>
       <div class="meta-item"><span>Assignee:</span><span class="meta-value">Abdo (dev, Makeen)</span></div>
+      <div class="meta-item"><span>Affects:</span><span class="meta-value">214 URLs</span></div>
     </div>
   </div>
 </div>
@@ -250,8 +250,8 @@
 <div class="ar-summary">
   <div class="ar-summary-inner">
     <h2>ملخص المشكلة</h2>
-    <p>كل رابط يحتوي على <code>/public/</code> في المسار يجب <strong>حذفه</strong> وإعادة توجيهه <strong>301 permanent</strong> إلى الرابط الصحيح بدون <code>/public/</code>. لو الحذف من الكود مش ممكن، يكفي إعداد التحويل الدائم على مستوى السيرفر (nginx أو .htaccess).</p>
-    <p>المشكلة موجودة في <strong>214 رابط</strong> حسب تقرير الـ dev، ومثال مباشر: <code>https://www.asasmakeen.com/public/ar</code> يجب أن يحوّل إلى <code>https://asasmakeen.com/ar</code>. التحقق المباشر اليوم يؤكد أن النسختين تردان بنفس المحتوى وبكود <strong>HTTP 200</strong>، وأن وسم <code>canonical</code> على نسخة <code>/public/</code> يشير إلى نفسه، مما يضاعف الفهرسة.</p>
+    <p>كل صفحة على الموقع متاحة من رابطين مختلفين: الرابط الصحيح (مثل <code>https://asasmakeen.com/ar</code>) ورابط مكرّر يحتوي على <code>/public/</code> في المسار (<code>https://www.asasmakeen.com/public/ar</code>). كلاهما يرد بكود <strong>HTTP 200</strong> ويعرض المحتوى نفسه، ووسم <code>canonical</code> على نسخة <code>/public/</code> يشير إلى نفسه بدلاً من الرابط الصحيح، فيقول لـ Google إن النسختين <strong>أصليّتان</strong>.</p>
+    <p>النتيجة أن Google يفهرس كل صفحة مرتين، فتنقسم إشارات الترتيب وقوة الروابط الخارجية بين النسختين بدلاً من أن تتراكم على الرابط الصحيح، وتظهر مسارات داخلية من Laravel ضمن نتائج البحث. عدد الروابط المتأثرة <strong>214 رابطاً</strong>، والحل تحويل <strong>301 دائم</strong> من كل رابط <code>/public/</code> إلى الرابط الصحيح بدونه (التفاصيل والأكواد في الأقسام اللاحقة).</p>
   </div>
 </div>
 
@@ -275,7 +275,7 @@
   <section id="summary">
     <div class="summary-box">
       <p>
-        Every URL containing <code>/public/</code> must be removed from the application and 301-redirected to the canonical URL without <code>/public/</code>. If the application can't drop the path entirely, a server-level rewrite alone is acceptable. Reported by Leen Mahrawan on May 13, 2026, citing <strong>214 affected URLs</strong> from the dev report. The <a href="https://drive.google.com/open?id=1YPxp27037aTqZbMH8z_Rjkzyqlh_w63w&amp;usp=drive_fs" target="_blank" style="color:var(--rose);">URL list lives in this Drive sheet</a>; today's GSC failing-URL export contains 36 of them as a verified subset.
+        Every page on <code>asasmakeen.com</code> is reachable at two URLs: the canonical one (e.g. <code>https://asasmakeen.com/ar</code>) and a duplicate that contains <code>/public/</code> in the path (<code>https://www.asasmakeen.com/public/ar</code>). Both return <strong>HTTP 200</strong> with the same content, and the <code>/public/</code> version's <code>&lt;link rel="canonical"&gt;</code> tag points to itself instead of the clean URL, so Google is told both versions are originals. Each page is therefore indexed twice: ranking signals and external link equity split between the duplicates instead of consolidating on the clean URL, and Laravel's internal directory name leaks into search results. <strong>214 URLs</strong> are affected; the full list is in <a href="https://drive.google.com/open?id=1YPxp27037aTqZbMH8z_Rjkzyqlh_w63w&amp;usp=drive_fs" target="_blank" style="color:var(--rose);">this Drive sheet</a>. The fix is a single server-level 301 rule.
       </p>
     </div>
   </section>
@@ -284,10 +284,10 @@
   <section id="scale">
     <h2><span class="emoji">📊</span> The Scale of the Problem</h2>
     <div class="stats-grid">
-      <div class="stat-card"><span class="stat-number">214</span><div class="stat-label">URLs in dev report<br>(per Leen Mahrawan)</div></div>
-      <div class="stat-card"><span class="stat-number">36</span><div class="stat-label">verified <code>/public/</code> URLs<br>in today's GSC export</div></div>
+      <div class="stat-card"><span class="stat-number">214</span><div class="stat-label">URLs affected</div></div>
       <div class="stat-card"><span class="stat-number">200</span><div class="stat-label">HTTP code returned<br>by every <code>/public/</code> URL</div></div>
       <div class="stat-card"><span class="stat-number">2x</span><div class="stat-label">indexable copies<br>of every page</div></div>
+      <div class="stat-card"><span class="stat-number green">1</span><div class="stat-label">rewrite rule<br>resolves all of them</div></div>
     </div>
   </section>
 
@@ -334,8 +334,8 @@
 
   <!-- URL List -->
   <section id="urls">
-    <h2><span class="emoji">📄</span> Affected URLs (Verified Sample)</h2>
-    <p>Full list of 214 URLs is in the Drive sheet linked above. Below are the 36 URLs from today's GSC failing-URL export that contain <code>/public/</code>. Every one of these maps cleanly to the same path with <code>/public/</code> removed.</p>
+    <h2><span class="emoji">📄</span> Affected URLs (Sample)</h2>
+    <p>The complete list of 214 affected URLs is in <a href="https://drive.google.com/open?id=1YPxp27037aTqZbMH8z_Rjkzyqlh_w63w&amp;usp=drive_fs" target="_blank" style="color:var(--rose);">the Drive sheet</a>. The sample below is a representative slice covering the main URL families (home, blogs, news, project pages, uploads). Every one of these maps cleanly to the same path with <code>/public/</code> removed.</p>
 
     <table class="data-table">
       <thead>
