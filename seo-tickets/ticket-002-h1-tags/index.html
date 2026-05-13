@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket #002 - H1 Tag Issues Across the Entire Site</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c0e1d;
+      --gold: #ffc409;
+      --rose: #cc5f73;
+      --teal: #96c7c3;
+      --bg: #ffffff;
+      --surface: #f5f6f8;
+      --surface-2: #edeef2;
+      --border: #d8dbe3;
+      --text: #0c0e1d;
+      --text-muted: #5c5f72;
+      --gold-bg: rgba(255, 196, 9, 0.12);
+      --gold-border: rgba(255, 196, 9, 0.45);
+      --rose-bg: rgba(204, 95, 115, 0.10);
+      --rose-border: rgba(204, 95, 115, 0.35);
+      --teal-bg: rgba(150, 199, 195, 0.18);
+      --teal-border: rgba(150, 199, 195, 0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Baloo Bhaijaan 2', 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 0;
+    }
+
+    /* ── Top Banner ── */
+    .banner {
+      background: var(--navy);
+      padding: 36px 0;
+    }
+
+    .banner-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .ticket-badge {
+      display: inline-block;
+      background: var(--rose);
+      color: #fff;
+      padding: 4px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .banner h1 {
+      font-size: 34px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.3;
+      margin-bottom: 18px;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .meta-label {
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .meta-value {
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+    }
+
+    .priority-high {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* ── Arabic Summary ── */
+    .ar-summary {
+      background: var(--surface);
+      border-top: 3px solid var(--gold);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      direction: rtl;
+      font-family: 'Baloo Bhaijaan 2', 'Noto Sans Arabic', 'Segoe UI', Tahoma, Arial, sans-serif;
+    }
+
+    .ar-summary-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .ar-summary h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+
+    .ar-summary p {
+      font-size: 18px;
+      line-height: 2;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .ar-summary p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ar-summary strong {
+      color: var(--rose);
+    }
+
+    /* ── Container ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 36px 24px 60px;
+    }
+
+    /* ── Section Headings ── */
+    section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    h2 .emoji {
+      margin-right: 8px;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 24px 0 12px;
+    }
+
+    p {
+      font-size: 17px;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    /* ── Summary Box ── */
+    .summary-box {
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-border);
+      border-radius: 10px;
+      padding: 22px 26px;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    /* ── Stats Row ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--rose);
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Issue Cards ── */
+    .issue-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .issue-card-header {
+      padding: 16px 22px;
+      font-weight: 700;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .issue-card-body {
+      padding: 18px 22px;
+      background: var(--bg);
+    }
+
+    .issue-critical .issue-card-header {
+      background: var(--rose-bg);
+      color: var(--rose);
+      border-bottom: 1px solid var(--rose-border);
+    }
+
+    .issue-warning .issue-card-header {
+      background: var(--gold-bg);
+      color: #9a7400;
+      border-bottom: 1px solid var(--gold-border);
+    }
+
+    .issue-info .issue-card-header {
+      background: var(--teal-bg);
+      color: #3d7a73;
+      border-bottom: 1px solid var(--teal-border);
+    }
+
+    .issue-card-body p {
+      margin-bottom: 10px;
+    }
+
+    .issue-card-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ── Tables ── */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    th {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 600;
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 14px;
+    }
+
+    td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:nth-child(even) {
+      background: var(--surface);
+    }
+
+    .tag-good {
+      display: inline-block;
+      background: #dcf5e7;
+      color: #1a7a3a;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .tag-bad {
+      display: inline-block;
+      background: var(--rose-bg);
+      color: var(--rose);
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .tag-missing {
+      display: inline-block;
+      background: #fce4e4;
+      color: #b91c1c;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ── Code Blocks ── */
+    .code-block {
+      background: #1a1d2e;
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin: 16px 0;
+      overflow-x: auto;
+    }
+
+    .code-block code {
+      color: #e2e8f0;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 15px;
+      line-height: 1.7;
+      white-space: pre;
+    }
+
+    .code-comment { color: #6b7394; }
+    .code-keyword { color: #c792ea; }
+    .code-string { color: #c3e88d; }
+    .code-tag { color: #f07178; }
+    .code-attr { color: #ffcb6b; }
+
+    /* ── Highlight boxes ── */
+    .highlight-box {
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 16px 0;
+    }
+
+    .highlight-rose {
+      background: var(--rose-bg);
+      border: 1px solid var(--rose-border);
+    }
+
+    .highlight-gold {
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-border);
+    }
+
+    .highlight-teal {
+      background: var(--teal-bg);
+      border: 1px solid var(--teal-border);
+    }
+
+    /* ── Checklist ── */
+    .checklist {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 16px;
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .checklist li::before {
+      content: '\2610';
+      font-size: 24px;
+      flex-shrink: 0;
+      color: var(--teal);
+    }
+
+    .check-main {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .check-detail {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Impact List ── */
+    .impact-list {
+      list-style: none;
+      margin: 14px 0;
+    }
+
+    .impact-list li {
+      padding: 8px 0 8px 30px;
+      position: relative;
+      font-size: 16px;
+    }
+
+    .impact-list li::before {
+      content: '\26A0';
+      position: absolute;
+      left: 0;
+      top: 8px;
+    }
+
+    /* ── Comparison ── */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0;
+    }
+
+    .comparison-bad, .comparison-good {
+      border-radius: 10px;
+      padding: 18px 22px;
+    }
+
+    .comparison-bad {
+      background: var(--rose-bg);
+      border: 1px solid var(--rose-border);
+    }
+
+    .comparison-good {
+      background: #dcf5e7;
+      border: 1px solid #a3e0ba;
+    }
+
+    .comparison-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .comparison-bad .comparison-label { color: var(--rose); }
+    .comparison-good .comparison-label { color: #1a7a3a; }
+
+    .comparison-content {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .comparison-note {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── Rule Box ── */
+    .rule-box {
+      background: var(--navy);
+      color: #fff;
+      border-radius: 12px;
+      padding: 28px 30px;
+      margin: 24px 0;
+      text-align: center;
+    }
+
+    .rule-box p {
+      color: rgba(255,255,255,0.92);
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    .rule-box .rule-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+      font-weight: 400;
+      margin-top: 8px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 30px 24px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .ar-text {
+      font-family: 'Baloo Bhaijaan 2', 'Noto Sans Arabic', 'Segoe UI', Tahoma, Arial, sans-serif;
+      direction: rtl;
+      unicode-bidi: isolate;
+    }
+
+    @media (max-width: 600px) {
+      .banner h1 { font-size: 24px; }
+      .stats-row { grid-template-columns: 1fr; }
+      .comparison { grid-template-columns: 1fr; }
+      .meta-row { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════ BANNER ═══════════════════════ -->
+<div class="banner">
+  <div class="banner-inner">
+    <a href="../" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,196,9,0.15);border:1px solid rgba(255,196,9,0.45);color:#ffc409;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.background=&quot;rgba(255,196,9,0.25)&quot;" onmouseout="this.style.background=&quot;rgba(255,196,9,0.15)&quot;">← All SEO Tickets</a>
+    <div class="ticket-badge">SEO Bug - Open</div>
+    <h1>Ticket #002 - H1 Tags Are Duplicated or Too Short Across the Site</h1>
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Project:</span>
+        <span class="meta-value">asasmakeen.com</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Priority:</span>
+        <span class="meta-value priority-high">High</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Category:</span>
+        <span class="meta-value">On-Page SEO</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Date:</span>
+        <span class="meta-value">March 10, 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Affects:</span>
+        <span class="meta-value">2,374+ pages</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ ARABIC SUMMARY ═══════════════════════ -->
+<div class="ar-summary">
+  <div class="ar-summary-inner">
+    <h2>ملخص المشكلة</h2>
+    <p>عنوان H1 هو أهم عنوان في أي صفحة ويب - يخبر محركات البحث عن موضوع الصفحة الرئيسي. حالياً في موقع مكين، هناك مشكلتان رئيسيتان في هذا العنوان:</p>
+    <p><strong>الصفحتان الرئيسيتان (العربية والإنجليزية) تحتويان على 7 عناوين H1 في كل صفحة</strong> بدلاً من عنوان واحد، و132 صفحة أخرى تحتوي على أكثر من H1 واحد، وأكثر من 2,300 صفحة تستخدم عناوين قصيرة جداً مثل "مكين 63" بدون وصف.</p>
+    <p>المطلوب: التأكد من أن كل صفحة تحتوي على عنوان H1 واحد فقط، واضح ووصفي ويحتوي على الكلمات المفتاحية المناسبة.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ CONTENT ═══════════════════════ -->
+<div class="container">
+
+  <!-- ── Quick Summary ── -->
+  <section>
+    <div class="summary-box">
+      <p>
+        The H1 tag is the main heading of any page. It tells search engines what the page is about. Right now, Makeen has <strong>two H1 problems</strong>: 134 pages have multiple H1 tags competing with each other (including the two homepages which have 7 H1 tags each), and over 2,300 pages use H1 tags that are too short to be useful (just project names like "مكين 63" with no description).
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Scale of the Problem ── -->
+  <section>
+    <h2><span class="emoji">📊</span> The Scale of the Problem</h2>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-number">134</div>
+        <div class="stat-label">Pages with multiple H1 tags</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">7</div>
+        <div class="stat-label">H1 tags on each homepage (should be 1)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2,374</div>
+        <div class="stat-label">Pages with H1 too short</div>
+      </div>
+    </div>
+
+    <p>Every one of these pages is <strong>indexable</strong> - meaning Google is crawling them and seeing these issues right now.</p>
+  </section>
+
+  <!-- ── The Three Issues ── -->
+  <section>
+    <h2><span class="emoji">🔍</span> The H1 Issues - Explained</h2>
+
+    <!-- Issue 1: Homepages have 7 H1 tags each -->
+    <div class="issue-card issue-critical">
+      <div class="issue-card-header">
+        <span>Issue 1: Both Homepages Have 7 H1 Tags Instead of One</span>
+      </div>
+      <div class="issue-card-body">
+        <p>The Arabic homepage (<code>/ar</code>) and English homepage (<code>/en</code>) each have <strong>7 H1 tags</strong>. These are the two most important pages on the entire site - they have a URL Rating of 97 (out of 100). Every page should have exactly one H1.</p>
+        <p>With 7 H1 tags competing on each homepage, search engines can't determine the main topic. The page's SEO focus gets diluted across all of them.</p>
+
+        <h3>The 7 H1 tags currently on the Arabic homepage (/ar)</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>H1 Text</th>
+                <th>What It Actually Is</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td class="ar-text">عن مكين</td><td>Section heading (About Makeen)</td></tr>
+              <tr><td>2</td><td class="ar-text">تصنع الفارق</td><td>Section heading (Make a Difference)</td></tr>
+              <tr><td>3</td><td class="ar-text">مشاريع مستدامة</td><td>Section heading (Sustainable Projects)</td></tr>
+              <tr><td>4</td><td class="ar-text">استكشف مشاريعنا على الخريطة</td><td>Section heading (Explore Our Projects on the Map)</td></tr>
+              <tr><td>5</td><td class="ar-text">كن على اطلاع على آخر الاخبار</td><td>Section heading (Our Story in the Spotlight)</td></tr>
+              <tr><td>6</td><td class="ar-text">شركاء النجاح</td><td>Section heading (Partners)</td></tr>
+              <tr><td>7</td><td class="ar-text">الريادة والتميز في التطوير العقاري</td><td>Section heading (Excellence in Real Estate)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>The English homepage (<code>/en</code>) has the same structure with 7 H1 tags: About Us, Make a Difference, Sustainable Projects, Explore Our Projects on the Map, Our Story in the Spotlight, Partners, Excellence in Real Estate Development.</p>
+
+        <div class="highlight-rose">
+          <p><strong>The problem:</strong> Every section heading on the homepage is using <code>&lt;h1&gt;</code> instead of <code>&lt;h2&gt;</code>. None of these is the actual page title. We need to keep one descriptive H1 as the page title and change the rest to H2.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue 2: Multiple -->
+    <div class="issue-card issue-warning">
+      <div class="issue-card-header">
+        <span>Issue 2: 132 Other Pages Have More Than One H1</span>
+      </div>
+      <div class="issue-card-body">
+        <p>Beyond the homepages, 132 additional pages have multiple H1 tags. Combined with the 2 homepages from Issue 1, that's <strong>134 pages total</strong> with more than one H1.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Number of H1 Tags</th>
+                <th>Pages Affected</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>2 H1 tags</td><td>86 pages</td></tr>
+              <tr><td>3 H1 tags</td><td>10 pages</td></tr>
+              <tr><td>5 H1 tags</td><td>18 pages</td></tr>
+              <tr><td>6 H1 tags</td><td>10 pages</td></tr>
+              <tr><td>7 H1 tags</td><td>10 pages (8 static + 2 homepages)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>The breakdown: 124 of these are property listing pages (62 Arabic + 62 English), 8 are static pages (About, Careers, Contact, Investor Relations - each in both languages), and 2 are the homepages covered in Issue 1.</p>
+        <p>What's happening: the page template uses <code>&lt;h1&gt;</code> for section headings (like "مزايا المشروع" / "Project Features") instead of <code>&lt;h2&gt;</code> or <code>&lt;h3&gt;</code>. Only the page title should be H1.</p>
+      </div>
+    </div>
+
+    <!-- Issue 3: Too Short -->
+    <div class="issue-card issue-info">
+      <div class="issue-card-header">
+        <span>Issue 3: 2,374 Pages Have H1 Tags That Are Too Short</span>
+      </div>
+      <div class="issue-card-body">
+        <p>The vast majority of pages (99.5% are property/unit pages) use the <strong>project name alone</strong> as the H1. A good H1 should describe what the page is about - not just state a name.</p>
+
+        <h3>Examples from the audit</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Current H1</th>
+                <th>Length</th>
+                <th>Problem</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ar-text">مكين 63</td>
+                <td>7 chars</td>
+                <td><span class="tag-bad">Too short</span></td>
+              </tr>
+              <tr>
+                <td class="ar-text">مكين 68</td>
+                <td>7 chars</td>
+                <td><span class="tag-bad">Too short</span></td>
+              </tr>
+              <tr>
+                <td class="ar-text">التوظيف</td>
+                <td>7 chars</td>
+                <td><span class="tag-bad">Too short</span></td>
+              </tr>
+              <tr>
+                <td class="ar-text">مكين سكوير</td>
+                <td>10 chars</td>
+                <td><span class="tag-bad">Too short</span></td>
+              </tr>
+              <tr>
+                <td class="ar-text">علاقات المستثمرين</td>
+                <td>17 chars</td>
+                <td><span class="tag-bad">Too short</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>These H1s tell Google nothing about location, property type, or what makes each project unique.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Why This Matters ── -->
+  <section>
+    <h2><span class="emoji">⚡</span> Why This Matters for SEO</h2>
+
+    <ul class="impact-list">
+      <li><strong>7 competing H1 tags on each homepage</strong> - When Google sees 7 H1 tags on a single page, it cannot determine the main topic. The homepage's relevance gets diluted across all of them instead of clearly signaling what Makeen is about.</li>
+      <li><strong>Multiple H1 tags</strong> - When a property page has 5 different H1s, Google can't determine the main topic. The page's relevance gets split across all of them.</li>
+      <li><strong>Short/generic H1 tags</strong> - "مكين 63" tells Google nothing. It doesn't know if this is a residential compound in Riyadh, a commercial building, or a restaurant. We're missing the chance to rank for location-based and property-type keywords.</li>
+      <li><strong>Competitive disadvantage</strong> - Competitors with descriptive H1s like "Luxury Villas in East Riyadh - Al Narjis District" will outrank a page with just "مكين 63".</li>
+    </ul>
+  </section>
+
+  <!-- ── The Rule ── -->
+  <section>
+    <h2><span class="emoji">🧩</span> The Simple Rule</h2>
+
+    <div class="rule-box">
+      <p>Every page gets exactly one H1 tag. It should be descriptive, unique, and include the primary keyword for that page.</p>
+      <p class="rule-sub">All other section headings on the page should use H2, H3, H4 - not H1.</p>
+    </div>
+  </section>
+
+  <!-- ── What Good H1s Look Like ── -->
+  <section>
+    <h2><span class="emoji">📋</span> What Good H1s Look Like</h2>
+
+    <h3>Homepage H1s (currently 7 H1 tags each - should be 1)</h3>
+    <div class="comparison">
+      <div class="comparison-bad">
+        <div class="comparison-label">Current (7 H1 tags)</div>
+        <div class="comparison-content ar-text">عن مكين، تصنع الفارق، مشاريع مستدامة، استكشف مشاريعنا على الخريطة، كن على اطلاع...، شركاء النجاح، الريادة والتميز...</div>
+        <div class="comparison-note">asasmakeen.com/ar - all section headings are H1</div>
+      </div>
+      <div class="comparison-good">
+        <div class="comparison-label">Suggested (1 H1)</div>
+        <div class="comparison-content ar-text">أساس مكين للتطوير والاستثمار العقاري في الرياض</div>
+        <div class="comparison-note">Keep one descriptive H1, change the other 6 to H2</div>
+      </div>
+    </div>
+    <div class="comparison">
+      <div class="comparison-bad">
+        <div class="comparison-label">Current (7 H1 tags)</div>
+        <div class="comparison-content">About Us, Make a Difference, Sustainable Projects, Explore Our Projects..., Our story..., Partners, Excellence...</div>
+        <div class="comparison-note">asasmakeen.com/en - all section headings are H1</div>
+      </div>
+      <div class="comparison-good">
+        <div class="comparison-label">Suggested (1 H1)</div>
+        <div class="comparison-content">Asas Makeen - Real Estate Development & Investment in Riyadh</div>
+        <div class="comparison-note">Keep one descriptive H1, change the other 6 to H2</div>
+      </div>
+    </div>
+
+    <h3>Property page H1s (currently too short)</h3>
+    <div class="comparison">
+      <div class="comparison-bad">
+        <div class="comparison-label">Current</div>
+        <div class="comparison-content ar-text">مكين 63</div>
+        <div class="comparison-note">7 characters - just a name</div>
+      </div>
+      <div class="comparison-good">
+        <div class="comparison-label">Better</div>
+        <div class="comparison-content ar-text">مكين 63 - مجمع سكني في شرق الرياض</div>
+        <div class="comparison-note">Adds property type + location</div>
+      </div>
+    </div>
+    <div class="comparison">
+      <div class="comparison-bad">
+        <div class="comparison-label">Current</div>
+        <div class="comparison-content ar-text">مكين سكوير</div>
+        <div class="comparison-note">10 characters - just a name</div>
+      </div>
+      <div class="comparison-good">
+        <div class="comparison-label">Better</div>
+        <div class="comparison-content ar-text">مكين سكوير - مشروع تجاري وسكني متعدد الاستخدامات</div>
+        <div class="comparison-note">Adds property type + description</div>
+      </div>
+    </div>
+
+    <h3>Static page H1s (currently too short)</h3>
+    <div class="comparison">
+      <div class="comparison-bad">
+        <div class="comparison-label">Current</div>
+        <div class="comparison-content ar-text">التوظيف</div>
+        <div class="comparison-note">7 characters</div>
+      </div>
+      <div class="comparison-good">
+        <div class="comparison-label">Better</div>
+        <div class="comparison-content ar-text">فرص العمل والتوظيف في أساس مكين</div>
+        <div class="comparison-note">Includes company name + context</div>
+      </div>
+    </div>
+
+    <div class="highlight-gold">
+      <p><strong>Note:</strong> The suggested H1s above are starting points. The SEO team will provide the final H1 text for each page template. The dev task is to make sure the template structure supports a single, editable H1 per page.</p>
+    </div>
+  </section>
+
+  <!-- ── What Needs to Be Done ── -->
+  <section>
+    <h2><span class="emoji">🛠</span> What Needs to Be Done</h2>
+
+    <h3>Part 1 - Fix the homepage H1 tags (2 pages)</h3>
+    <p>Both homepages currently have 7 <code>&lt;h1&gt;</code> tags each (all section headings are incorrectly using H1). Reduce them to a single descriptive H1 and change the remaining 6 to <code>&lt;h2&gt;</code>. The SEO team will provide the final H1 text.</p>
+
+    <h3>Part 2 - Fix multiple H1 tags (132 pages)</h3>
+    <p>In the property listing template and static page templates, find all <code>&lt;h1&gt;</code> tags that are used for section headings and change them to <code>&lt;h2&gt;</code> or <code>&lt;h3&gt;</code>. Only the main page title should remain as <code>&lt;h1&gt;</code>.</p>
+
+    <div class="code-block"><code><span class="code-comment">-- Before (wrong): multiple H1 tags in a property page --</span>
+<span class="code-tag">&lt;h1&gt;</span><span class="code-string">مكين 63</span><span class="code-tag">&lt;/h1&gt;</span>                  <span class="code-comment">-- page title (correct as H1)</span>
+<span class="code-tag">&lt;h1&gt;</span><span class="code-string">مزايا المشروع</span><span class="code-tag">&lt;/h1&gt;</span>           <span class="code-comment">-- section heading (should NOT be H1)</span>
+<span class="code-tag">&lt;h1&gt;</span><span class="code-string">الموقع</span><span class="code-tag">&lt;/h1&gt;</span>                 <span class="code-comment">-- section heading (should NOT be H1)</span>
+
+<span class="code-comment">-- After (correct): only one H1, rest are H2 --</span>
+<span class="code-tag">&lt;h1&gt;</span><span class="code-string">مكين 63 - مجمع سكني في شرق الرياض</span><span class="code-tag">&lt;/h1&gt;</span>   <span class="code-comment">-- descriptive H1</span>
+<span class="code-tag">&lt;h2&gt;</span><span class="code-string">مزايا المشروع</span><span class="code-tag">&lt;/h2&gt;</span>           <span class="code-comment">-- section heading</span>
+<span class="code-tag">&lt;h2&gt;</span><span class="code-string">الموقع</span><span class="code-tag">&lt;/h2&gt;</span>                 <span class="code-comment">-- section heading</span></code></div>
+
+    <h3>Part 3 - Make H1 content dynamic and descriptive (2,374 pages)</h3>
+    <p>The H1 on property/unit pages is currently pulling just the project name from the database. We need to enrich it. The H1 template should follow this pattern:</p>
+
+    <div class="code-block"><code><span class="code-comment">-- H1 pattern for property pages --</span>
+<span class="code-tag">&lt;h1&gt;</span>{project_name} - {property_type} <span class="code-keyword">في</span> {location}<span class="code-tag">&lt;/h1&gt;</span>
+
+<span class="code-comment">-- Example output: --</span>
+<span class="code-tag">&lt;h1&gt;</span><span class="code-string">مكين 63 - مجمع سكني في شرق الرياض</span><span class="code-tag">&lt;/h1&gt;</span>
+
+<span class="code-comment">-- English equivalent: --</span>
+<span class="code-tag">&lt;h1&gt;</span><span class="code-string">Makeen 63 - Residential Compound in East Riyadh</span><span class="code-tag">&lt;/h1&gt;</span></code></div>
+
+    <div class="highlight-teal">
+      <p><strong>Question for the dev team:</strong> Are "property type" and "location/district" stored as separate fields in the database? If so, we can build this dynamically. If not, we may need to add a dedicated H1 field to the CMS so the content team can fill it in per project.</p>
+    </div>
+  </section>
+
+  <!-- ── Heading Hierarchy Reference ── -->
+  <section>
+    <h2><span class="emoji">💻</span> Quick Reference - Heading Hierarchy</h2>
+
+    <p>For anyone on the team who's unsure about heading levels, here's how they should work on any page:</p>
+
+    <div class="code-block"><code><span class="code-tag">&lt;h1&gt;</span> Page Title (only ONE per page)
+  <span class="code-tag">&lt;h2&gt;</span> Major section
+    <span class="code-tag">&lt;h3&gt;</span> Subsection
+    <span class="code-tag">&lt;h3&gt;</span> Subsection
+  <span class="code-tag">&lt;h2&gt;</span> Major section
+    <span class="code-tag">&lt;h3&gt;</span> Subsection</code></div>
+
+    <p>Think of it like a document outline. H1 is the title of the book, H2 is a chapter, H3 is a section within a chapter. There's only one book title.</p>
+  </section>
+
+  <!-- ── Done Criteria ── -->
+  <section>
+    <h2><span class="emoji">✅</span> How to Know This Is Done</h2>
+    <ul class="checklist">
+      <li>
+        <div>
+          <div class="check-main">Both homepages (/ar and /en) have exactly one H1 tag each</div>
+          <div class="check-detail">The H1 text will be provided by the SEO team</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">No page on the site has more than one H1 tag</div>
+          <div class="check-detail">All section headings that were incorrectly using H1 have been changed to H2 or H3</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">Property page H1s are descriptive (not just the project name)</div>
+          <div class="check-detail">Either dynamically built from database fields or editable via a CMS field</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">Static page H1s include context (company name, page purpose)</div>
+          <div class="check-detail">Example: "التوظيف" becomes "فرص العمل والتوظيف في أساس مكين"</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">Running a crawl shows 0 pages with missing H1, 0 with multiple H1s</div>
+          <div class="check-detail">We'll re-audit after the fix is deployed to confirm</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── Quick Test ── -->
+  <section>
+    <h2><span class="emoji">🧪</span> Quick Test We Can Run Right Now</h2>
+    <p>Open any property page in the browser, right-click, and select "View Page Source" (or press Ctrl+U). Then search for <code>&lt;h1</code>. Count how many times it appears:</p>
+
+    <div class="highlight-rose">
+      <p><strong>If it appears 0 times</strong> - the page has no H1 tag.</p>
+      <p><strong>If it appears more than once</strong> - the page has multiple H1 tags that need fixing.</p>
+      <p><strong>If it appears exactly once but the text is just a project name</strong> - the H1 is too short and needs enriching.</p>
+    </div>
+
+    <p>Try it on these pages:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Page</th>
+            <th>Expected Issue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>asasmakeen.com/ar</td><td>7 H1 tags (should be 1)</td></tr>
+          <tr><td>asasmakeen.com/en</td><td>7 H1 tags (should be 1)</td></tr>
+          <tr><td>Any property page</td><td>Multiple H1s + H1 too short</td></tr>
+          <tr><td>asasmakeen.com/ar/about</td><td>Multiple H1s</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Questions ── -->
+  <section>
+    <h2><span class="emoji">❓</span> Questions Before We Start</h2>
+    <p>Before starting, let's confirm:</p>
+    <ul class="checklist">
+      <li>
+        <div>
+          <div class="check-main">Which template engine or CMS generates the property pages?</div>
+          <div class="check-detail">We need to know where to change the heading tags from H1 to H2.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">Are "property type" and "location" stored as separate database fields?</div>
+          <div class="check-detail">If yes, we can build the H1 dynamically. If not, we may need a new CMS field.</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="check-main">Is the homepage layout built from a separate template or a CMS page builder?</div>
+          <div class="check-detail">This determines how we add the H1 to the homepages.</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+</div>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<div class="footer">
+  Makeen SEO Team - Ticket #002 - March 2026
+</div>
+
+</body>
+</html>
