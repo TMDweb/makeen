@@ -459,7 +459,7 @@
       <li><div><div class="check-main">Same test passes for <code>www.asasmakeen.com/public/ar</code> in a single hop to <code>asasmakeen.com/ar</code></div><div class="check-detail">No 2-hop chain (avoid <code>www/public</code> → <code>www</code> → <code>apex</code>).</div></div></li>
       <li><div><div class="check-main">Spot-check 5 random URLs from the Drive list with <code>curl -ILs</code></div><div class="check-detail">Pick one each from <code>/ar/</code>, <code>/en/</code>, <code>/blogs/</code>, <code>/news/</code>, <code>/uploads/</code>.</div></div></li>
       <li><div><div class="check-main">Final destination of every redirect returns <code>HTTP/2 200</code> (no chain to a 404)</div></div></li>
-      <li><div><div class="check-main">GSC "Page indexing" report shows <code>/public/*</code> URLs migrating from "Indexed" to "Page with redirect" within 4 weeks</div><div class="check-detail">Re-run the GSC failing-URL export at month-end and confirm the 36-URL slice has dropped to 0.</div></div></li>
+      <li><div><div class="check-main">GSC "Page indexing" report shows <code>/public/*</code> URLs migrating from "Indexed" to "Page with redirect" within 4 weeks</div><div class="check-detail">Re-pull the Drive failing-URL sheet at month-end and confirm the <code>/public/*</code> rows have dropped to zero.</div></div></li>
       <li><div><div class="check-main">No new <code>/public/</code> internal links in the codebase</div><div class="check-detail"><code>grep -rn "/public/" resources/ app/</code> in the Laravel repo should return only legitimate file paths, not user-facing URL builders.</div></div></li>
     </ul>
   </section>
@@ -473,10 +473,10 @@
       </thead>
       <tbody>
         <tr><td><strong>1</strong></td><td>Add nginx (or .htaccess) <code>/public/*</code> → clean URL 301 rule</td><td>Abdo</td><td>Low (one rule)</td></tr>
-        <tr><td><strong>2</strong></td><td>Deploy and curl-verify the 36 sample URLs</td><td>Abdo + SEO</td><td>Low (10 min QA)</td></tr>
+        <tr><td><strong>2</strong></td><td>Deploy and curl-verify the sample URLs in the table above</td><td>Abdo + SEO</td><td>Low (10 min QA)</td></tr>
         <tr><td><strong>3</strong></td><td>Submit canonical URLs to GSC for re-crawl (<a href="https://search.google.com/search-console" target="_blank" style="color:var(--rose);">URL Inspection &gt; Request indexing</a>) for the top 10 affected pages</td><td>SEO</td><td>Low</td></tr>
         <tr><td><strong>4</strong></td><td>Harden Blade canonical template (defensive)</td><td>Abdo</td><td>Low (one line)</td></tr>
-        <tr><td><strong>5</strong></td><td>Re-export GSC failing URLs in 4 weeks and confirm <code>/public/*</code> count = 0</td><td>SEO</td><td>Low</td></tr>
+        <tr><td><strong>5</strong></td><td>Re-pull the Drive failing-URL sheet in 4 weeks and confirm <code>/public/*</code> count = 0</td><td>SEO</td><td>Low</td></tr>
       </tbody>
     </table>
   </section>
