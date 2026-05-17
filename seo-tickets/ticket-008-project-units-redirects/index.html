@@ -134,7 +134,7 @@
 <div class="banner">
   <div class="banner-inner">
     <a href="../" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,196,9,0.15);border:1px solid rgba(255,196,9,0.45);color:#ffc409;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px;font-family:inherit;">← All SEO Tickets</a>
-    <div class="ticket-badge">SEO Redirect Bug - Open</div>
+    <div class="ticket-badge">Duplicate Content Bug - Open</div>
     <h1>Ticket #008 - Duplicate Project Units Pages</h1>
     <div class="meta-row">
       <div class="meta-item"><span>Project:</span><span class="meta-value">asasmakeen.com</span></div>
@@ -187,14 +187,18 @@
       </tbody>
     </table>
     <div class="note">
-      <p><strong>Implementation note:</strong> 301 is recommended only if the units page is not needed. If the units page must remain accessible, use <code>&lt;link rel="canonical"&gt;</code> to point Google to the main project page. Either option is acceptable, but leaving both pages indexable without canonicalization is the issue.</p>
+      <p><strong>Implementation options:</strong> choose one path per URL.</p>
+      <p><strong>Option A - 301 redirect:</strong> use this if the units subpage is not needed as a standalone page. The duplicate URL should permanently redirect to the matching main project page.</p>
+      <p><strong>Option B - canonical tag:</strong> use this if the units subpage must remain accessible for users. Keep the page live with HTTP 200, but add a self-contained canonical tag pointing to the matching main project page.</p>
+      <p><strong>Do not leave the current state:</strong> both URLs returning 200 without consolidation leaves duplicate content indexable.</p>
     </div>
   </section>
 
   <section>
     <h2><span class="emoji">✅</span> Verify</h2>
+    <p>After deployment, each duplicate units page should pass either the 301 redirect check or the canonical check. The chosen fix can differ by URL, but every affected URL needs one of the two outcomes.</p>
     <div class="code-block">
-      <div class="code-block-header"><span>🖥️</span> Expected after deploy if 301 is chosen</div>
+      <div class="code-block-header"><span>🖥️</span> Option A: expected if 301 is chosen</div>
       <pre>$ curl -sI https://asasmakeen.com/ar/projects/49/units
 HTTP/2 <span class="code-correct">301</span>
 location: https://asasmakeen.com/ar/u/pu/3/49/مكين-71
@@ -206,6 +210,17 @@ location: https://asasmakeen.com/en/u/pu/3/49/makeen-71
 $ curl -sI https://asasmakeen.com/ar/projects/50/units
 HTTP/2 <span class="code-correct">301</span>
 location: https://asasmakeen.com/ar/u/pu/3/50/مكين-72</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span>🖥️</span> Option B: expected if canonical is chosen</div>
+      <pre>$ curl -s https://asasmakeen.com/ar/projects/49/units | grep -i 'rel="canonical"'
+&lt;link rel="canonical" href="https://asasmakeen.com/ar/u/pu/3/49/مكين-71"&gt;
+
+$ curl -s https://asasmakeen.com/en/projects/49/units | grep -i 'rel="canonical"'
+&lt;link rel="canonical" href="https://asasmakeen.com/en/u/pu/3/49/makeen-71"&gt;
+
+$ curl -s https://asasmakeen.com/ar/projects/50/units | grep -i 'rel="canonical"'
+&lt;link rel="canonical" href="https://asasmakeen.com/ar/u/pu/3/50/مكين-72"&gt;</pre>
     </div>
   </section>
 
