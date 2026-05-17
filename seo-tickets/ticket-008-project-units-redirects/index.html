@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ticket #008 - Legacy Project Units 301 Redirects</title>
+  <title>Ticket #008 - Duplicate Project Units Pages</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -135,7 +135,7 @@
   <div class="banner-inner">
     <a href="../" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,196,9,0.15);border:1px solid rgba(255,196,9,0.45);color:#ffc409;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px;font-family:inherit;">← All SEO Tickets</a>
     <div class="ticket-badge">SEO Redirect Bug - Open</div>
-    <h1>Ticket #008 - Legacy Project Units 301 Redirects</h1>
+    <h1>Ticket #008 - Duplicate Project Units Pages</h1>
     <div class="meta-row">
       <div class="meta-item"><span>Project:</span><span class="meta-value">asasmakeen.com</span></div>
       <div class="meta-item"><span>Priority:</span><span class="meta-value priority-high">High</span></div>
@@ -148,26 +148,27 @@
 <div class="ar-summary">
   <div class="ar-summary-inner">
     <h2>ملخص المشكلة</h2>
-    <p>روابط الوحدات القديمة لبعض المشاريع ما زالت تفتح بكود <strong>200</strong> بدلاً من التحويل إلى روابط المشروع الجديدة. هذا يترك روابط قديمة قابلة للفهرسة وقد يسبب تكراراً أو تشتتاً في إشارات الصفحة.</p>
-    <p>المطلوب: إضافة <strong>301 redirect</strong> دائم من روابط <code>/projects/{id}/units</code> أدناه إلى روابط المشروع الجديدة المقابلة.</p>
+    <p>صفحات الوحدات الفرعية لبعض المشاريع تفتح بكود <strong>200</strong> وتعرض نفس محتوى صفحات المشروع الأساسية تقريباً. هذا يخلق نسخاً مكررة قابلة للفهرسة لنفس المحتوى.</p>
+    <p>المطلوب: تدخل تقني لتوحيد إشارات SEO. إذا لم تكن صفحات الوحدات مطلوبة كصفحات مستقلة، استخدم <strong>301 redirect</strong> إلى صفحة المشروع الأساسية. إذا كانت مطلوبة للمستخدمين، أضف <strong>canonical tag</strong> يشير إلى صفحة المشروع الأساسية.</p>
   </div>
 </div>
 
 <div class="container">
   <section>
     <div class="summary-box">
-      <p>The legacy project unit URLs below currently return HTTP <strong>200</strong>. They should not remain indexable pages. Each legacy URL should return a permanent <strong>301 redirect</strong> to the matching new project URL.</p>
-      <p>Verified on May 17, 2026: all three legacy URLs are still live as <code>200</code>.</p>
+      <p>The project unit subpages below currently return HTTP <strong>200</strong> and duplicate the same content already available on the main project pages. They should not remain as separate indexable copies of the same page.</p>
+      <p><strong>Required intervention:</strong> if these unit subpages are not needed as standalone user pages, add a permanent <strong>301 redirect</strong> to the matching main project page. If the pages are needed, keep them live but add a <strong>canonical tag</strong> pointing to the main project page.</p>
+      <p>Verified on May 17, 2026: all three duplicate unit subpages are still live as <code>200</code>.</p>
     </div>
   </section>
 
   <section>
-    <h2><span class="emoji">🔁</span> Required Redirects</h2>
+    <h2><span class="emoji">🔁</span> Affected Duplicate Pages</h2>
     <table class="redirect-table">
       <thead>
         <tr>
-          <th>Legacy URL</th>
-          <th>Should 301 to</th>
+          <th>Duplicate units page</th>
+          <th>Main project page</th>
         </tr>
       </thead>
       <tbody>
@@ -186,14 +187,14 @@
       </tbody>
     </table>
     <div class="note">
-      <p><strong>Implementation note:</strong> avoid redirect chains. If the target project URL is internally normalized to a longer final slug, redirect the legacy URL directly to that final canonical URL.</p>
+      <p><strong>Implementation note:</strong> 301 is recommended only if the units page is not needed. If the units page must remain accessible, use <code>&lt;link rel="canonical"&gt;</code> to point Google to the main project page. Either option is acceptable, but leaving both pages indexable without canonicalization is the issue.</p>
     </div>
   </section>
 
   <section>
     <h2><span class="emoji">✅</span> Verify</h2>
     <div class="code-block">
-      <div class="code-block-header"><span>🖥️</span> Expected after deploy</div>
+      <div class="code-block-header"><span>🖥️</span> Expected after deploy if 301 is chosen</div>
       <pre>$ curl -sI https://asasmakeen.com/ar/projects/49/units
 HTTP/2 <span class="code-correct">301</span>
 location: https://asasmakeen.com/ar/u/pu/3/49/مكين-71
