@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket #008 - Legacy Project Units 301 Redirects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c0e1d;
+      --gold: #ffc409;
+      --rose: #cc5f73;
+      --teal: #96c7c3;
+      --bg: #ffffff;
+      --surface: #f5f6f8;
+      --surface-2: #edeef2;
+      --border: #d8dbe3;
+      --text: #0c0e1d;
+      --text-muted: #5c5f72;
+      --gold-bg: rgba(255, 196, 9, 0.12);
+      --gold-border: rgba(255, 196, 9, 0.45);
+      --rose-bg: rgba(204, 95, 115, 0.10);
+      --rose-border: rgba(204, 95, 115, 0.35);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Baloo Bhaijaan 2', 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .banner { background: var(--navy); padding: 36px 0; }
+    .banner-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .ticket-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(204, 95, 115, 0.2);
+      border: 1px solid rgba(204, 95, 115, 0.5);
+      color: #f0a0b0; padding: 4px 14px; border-radius: 20px;
+      font-size: 15px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 16px;
+    }
+    .ticket-badge::before {
+      content: ''; width: 8px; height: 8px; background: var(--rose);
+      border-radius: 50%; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    .banner h1 { font-size: 34px; font-weight: 700; margin-bottom: 14px; color: #fff; }
+    .meta-row { display:flex; gap:24px; flex-wrap:wrap; font-size:16px; color:rgba(255,255,255,.55); }
+    .meta-item { display:flex; align-items:center; gap:6px; }
+    .meta-value { color: rgba(255,255,255,.9); font-weight:600; }
+    .priority-high { color: var(--gold); font-weight:700; }
+    .container { max-width: 900px; margin: 0 auto; padding: 36px 24px; }
+    section { margin-bottom: 32px; }
+    h2 {
+      font-size: 22px; font-weight: 700; margin-bottom: 14px;
+      padding-bottom: 8px; border-bottom: 2px solid var(--gold);
+      color: var(--navy);
+    }
+    h2 .emoji { margin-right: 8px; }
+    p { margin-bottom: 14px; color: var(--text); font-size: 17px; }
+    strong { color: var(--navy); font-weight: 700; }
+    a { color: var(--rose); }
+    code {
+      background: var(--surface-2); padding: 2px 7px; border-radius: 5px;
+      font-family: 'SF Mono','Fira Code','Courier New',monospace;
+      font-size: 15px; color: var(--navy); border: 1px solid var(--border);
+    }
+    .summary-box {
+      background: var(--gold-bg); border: 1px solid var(--gold-border);
+      border-left: 4px solid var(--gold); border-radius: 8px;
+      padding: 22px; margin-bottom: 24px;
+    }
+    .summary-box p:last-child { margin-bottom: 0; }
+    .redirect-table {
+      width: 100%; border-collapse: collapse; margin-top: 12px;
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+      display: table;
+    }
+    .redirect-table th,
+    .redirect-table td {
+      padding: 13px 14px; border-bottom: 1px solid var(--border);
+      text-align: left; vertical-align: top; font-size: 15px;
+    }
+    .redirect-table th { background: var(--surface); color: var(--navy); font-size: 16px; }
+    .redirect-table tr:last-child td { border-bottom: 0; }
+    .redirect-table code { word-break: break-all; }
+    .note {
+      background: var(--rose-bg); border: 1px solid var(--rose-border);
+      border-left: 4px solid var(--rose); border-radius: 8px;
+      padding: 18px; margin-top: 16px;
+    }
+    .code-block {
+      background: var(--navy); border: 1px solid #2a2d40;
+      border-radius: 10px; overflow-x: auto; margin: 12px 0;
+    }
+    .code-block-header {
+      background: rgba(255,255,255,.06); padding: 10px 18px;
+      font-size: 14px; font-weight: 600; color: rgba(255,255,255,.6);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display:flex; align-items:center; gap:8px;
+    }
+    .code-block pre {
+      padding: 18px; font-family: 'SF Mono','Fira Code','Courier New',monospace;
+      font-size: 14px; line-height: 1.6; color: #e2e4ef;
+      white-space: pre; overflow-x: auto;
+    }
+    .code-correct { color: var(--teal); }
+    .footer {
+      text-align: center; padding: 28px; color: var(--text-muted);
+      font-size: 15px; background: var(--surface); border-top: 1px solid var(--border);
+    }
+    .footer p:first-child { font-weight: 600; color: var(--navy); }
+    .ar-summary {
+      background: var(--surface); border-top: 3px solid var(--gold);
+      border-bottom: 1px solid var(--border); padding: 28px 24px;
+      text-align: center; direction: rtl;
+      font-family: 'Baloo Bhaijaan 2','Noto Sans Arabic','Segoe UI',Tahoma,Arial,sans-serif;
+    }
+    .ar-summary-inner { max-width: 720px; margin: 0 auto; }
+    .ar-summary h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 14px; border: none; padding: 0; }
+    .ar-summary p { font-size: 17px; line-height: 2; color: var(--text); margin-bottom: 10px; }
+    .ar-summary p:last-child { margin-bottom: 0; }
+    .ar-summary strong { color: var(--rose); }
+    @media (max-width: 720px) {
+      .banner h1 { font-size: 28px; }
+      .redirect-table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="banner-inner">
+    <a href="../" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,196,9,0.15);border:1px solid rgba(255,196,9,0.45);color:#ffc409;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px;font-family:inherit;">← All SEO Tickets</a>
+    <div class="ticket-badge">SEO Redirect Bug - Open</div>
+    <h1>Ticket #008 - Legacy Project Units 301 Redirects</h1>
+    <div class="meta-row">
+      <div class="meta-item"><span>Project:</span><span class="meta-value">asasmakeen.com</span></div>
+      <div class="meta-item"><span>Priority:</span><span class="meta-value priority-high">High</span></div>
+      <div class="meta-item"><span>Date:</span><span class="meta-value">May 17, 2026</span></div>
+      <div class="meta-item"><span>Assignee:</span><span class="meta-value">Abdo (dev, Makeen)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="ar-summary">
+  <div class="ar-summary-inner">
+    <h2>ملخص المشكلة</h2>
+    <p>روابط الوحدات القديمة لبعض المشاريع ما زالت تفتح بكود <strong>200</strong> بدلاً من التحويل إلى روابط المشروع الجديدة. هذا يترك روابط قديمة قابلة للفهرسة وقد يسبب تكراراً أو تشتتاً في إشارات الصفحة.</p>
+    <p>المطلوب: إضافة <strong>301 redirect</strong> دائم من روابط <code>/projects/{id}/units</code> أدناه إلى روابط المشروع الجديدة المقابلة.</p>
+  </div>
+</div>
+
+<div class="container">
+  <section>
+    <div class="summary-box">
+      <p>The legacy project unit URLs below currently return HTTP <strong>200</strong>. They should not remain indexable pages. Each legacy URL should return a permanent <strong>301 redirect</strong> to the matching new project URL.</p>
+      <p>Verified on May 17, 2026: all three legacy URLs are still live as <code>200</code>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="emoji">🔁</span> Required Redirects</h2>
+    <table class="redirect-table">
+      <thead>
+        <tr>
+          <th>Legacy URL</th>
+          <th>Should 301 to</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>https://asasmakeen.com/ar/projects/49/units</code></td>
+          <td><code>https://asasmakeen.com/ar/u/pu/3/49/مكين-71</code></td>
+        </tr>
+        <tr>
+          <td><code>https://asasmakeen.com/en/projects/49/units</code></td>
+          <td><code>https://asasmakeen.com/en/u/pu/3/49/makeen-71</code></td>
+        </tr>
+        <tr>
+          <td><code>https://asasmakeen.com/ar/projects/50/units</code></td>
+          <td><code>https://asasmakeen.com/ar/u/pu/3/50/مكين-72</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="note">
+      <p><strong>Implementation note:</strong> avoid redirect chains. If the target project URL is internally normalized to a longer final slug, redirect the legacy URL directly to that final canonical URL.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="emoji">✅</span> Verify</h2>
+    <div class="code-block">
+      <div class="code-block-header"><span>🖥️</span> Expected after deploy</div>
+      <pre>$ curl -sI https://asasmakeen.com/ar/projects/49/units
+HTTP/2 <span class="code-correct">301</span>
+location: https://asasmakeen.com/ar/u/pu/3/49/مكين-71
+
+$ curl -sI https://asasmakeen.com/en/projects/49/units
+HTTP/2 <span class="code-correct">301</span>
+location: https://asasmakeen.com/en/u/pu/3/49/makeen-71
+
+$ curl -sI https://asasmakeen.com/ar/projects/50/units
+HTTP/2 <span class="code-correct">301</span>
+location: https://asasmakeen.com/ar/u/pu/3/50/مكين-72</pre>
+    </div>
+  </section>
+
+  <div class="footer">
+    <p>Makeen SEO Task Ticket #008 - May 17, 2026</p>
+    <p>asasmakeen.com</p>
+  </div>
+</div>
+
+</body>
+</html>
