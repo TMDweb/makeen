@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ticket #009 - /uploads/ Blocked by Robots.txt</title>
+  <title>Ticket #009 - Remove /uploads/ Robots Block</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
       --navy: #0c0e1d;
       --gold: #ffc409;
       --rose: #cc5f73;
-      --teal: #96c7c3;
       --bg: #ffffff;
       --surface: #f5f6f8;
       --surface-2: #edeef2;
@@ -25,87 +24,116 @@
       --rose-border: rgba(204, 95, 115, 0.35);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
       font-family: 'Baloo Bhaijaan 2', 'Segoe UI', Tahoma, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.7;
+      line-height: 1.65;
     }
-    .banner { background: var(--navy); padding: 36px 0; }
-    .banner-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .banner { background: var(--navy); padding: 32px 0; }
+    .banner-inner, .container, .ar-summary-inner {
+      width: min(900px, 100%);
+      margin: 0 auto;
+      padding: 0 22px;
+    }
+    .back-link {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(255,196,9,0.15); border:1px solid rgba(255,196,9,0.45);
+      color:#ffc409; padding:8px 16px; border-radius:20px; text-decoration:none;
+      font-size:14px; font-weight:600; margin-bottom:18px;
+    }
     .ticket-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(204, 95, 115, 0.2);
-      border: 1px solid rgba(204, 95, 115, 0.5);
-      color: #f0a0b0; padding: 4px 14px; border-radius: 20px;
-      font-size: 15px; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.5px; margin-bottom: 16px;
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(204,95,115,0.2); border:1px solid rgba(204,95,115,0.5);
+      color:#f0a0b0; padding:4px 14px; border-radius:20px;
+      font-size:15px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-bottom:14px;
     }
-    .ticket-badge::before { content: ''; width: 8px; height: 8px; background: var(--rose); border-radius: 50%; }
-    .banner h1 { font-size: 34px; font-weight: 700; margin-bottom: 14px; color: #fff; }
-    .meta-row { display:flex; gap:24px; flex-wrap:wrap; font-size:16px; color:rgba(255,255,255,.55); }
+    .ticket-badge::before { content:''; width:8px; height:8px; background:var(--rose); border-radius:50%; }
+    .banner h1 { font-size:34px; font-weight:700; margin-bottom:14px; color:#fff; line-height:1.18; }
+    .meta-row { display:flex; gap:16px 24px; flex-wrap:wrap; font-size:16px; color:rgba(255,255,255,.55); }
     .meta-item { display:flex; align-items:center; gap:6px; }
-    .meta-value { color: rgba(255,255,255,.9); font-weight:600; }
-    .priority-high { color: var(--gold); font-weight:700; }
-    .container { max-width: 900px; margin: 0 auto; padding: 36px 24px; }
-    section { margin-bottom: 32px; }
-    h2 {
-      font-size: 22px; font-weight: 700; margin-bottom: 14px;
-      padding-bottom: 8px; border-bottom: 2px solid var(--gold);
-      color: var(--navy);
-    }
-    h2 .emoji { margin-right: 8px; }
-    p { margin-bottom: 14px; color: var(--text); font-size: 17px; }
-    strong { color: var(--navy); font-weight: 700; }
+    .meta-value { color:rgba(255,255,255,.9); font-weight:600; }
+    .priority-high { color:var(--gold); font-weight:700; }
+    .ar-summary { background:var(--surface); border-top:3px solid var(--gold); border-bottom:1px solid var(--border); padding:24px 0; text-align:center; direction:rtl; }
+    .ar-summary h2 { font-size:22px; font-weight:700; color:var(--navy); margin-bottom:10px; }
+    .ar-summary p { font-size:17px; line-height:1.9; margin:0 auto; max-width:720px; }
+    .ar-summary strong { color:var(--rose); }
+    .container { padding-top:32px; padding-bottom:32px; }
+    section { margin-bottom:28px; }
+    h2 { font-size:22px; font-weight:700; margin-bottom:14px; padding-bottom:8px; border-bottom:2px solid var(--gold); color:var(--navy); line-height:1.25; }
+    p { margin-bottom:12px; font-size:17px; }
+    strong { color:var(--navy); font-weight:700; }
     code {
-      background: var(--surface-2); padding: 2px 7px; border-radius: 5px;
-      font-family: 'SF Mono','Fira Code','Courier New',monospace;
-      font-size: 15px; color: var(--navy); border: 1px solid var(--border);
+      background:var(--surface-2); padding:2px 7px; border-radius:5px;
+      font-family:'SF Mono','Fira Code','Courier New',monospace;
+      font-size:.92em; color:var(--navy); border:1px solid var(--border);
+      word-break:break-word;
     }
-    .summary-box {
-      background: var(--gold-bg); border: 1px solid var(--gold-border);
-      border-left: 4px solid var(--gold); border-radius: 8px;
-      padding: 22px; margin-bottom: 24px;
-    }
-    .summary-box p:last-child { margin-bottom: 0; }
-    .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin:18px 0; }
-    .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:18px; text-align:center; }
-    .stat-number { display:block; font-size:38px; line-height:1; font-weight:800; color:var(--rose); }
-    .stat-label { display:block; margin-top:8px; color:var(--text-muted); font-size:14px; }
-    .data-table { width:100%; border-collapse:collapse; margin-top:12px; border:1px solid var(--border); border-radius:8px; overflow:hidden; display:table; }
-    .data-table th, .data-table td { padding:13px 14px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top; font-size:15px; }
-    .data-table th { background:var(--surface); color:var(--navy); font-size:16px; }
+    .summary-box { background:var(--gold-bg); border:1px solid var(--gold-border); border-left:4px solid var(--gold); border-radius:10px; padding:20px; }
+    .summary-box p:last-child { margin-bottom:0; }
+    .stats-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:12px; margin:18px 0; }
+    .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; min-width:0; }
+    .stat-number { display:block; font-size:32px; line-height:1; font-weight:800; color:var(--rose); word-break:break-word; }
+    .stat-label { display:block; margin-top:8px; color:var(--text-muted); font-size:14px; line-height:1.35; }
+    .data-table { width:100%; border-collapse:collapse; margin-top:12px; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+    .data-table th, .data-table td { padding:12px 14px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top; font-size:15px; }
+    .data-table th { background:var(--surface); color:var(--navy); font-size:15px; }
     .data-table tr:last-child td { border-bottom:0; }
-    .data-table code { word-break:break-all; }
-    .note { background:var(--rose-bg); border:1px solid var(--rose-border); border-left:4px solid var(--rose); border-radius:8px; padding:18px; margin-top:16px; }
-    .code-block { background:var(--navy); border:1px solid #2a2d40; border-radius:10px; overflow-x:auto; margin:12px 0; }
-    .code-block-header { background:rgba(255,255,255,.06); padding:10px 18px; font-size:14px; font-weight:600; color:rgba(255,255,255,.6); border-bottom:1px solid rgba(255,255,255,.08); }
-    .code-block pre { padding:18px; font-family:'SF Mono','Fira Code','Courier New',monospace; font-size:14px; line-height:1.6; color:#e2e4ef; white-space:pre; overflow-x:auto; }
+    .note { background:var(--rose-bg); border:1px solid var(--rose-border); border-left:4px solid var(--rose); border-radius:10px; padding:16px; margin-top:16px; }
+    .code-block { background:var(--navy); border:1px solid #2a2d40; border-radius:10px; overflow:hidden; margin:12px 0; }
+    .code-block-header { background:rgba(255,255,255,.06); padding:10px 16px; font-size:14px; font-weight:600; color:rgba(255,255,255,.65); border-bottom:1px solid rgba(255,255,255,.08); }
+    .code-block pre { padding:16px; font-family:'SF Mono','Fira Code','Courier New',monospace; font-size:14px; line-height:1.6; color:#e2e4ef; white-space:pre-wrap; overflow-wrap:anywhere; }
     .code-key { color:var(--gold); }
     .code-wrong { color:var(--rose); }
-    .code-correct { color:var(--teal); }
-    .footer { text-align:center; padding:28px; color:var(--text-muted); font-size:15px; background:var(--surface); border-top:1px solid var(--border); }
+    .code-correct { color:#96c7c3; }
+    .checklist { list-style:none; display:grid; gap:10px; }
+    .checklist li { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; font-size:16px; }
+    .checklist li::before { content:'☐'; color:#4a8e88; font-weight:800; margin-right:10px; }
+    .footer { text-align:center; padding:24px 22px; color:var(--text-muted); font-size:15px; background:var(--surface); border-top:1px solid var(--border); }
     .footer p:first-child { font-weight:600; color:var(--navy); }
-    .ar-summary { background:var(--surface); border-top:3px solid var(--gold); border-bottom:1px solid var(--border); padding:28px 24px; text-align:center; direction:rtl; font-family:'Baloo Bhaijaan 2','Noto Sans Arabic','Segoe UI',Tahoma,Arial,sans-serif; }
-    .ar-summary-inner { max-width:720px; margin:0 auto; }
-    .ar-summary h2 { font-size:22px; font-weight:700; color:var(--navy); margin-bottom:14px; border:none; padding:0; }
-    .ar-summary p { font-size:17px; line-height:2; color:var(--text); margin-bottom:10px; }
-    .ar-summary strong { color:var(--rose); }
-    @media (max-width:720px) { .banner h1 { font-size:28px; } .data-table { display:block; overflow-x:auto; } }
+    @media (max-width: 760px) {
+      .banner { padding:26px 0; }
+      .banner-inner, .container, .ar-summary-inner { padding-left:16px; padding-right:16px; }
+      .banner h1 { font-size:27px; }
+      .ticket-badge { font-size:13px; padding:4px 12px; }
+      .meta-row { display:grid; grid-template-columns:1fr; gap:8px; font-size:15px; }
+      .meta-item { justify-content:space-between; align-items:flex-start; gap:14px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+      .ar-summary { padding:20px 0; }
+      .ar-summary h2 { font-size:20px; }
+      .ar-summary p, p { font-size:16px; }
+      .container { padding-top:24px; padding-bottom:24px; }
+      section { margin-bottom:24px; }
+      h2 { font-size:20px; }
+      .summary-box, .note { padding:16px; }
+      .stats-grid { grid-template-columns:1fr; gap:10px; }
+      .stat-card { display:flex; justify-content:space-between; align-items:center; gap:12px; text-align:left; padding:14px 16px; }
+      .stat-number { font-size:26px; flex:0 0 auto; }
+      .stat-label { margin-top:0; text-align:right; }
+      .data-table, .data-table tbody, .data-table tr, .data-table td { display:block; width:100%; }
+      .data-table thead { display:none; }
+      .data-table tr { border-bottom:1px solid var(--border); padding:12px; }
+      .data-table tr:last-child { border-bottom:0; }
+      .data-table td { border:0; padding:4px 0; font-size:14px; }
+      .data-table td:first-child::before { content:'Blocked asset'; display:block; font-weight:700; color:var(--text-muted); font-size:12px; text-transform:uppercase; margin-bottom:4px; }
+      .data-table td:last-child::before { content:'Matched rule'; display:block; font-weight:700; color:var(--text-muted); font-size:12px; text-transform:uppercase; margin:8px 0 4px; }
+      .code-block pre { font-size:13px; padding:14px; }
+      .back-link { width:100%; justify-content:center; }
+    }
   </style>
 </head>
 <body>
 
 <div class="banner">
   <div class="banner-inner">
-    <a href="../" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,196,9,0.15);border:1px solid rgba(255,196,9,0.45);color:#ffc409;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px;font-family:inherit;">← All SEO Tickets</a>
+    <a href="../" class="back-link">← All SEO Tickets</a>
     <div class="ticket-badge">Crawlability Bug - Open</div>
-    <h1>Ticket #009 - /uploads/ Blocked by Robots.txt</h1>
+    <h1>Ticket #009 - Remove /uploads/ Robots Block</h1>
     <div class="meta-row">
       <div class="meta-item"><span>Project:</span><span class="meta-value">asasmakeen.com</span></div>
       <div class="meta-item"><span>Priority:</span><span class="meta-value priority-high">High</span></div>
       <div class="meta-item"><span>Date:</span><span class="meta-value">May 20, 2026</span></div>
-      <div class="meta-item"><span>Source:</span><span class="meta-value">Screaming Frog crawl</span></div>
+      <div class="meta-item"><span>Source:</span><span class="meta-value">Screaming Frog</span></div>
     </div>
   </div>
 </div>
@@ -113,101 +141,66 @@
 <div class="ar-summary">
   <div class="ar-summary-inner">
     <h2>ملخص المشكلة</h2>
-    <p>ملف <strong>robots.txt</strong> يمنع مجلد <strong>/uploads/</strong> بالكامل، وهذا يحجب صور وملفات عامة مستخدمة داخل صفحات الموقع مثل صور <strong>.webp</strong> وملفات <strong>.svg</strong>.</p>
-    <p>المطلوب: السماح بالزحف لملفات الوسائط العامة داخل <strong>/uploads/</strong>، أو نقل الملفات العامة لمسار مسموح، مع إبقاء أي ملفات حساسة محجوبة.</p>
+    <p>ملف <strong>robots.txt</strong> يمنع مجلد <strong>/uploads/</strong> بالكامل. المطلوب ببساطة هو حذف سطر المنع حتى تستطيع محركات البحث رؤية صور وملفات الصفحات العامة.</p>
   </div>
 </div>
 
 <div class="container">
   <section>
     <div class="summary-box">
-      <p>Screaming Frog found that the production robots.txt blocks public upload assets. The rule <code>Disallow: /uploads/</code> caused uploaded page images and SVG assets to be reported as <strong>Blocked by robots.txt</strong>.</p>
-      <p>This can prevent search engines from fetching important visual assets used on indexable pages, reducing image SEO, page understanding, and rendering confidence.</p>
+      <p><strong>Issue:</strong> Screaming Frog found public upload assets blocked by <code>Disallow: /uploads/</code>.</p>
+      <p><strong>Fix:</strong> remove that disallow line. Do not add <code>Allow</code> rules for this; they are unnecessary when the folder is not disallowed.</p>
     </div>
 
     <div class="stats-grid">
       <div class="stat-card"><span class="stat-number">1,764</span><span class="stat-label">internal URLs blocked by robots.txt</span></div>
       <div class="stat-card"><span class="stat-number">42.08%</span><span class="stat-label">of encountered URLs blocked internally</span></div>
-      <div class="stat-card"><span class="stat-number">/uploads/</span><span class="stat-label">matched robots.txt rule</span></div>
+      <div class="stat-card"><span class="stat-number">/uploads/</span><span class="stat-label">blocked by current rule</span></div>
     </div>
   </section>
 
   <section>
-    <h2><span class="emoji">🚫</span> Affected Example URLs</h2>
+    <h2><span class="emoji">🚫</span> Examples</h2>
     <table class="data-table">
       <thead>
-        <tr>
-          <th>Blocked asset URL</th>
-          <th>Matched rule</th>
-        </tr>
+        <tr><th>Blocked asset</th><th>Matched rule</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td><code>https://asasmakeen.com/uploads/pages/1744268921.webp</code></td>
-          <td><code>Disallow: /uploads/</code></td>
-        </tr>
-        <tr>
-          <td><code>https://asasmakeen.com/uploads/pages/1739886361.svg</code></td>
-          <td><code>Disallow: /uploads/</code></td>
-        </tr>
-        <tr>
-          <td><code>https://asasmakeen.com/uploads/pages/1771324660_MpQNdHEdbV.webp</code></td>
-          <td><code>Disallow: /uploads/</code></td>
-        </tr>
-        <tr>
-          <td><code>https://asasmakeen.com/uploads/pages/1744268946.webp</code></td>
-          <td><code>Disallow: /uploads/</code></td>
-        </tr>
+        <tr><td><code>https://asasmakeen.com/uploads/pages/1744268921.webp</code></td><td><code>Disallow: /uploads/</code></td></tr>
+        <tr><td><code>https://asasmakeen.com/uploads/pages/1739886361.svg</code></td><td><code>Disallow: /uploads/</code></td></tr>
+        <tr><td><code>https://asasmakeen.com/uploads/pages/1771324660_MpQNdHEdbV.webp</code></td><td><code>Disallow: /uploads/</code></td></tr>
       </tbody>
     </table>
-    <div class="note">
-      <p><strong>Important:</strong> do not simply expose private uploads. First confirm whether <code>/uploads/</code> contains only public marketing/page media. If sensitive files live there, separate public media into a dedicated crawlable path.</p>
-    </div>
   </section>
 
   <section>
-    <h2><span class="emoji">🛠</span> Recommended Fix</h2>
-    <p>Update robots.txt so public image/media uploads can be crawled while private or system uploads remain protected.</p>
-
+    <h2><span class="emoji">🛠</span> Required Change</h2>
+    <p>Remove this line from the main production robots.txt:</p>
     <div class="code-block">
-      <div class="code-block-header">Current problematic pattern</div>
-      <pre><span class="code-key">User-agent:</span> *
-<span class="code-key">Disallow:</span> <span class="code-wrong">/uploads/</span></pre>
+      <div class="code-block-header">Remove</div>
+      <pre><span class="code-key">Disallow:</span> <span class="code-wrong">/uploads/</span></pre>
     </div>
-
-    <div class="code-block">
-      <div class="code-block-header">Preferred target if uploads are public media</div>
-      <pre><span class="code-key">User-agent:</span> *
-<span class="code-key">Allow:</span> <span class="code-correct">/uploads/pages/</span>
-<span class="code-key">Allow:</span> <span class="code-correct">/uploads/projects/</span>
-<span class="code-key">Allow:</span> <span class="code-correct">/*.webp$</span>
-<span class="code-key">Allow:</span> <span class="code-correct">/*.svg$</span>
-
-<span class="code-key">Disallow:</span> /admin/
-<span class="code-key">Disallow:</span> /dashboard/
-<span class="code-key">Disallow:</span> /api/</pre>
+    <p>Keep the rest of the protective rules for admin, dashboard, auth, API, and internal system paths.</p>
+    <div class="note">
+      <p><strong>Security check:</strong> before deploying, confirm <code>/uploads/</code> only contains public media. If private files are mixed in, move them outside the public web path instead of using robots.txt as protection.</p>
     </div>
-
-    <p>If <code>/uploads/</code> mixes public and private files, create a safer structure such as <code>/uploads/public/</code> for crawlable assets and keep private uploads outside the web root or blocked.</p>
   </section>
 
   <section>
     <h2><span class="emoji">✅</span> Acceptance Criteria</h2>
-    <p>After deployment, these checks should pass:</p>
+    <ul class="checklist">
+      <li><code>https://asasmakeen.com/robots.txt</code> no longer contains <code>Disallow: /uploads/</code>.</li>
+      <li>Example public upload assets return <code>200</code> in browser and curl checks.</li>
+      <li>Screaming Frog no longer reports public <code>/uploads/</code> assets as <strong>Internal Blocked by Robots.txt</strong>.</li>
+    </ul>
     <div class="code-block">
-      <div class="code-block-header">Validation commands</div>
-      <pre>$ curl -s https://asasmakeen.com/robots.txt | grep -n "uploads"
-# Public upload/image paths should not be globally blocked.
+      <div class="code-block-header">Quick validation</div>
+      <pre>$ curl -s https://asasmakeen.com/robots.txt | grep -n "Disallow: /uploads/"
+<span class="code-correct"># expected: no output</span>
 
 $ curl -I https://asasmakeen.com/uploads/pages/1744268921.webp
-HTTP/2 <span class="code-correct">200</span>
-content-type: image/webp
-
-$ curl -I https://asasmakeen.com/uploads/pages/1739886361.svg
-HTTP/2 <span class="code-correct">200</span>
-content-type: image/svg+xml</pre>
+HTTP/2 <span class="code-correct">200</span></pre>
     </div>
-    <p>Then rerun Screaming Frog and confirm uploaded public assets no longer appear under <strong>Response Codes → Internal Blocked by Robots.txt</strong>.</p>
   </section>
 
   <div class="footer">
