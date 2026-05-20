@@ -133,7 +133,7 @@
       <div class="meta-item"><span>Project:</span><span class="meta-value">asasmakeen.com</span></div>
       <div class="meta-item"><span>Priority:</span><span class="meta-value priority-high">High</span></div>
       <div class="meta-item"><span>Date:</span><span class="meta-value">May 20, 2026</span></div>
-      <div class="meta-item"><span>Source:</span><span class="meta-value">Screaming Frog</span></div>
+      <div class="meta-item"><span>Owner:</span><span class="meta-value">Saiaf — SEO Specialist</span></div>
     </div>
   </div>
 </div>
@@ -148,7 +148,7 @@
 <div class="container">
   <section>
     <div class="summary-box">
-      <p><strong>Issue:</strong> Screaming Frog found public upload assets blocked by <code>Disallow: /uploads/</code>.</p>
+      <p><strong>Issue:</strong> public upload assets are blocked by <code>Disallow: /uploads/</code>.</p>
       <p><strong>Fix:</strong> remove that disallow line. Do not add <code>Allow</code> rules for this; they are unnecessary when the folder is not disallowed.</p>
     </div>
 
@@ -191,7 +191,7 @@
     <ul class="checklist">
       <li><code>https://asasmakeen.com/robots.txt</code> no longer contains <code>Disallow: /uploads/</code>.</li>
       <li>Example public upload assets return <code>200</code> in browser and curl checks.</li>
-      <li>Screaming Frog no longer reports public <code>/uploads/</code> assets as <strong>Internal Blocked by Robots.txt</strong>.</li>
+      <li>Public <code>/uploads/</code> assets are no longer blocked by robots.txt.</li>
     </ul>
     <div class="code-block">
       <div class="code-block-header">Quick validation</div>
