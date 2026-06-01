@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket #010 - Content Consolidation 301 Redirects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c0e1d;
+      --gold: #ffc409;
+      --rose: #cc5f73;
+      --teal: #96c7c3;
+      --bg: #ffffff;
+      --surface: #f5f6f8;
+      --surface-2: #edeef2;
+      --border: #d8dbe3;
+      --text: #0c0e1d;
+      --text-muted: #5c5f72;
+      --gold-bg: rgba(255, 196, 9, 0.12);
+      --gold-border: rgba(255, 196, 9, 0.45);
+      --rose-bg: rgba(204, 95, 115, 0.10);
+      --rose-border: rgba(204, 95, 115, 0.35);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Baloo Bhaijaan 2', 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .banner { background: var(--navy); padding: 36px 0; }
+    .banner-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .ticket-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(204, 95, 115, 0.2);
+      border: 1px solid rgba(204, 95, 115, 0.5);
+      color: #f0a0b0; padding: 4px 14px; border-radius: 20px;
+      font-size: 15px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 16px;
+    }
+    .ticket-badge::before {
+      content: ''; width: 8px; height: 8px; background: var(--rose);
+      border-radius: 50%; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    .banner h1 { font-size: 34px; font-weight: 700; margin-bottom: 14px; color: #fff; }
+    .meta-row { display:flex; gap:24px; flex-wrap:wrap; font-size:16px; color:rgba(255,255,255,.55); }
+    .meta-item { display:flex; align-items:center; gap:6px; }
+    .meta-value { color: rgba(255,255,255,.9); font-weight:600; }
+    .priority-med { color: var(--teal); font-weight:700; }
+    .container { max-width: 900px; margin: 0 auto; padding: 36px 24px; }
+    section { margin-bottom: 32px; }
+    h2 {
+      font-size: 22px; font-weight: 700; margin-bottom: 14px;
+      padding-bottom: 8px; border-bottom: 2px solid var(--gold);
+      color: var(--navy);
+    }
+    h2 .emoji { margin-right: 8px; }
+    p { margin-bottom: 14px; color: var(--text); font-size: 17px; }
+    strong { color: var(--navy); font-weight: 700; }
+    a { color: var(--rose); }
+    code {
+      background: var(--surface-2); padding: 2px 7px; border-radius: 5px;
+      font-family: 'SF Mono','Fira Code','Courier New',monospace;
+      font-size: 15px; color: var(--navy); border: 1px solid var(--border);
+    }
+    .summary-box {
+      background: var(--gold-bg); border: 1px solid var(--gold-border);
+      border-left: 4px solid var(--gold); border-radius: 8px;
+      padding: 22px; margin-bottom: 24px;
+    }
+    .summary-box p:last-child { margin-bottom: 0; }
+    /* checklist of redirects */
+    .checklist { display: flex; flex-direction: column; gap: 16px; }
+    .check-item {
+      display: flex; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 4px solid var(--gold); border-radius: 8px; padding: 18px 20px;
+    }
+    .checkbox {
+      flex: 0 0 auto; width: 22px; height: 22px; margin-top: 4px;
+      border: 2px solid var(--rose); border-radius: 5px; background: #fff;
+    }
+    .check-body { flex: 1; min-width: 0; }
+    .check-title { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .check-title .muted { color: var(--text-muted); font-weight: 600; font-size: 15px; }
+    .check-body p { font-size: 15px; margin-bottom: 12px; }
+    .redirect-table {
+      width: 100%; border-collapse: collapse; margin-top: 4px;
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+      display: table;
+    }
+    .redirect-table th,
+    .redirect-table td {
+      padding: 11px 13px; border-bottom: 1px solid var(--border);
+      text-align: left; vertical-align: top; font-size: 14px;
+    }
+    .redirect-table th { background: var(--surface-2); color: var(--navy); font-size: 15px; }
+    .redirect-table tr:last-child td { border-bottom: 0; }
+    .redirect-table code { word-break: break-all; }
+    .code-block {
+      background: var(--navy); border: 1px solid #2a2d40;
+      border-radius: 10px; overflow-x: auto; margin: 12px 0;
+    }
+    .code-block-header {
+      background: rgba(255,255,255,.06); padding: 10px 18px;
+      font-size: 14px; font-weight: 600; color: rgba(255,255,255,.6);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display:flex; align-items:center; gap:8px;
+    }
+    .code-block pre {
+      padding: 18px; font-family: 'SF Mono','Fira Code','Courier New',monospace;
+      font-size: 14px; line-height: 1.6; color: #e2e4ef;
+      white-space: pre; overflow-x: auto;
+    }
+    .code-correct { color: var(--teal); }
+    .footer {
+      text-align: center; padding: 28px; color: var(--text-muted);
+      font-size: 15px; background: var(--surface); border-top: 1px solid var(--border);
+    }
+    .footer p:first-child { font-weight: 600; color: var(--navy); }
+    .ar-summary {
+      background: var(--surface); border-top: 3px solid var(--gold);
+      border-bottom: 1px solid var(--border); padding: 28px 24px;
+      text-align: center; direction: rtl;
+      font-family: 'Baloo Bhaijaan 2','Noto Sans Arabic','Segoe UI',Tahoma,Arial,sans-serif;
+    }
+    .ar-summary-inner { max-width: 720px; margin: 0 auto; }
+    .ar-summary h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 14px; border: none; padding: 0; }
+    .ar-summary p { font-size: 17px; line-height: 2; color: var(--text); margin-bottom: 10px; }
+    .ar-summary p:last-child { margin-bottom: 0; }
+    .ar-summary strong { color: var(--rose); }
+    @media (max-width: 720px) {
+      .banner h1 { font-size: 28px; }
+      .redirect-table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="banner-inner">
+    <a href="../" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,196,9,0.15);border:1px solid rgba(255,196,9,0.45);color:#ffc409;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px;font-family:inherit;">&larr; All SEO Tickets</a>
+    <div class="ticket-badge">Redirects - Open</div>
+    <h1>Ticket #010 - Content Consolidation 301 Redirects</h1>
+    <div class="meta-row">
+      <div class="meta-item"><span>Project:</span><span class="meta-value">asasmakeen.com</span></div>
+      <div class="meta-item"><span>Priority:</span><span class="meta-value priority-med">Medium</span></div>
+      <div class="meta-item"><span>Date:</span><span class="meta-value">June 2, 2026</span></div>
+      <div class="meta-item"><span>Assignee:</span><span class="meta-value">Abdo (dev, Makeen)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="ar-summary">
+  <div class="ar-summary-inner">
+    <h2>ملخص المهمة</h2>
+    <p>هذه التذكرة هي القائمة الموحّدة لإعادة توجيهات <strong>301</strong> الناتجة عن دمج صفحات مكرّرة أو مترادفة في صفحة واحدة. كل عملية تحويل بند في قائمة تحقّق (checklist) بالأسفل؛ يُعلَّم على البند عند تنفيذه والتحقق منه، وتُضاف عمليات جديدة كبنود تباعاً.</p>
+    <p>المعيار الموحّد لكل تحويل: <strong>301 دائم</strong> (وليس 302)، للعربي والإنجليزي معاً، مباشر إلى الوجهة بدون سلسلة تحويلات، مع تحديث أي روابط داخلية تشير إلى الرابط القديم.</p>
+  </div>
+</div>
+
+<div class="container">
+  <section>
+    <div class="summary-box">
+      <p>This ticket is the running checklist of <strong>301 redirects</strong> created whenever a duplicate or synonym page is merged into a single canonical page. It is not for one page: each consolidation is added as a new checklist item below, and checked off once it is deployed and verified.</p>
+      <p><strong>Standard for every redirect:</strong> permanent <strong>301</strong> (not 302), for both <code>ar</code> and <code>en</code>, direct to the destination with no redirect chain, and update any internal links pointing at the old URL.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="emoji">🔁</span> Redirect Checklist</h2>
+
+    <div class="checklist">
+
+      <!-- Add each new consolidation as another .check-item block below -->
+      <div class="check-item">
+        <div class="checkbox"></div>
+        <div class="check-body">
+          <div class="check-title">/76/ &rarr; /75/ <span class="muted">(شقق تمليك &rarr; شقق للبيع)</span></div>
+          <p>Blog <code>/76/</code> (<span dir="rtl">شقق تمليك بالرياض</span>) is a synonym duplicate of <code>/75/</code> (<span dir="rtl">شقق للبيع في الرياض</span>): same buy intent in Saudi search, and near-zero performance (1 click / 19 impressions in 90 days). The <code>/76/</code> body is merged manually into <code>/75/</code> first, then the 301 is applied for both languages.</p>
+          <table class="redirect-table">
+            <thead>
+              <tr>
+                <th>Old URL (301 from)</th>
+                <th>New URL (301 to)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>https://asasmakeen.com/ar/blogs/d/76/ownership-apartments-in-riyadh</code></td>
+                <td><code>https://asasmakeen.com/ar/blogs/d/75/apartments-for-sale-in-riyadh</code></td>
+              </tr>
+              <tr>
+                <td><code>https://asasmakeen.com/en/blogs/d/76/ownership-apartments-in-riyadh</code></td>
+                <td><code>https://asasmakeen.com/en/blogs/d/75/apartments-for-sale-in-riyadh</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="emoji">✅</span> Verify</h2>
+    <p>Each item in the checklist must return a direct 301 to its target (not 200, not a redirect chain), for both languages.</p>
+    <div class="code-block">
+      <div class="code-block-header"><span>🖥️</span> /76/ &rarr; /75/</div>
+      <pre>$ curl -sI https://asasmakeen.com/ar/blogs/d/76/ownership-apartments-in-riyadh
+HTTP/2 <span class="code-correct">301</span>
+location: https://asasmakeen.com/ar/blogs/d/75/apartments-for-sale-in-riyadh
+
+$ curl -sI https://asasmakeen.com/en/blogs/d/76/ownership-apartments-in-riyadh
+HTTP/2 <span class="code-correct">301</span>
+location: https://asasmakeen.com/en/blogs/d/75/apartments-for-sale-in-riyadh</pre>
+    </div>
+  </section>
+
+  <div class="footer">
+    <p>Makeen SEO Task Ticket #010 - June 2, 2026</p>
+    <p>asasmakeen.com</p>
+  </div>
+</div>
+
+</body>
+</html>
