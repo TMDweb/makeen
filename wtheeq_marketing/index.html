@@ -61,9 +61,17 @@ body{
   stroke:var(--gold);stroke-width:2;fill:none;
 }
 .hero__inner{position:relative;z-index:2;max-width:520px;margin:0 auto}
-.hero__logo{
-  height:74px;width:auto;margin:0 auto 26px;display:block;
+.lockup{
+  display:flex;align-items:center;justify-content:center;
+  gap:clamp(16px,5vw,28px);margin-bottom:30px;
+}
+.lockup img{
+  height:clamp(48px,13vw,64px);width:auto;display:block;
   filter:drop-shadow(0 6px 18px rgba(0,0,0,.28));
+}
+.lockup__div{
+  width:1px;height:clamp(38px,10vw,52px);align-self:center;
+  background:linear-gradient(180deg,rgba(201,169,122,0),rgba(201,169,122,.55),rgba(201,169,122,0));
 }
 .hero h1{
   font-size:clamp(1.9rem,7vw,2.5rem);
@@ -111,10 +119,11 @@ body{
 .avatar{
   width:54px;height:54px;min-width:54px;border-radius:16px;
   display:grid;place-items:center;
-  font-size:1.5rem;font-weight:700;color:#fff;
+  color:#fff;
   background:linear-gradient(140deg,var(--teal-600),var(--teal-800));
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
 }
+.avatar svg{width:26px;height:26px}
 .card:nth-child(even) .avatar{
   background:linear-gradient(140deg,var(--bronze-700),var(--bronze-900));
 }
@@ -157,7 +166,6 @@ body{
   text-align:center;padding:30px 24px 40px;
   color:var(--ink-soft);font-size:.86rem;
 }
-.foot__logo{height:72px;width:auto;display:block;margin:0 auto 16px;opacity:.92}
 .foot strong{color:var(--bronze-900);font-weight:700}
 .foot a{color:var(--teal-700);text-decoration:none;direction:ltr;display:inline-block;margin-top:4px;font-size:.82rem}
 .foot .rule{width:42px;height:2px;background:var(--gold);border-radius:2px;margin:0 auto 16px;opacity:.7}
@@ -179,7 +187,11 @@ body{
     <path d="M76 150 V104 L100 80 L124 104 V150"/>
   </svg>
   <div class="hero__inner">
-    <img class="hero__logo" src="assets/logo.png" alt="أساس مكين">
+    <div class="lockup">
+      <img src="assets/logo.png" alt="أساس مكين">
+      <span class="lockup__div" aria-hidden="true"></span>
+      <img src="assets/wtheeq-gold.png" alt="وثيق التسويق العقاري">
+    </div>
     <h1>شكرًا لزيارتك مشاريع أساس مكين</h1>
     <p>يسعد فريق المبيعات بخدمتك والإجابة على جميع استفساراتك، تواصل مباشرة مع مستشاري أساس مكين العقاريين</p>
     <span class="hint">
@@ -195,7 +207,6 @@ body{
 
 <footer class="foot">
   <div class="rule"></div>
-  <img class="foot__logo" src="assets/wtheeq-logo.png" alt="وثيق التسويق العقاري">
   <div>فريق المبيعات لدى <strong>أساس مكين للتطوير العقاري</strong></div>
   <a href="https://asasmakeen.com" target="_blank" rel="noopener">asasmakeen.com</a>
 </footer>
@@ -215,6 +226,7 @@ const ROLE = "مستشار مبيعات عقارية";
 const WA_MSG = encodeURIComponent("السلام عليكم، شاهدت أحد مشاريع أساس مكين وأرغب بالاستفسار.");
 
 const callIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+const userIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.6"/><path d="M5.5 19.5a6.5 6.5 0 0 1 13 0"/></svg>';
 const waIcon = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.21 8.21 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.69 8.24-8.24 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg>';
 
 function toWa(p){ return "966" + p.replace(/^0/,""); }
@@ -227,7 +239,7 @@ TEAM.forEach((m,i)=>{
   card.style.animationDelay = (i*70)+"ms";
   card.innerHTML = `
     <div class="card__top">
-      <div class="avatar">${m.name.charAt(0)}</div>
+      <div class="avatar">${userIcon}</div>
       <div>
         <div class="card__name">${m.name}</div>
         <div class="card__role">${ROLE}</div>
