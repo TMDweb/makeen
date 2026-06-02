@@ -165,8 +165,30 @@ body{
 .foot a{color:var(--teal-700);text-decoration:none;direction:ltr;display:inline-block;margin-top:4px;font-size:.82rem}
 .foot .rule{width:42px;height:2px;background:var(--gold);border-radius:2px;margin:0 auto 16px;opacity:.7}
 
-@media(max-width:380px){
-  .actions{grid-template-columns:1fr}
+/* ---------- PHONE: compact, fits with minimal scroll (desktop untouched) ---------- */
+@media(max-width:600px){
+  .hero{padding:calc(env(safe-area-inset-top) + 28px) 18px 88px}
+  .lockup{gap:16px;margin-bottom:16px}
+  .lockup img{height:38px}
+  .lockup__div{height:32px}
+  .hero h1{font-size:1.45rem;line-height:1.25}
+  .hero p{font-size:.82rem;line-height:1.55;margin-top:8px;max-width:25em}
+  .hint{margin-top:14px;padding:7px 14px;font-size:.74rem;gap:6px}
+  .hint svg{width:14px;height:14px}
+
+  .team{margin-top:-58px;padding:0 12px calc(env(safe-area-inset-bottom) + 16px)}
+  .grid{grid-template-columns:1fr 1fr;gap:9px}
+  .card{padding:13px 11px;border-radius:15px}
+  .card__top{gap:8px;margin-bottom:8px}
+  .avatar{width:36px;height:36px;min-width:36px;border-radius:10px}
+  .avatar svg{width:18px;height:18px}
+  .card__name{font-size:.97rem}
+  .card__role{font-size:.68rem;margin-top:1px}
+  .phone{font-size:.78rem;margin-bottom:9px;letter-spacing:.01em}
+  .actions{grid-template-columns:1fr 1fr;gap:6px}
+  .btn{height:37px;font-size:.78rem;border-radius:10px;gap:4px}
+  .btn svg{width:14px;height:14px}
+  .foot{padding:20px 18px 28px;font-size:.8rem}
 }
 @media(prefers-reduced-motion:reduce){
   .card{animation:none;opacity:1;transform:none}
