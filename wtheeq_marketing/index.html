@@ -47,28 +47,18 @@ body{
 .hero{
   position:relative;
   background:
-    radial-gradient(120% 90% at 80% -10%, rgba(201,169,122,.16) 0%, rgba(201,169,122,0) 55%),
-    linear-gradient(160deg,#1c615b 0%,var(--teal-700) 38%,var(--teal-900) 100%);
+    radial-gradient(150% 130% at 50% 0%, rgba(255,255,255,.045) 0%, rgba(255,255,255,0) 55%),
+    linear-gradient(172deg,#1d5651 0%,#123f3a 100%);
   color:#fff;
   padding:calc(env(safe-area-inset-top) + 48px) 24px 116px;
   text-align:center;
   overflow:hidden;
 }
-.hero::before{
-  content:"";
-  position:absolute;inset:0;
-  background-image:
-    radial-gradient(circle at 12% 18%, rgba(255,255,255,.05) 0 1.4px, transparent 1.6px),
-    radial-gradient(circle at 88% 28%, rgba(255,255,255,.04) 0 1.4px, transparent 1.6px);
-  background-size:42px 42px,52px 52px;
-  opacity:.6;
-  pointer-events:none;
-}
 /* faint architectural arch echo from the Makeen mark */
 .hero .arch{
-  position:absolute;left:50%;top:-60px;transform:translateX(-50%);
-  width:520px;max-width:150%;height:auto;opacity:.10;pointer-events:none;
-  stroke:var(--gold);stroke-width:2.5;fill:none;
+  position:absolute;left:50%;top:-54px;transform:translateX(-50%);
+  width:480px;max-width:150%;height:auto;opacity:.055;pointer-events:none;
+  stroke:var(--gold);stroke-width:2;fill:none;
 }
 .hero__inner{position:relative;z-index:2;max-width:520px;margin:0 auto}
 .hero__logo{
@@ -80,8 +70,9 @@ body{
   font-weight:700;line-height:1.3;letter-spacing:-.01em;
 }
 .hero p{
-  margin-top:12px;color:var(--gold);font-size:clamp(1rem,3.8vw,1.18rem);
-  font-weight:400;
+  margin:14px auto 0;max-width:30em;
+  color:rgba(244,237,226,.86);font-size:clamp(.98rem,3.4vw,1.1rem);
+  font-weight:400;line-height:1.85;
 }
 .hint{
   display:inline-flex;align-items:center;gap:9px;margin-top:24px;
@@ -166,6 +157,7 @@ body{
   text-align:center;padding:30px 24px 40px;
   color:var(--ink-soft);font-size:.86rem;
 }
+.foot__logo{height:72px;width:auto;display:block;margin:0 auto 16px;opacity:.92}
 .foot strong{color:var(--bronze-900);font-weight:700}
 .foot a{color:var(--teal-700);text-decoration:none;direction:ltr;display:inline-block;margin-top:4px;font-size:.82rem}
 .foot .rule{width:42px;height:2px;background:var(--gold);border-radius:2px;margin:0 auto 16px;opacity:.7}
@@ -188,8 +180,8 @@ body{
   </svg>
   <div class="hero__inner">
     <img class="hero__logo" src="assets/logo.png" alt="أساس مكين">
-    <h1>فريق المبيعات</h1>
-    <p>تواصل مباشرة مع مستشاري أساس مكين العقاريين</p>
+    <h1>شكرًا لزيارتك مشاريع أساس مكين</h1>
+    <p>يسعد فريق المبيعات بخدمتك والإجابة على جميع استفساراتك، تواصل مباشرة مع مستشاري أساس مكين العقاريين</p>
     <span class="hint">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M3 12h18M3 19h12"/></svg>
       اختر مستشارك واتصل أو راسله على واتساب
@@ -203,6 +195,7 @@ body{
 
 <footer class="foot">
   <div class="rule"></div>
+  <img class="foot__logo" src="assets/wtheeq-logo.png" alt="وثيق التسويق العقاري">
   <div>فريق المبيعات لدى <strong>أساس مكين للتطوير العقاري</strong></div>
   <a href="https://asasmakeen.com" target="_blank" rel="noopener">asasmakeen.com</a>
 </footer>
