@@ -84,6 +84,19 @@
       flex: 0 0 auto; width: 22px; height: 22px; margin-top: 4px;
       border: 2px solid var(--rose); border-radius: 5px; background: #fff;
     }
+    .checkbox.done { border-color: #1f9d55; background: #1f9d55; position: relative; }
+    .checkbox.done::after {
+      content: '✓'; position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 15px; font-weight: 800; line-height: 1;
+    }
+    .check-item.done { border-left-color: #1f9d55; }
+    .done-tag {
+      display: inline-block; margin-left: 8px; vertical-align: middle;
+      background: rgba(31,157,85,0.12); color: #1f9d55;
+      border: 1px solid rgba(31,157,85,0.4); border-radius: 12px;
+      padding: 1px 9px; font-size: 13px; font-weight: 700;
+    }
     .check-body { flex: 1; min-width: 0; }
     .check-title { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
     .check-title .muted { color: var(--text-muted); font-weight: 600; font-size: 15px; }
@@ -180,10 +193,10 @@
     <div class="checklist">
 
       <!-- Add each new consolidation as another .check-item block below -->
-      <div class="check-item">
-        <div class="checkbox"></div>
+      <div class="check-item done">
+        <div class="checkbox done"></div>
         <div class="check-body">
-          <div class="check-title">/76/ &rarr; /75/ <span class="muted">(شقق تمليك &rarr; شقق للبيع)</span></div>
+          <div class="check-title">/76/ &rarr; /75/ <span class="muted">(شقق تمليك &rarr; شقق للبيع)</span> <span class="done-tag">تم 2026-06-03</span></div>
           <p>Blog <code>/76/</code> (<span dir="rtl">شقق تمليك بالرياض</span>) is a synonym duplicate of <code>/75/</code> (<span dir="rtl">شقق للبيع في الرياض</span>): same buy intent in Saudi search, and near-zero performance (1 click / 19 impressions in 90 days). The <code>/76/</code> body is merged manually into <code>/75/</code> first, then the 301 is applied for both languages.</p>
           <table class="redirect-table">
             <thead>
@@ -206,10 +219,10 @@
         </div>
       </div>
 
-      <div class="check-item">
-        <div class="checkbox"></div>
+      <div class="check-item done">
+        <div class="checkbox done"></div>
         <div class="check-body">
-          <div class="check-title">/80/ + /179/ &rarr; /62/ <span class="muted">(توحيد عنقود الاستثمار)</span></div>
+          <div class="check-title">/80/ + /179/ &rarr; /62/ <span class="muted">(توحيد عنقود الاستثمار)</span> <span class="done-tag">تم 2026-06-03</span></div>
           <p>Blogs <code>/80/</code> (<span dir="rtl">الرياض وجهة الاستثمار العقاري</span>) and <code>/179/</code> (<span dir="rtl">أفضل شركة استثمار عقاري</span>) are consolidated into the brand authority page <code>/62/</code>. The useful content from both is merged into <code>/62/</code> first, then each is 301'd to it for both languages. <code>/73/</code> (the real-estate development guide) stays live and is <strong>not</strong> redirected.</p>
           <p><strong>Catch every slug variant of these ids</strong> (the old English slug and the current Arabic slug), both languages, and 301 to <code>/62/</code>. The rows below are the current live (200) pages: Arabic uses the Arabic slug, English uses the English slug.</p>
           <table class="redirect-table">
@@ -267,6 +280,12 @@ $ curl -s -o /dev/null -w "%{num_redirects} %{http_code} %{url_effective}\n" -L 
     https://asasmakeen.com/ar/blogs/d/179/%D8%A7%D9%81%D8%B6%D9%84-%D8%B4%D8%B1%D9%83%D8%A9-%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1-%D8%B9%D9%82%D8%A7%D8%B1%D9%8A-%D9%81%D9%8A-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6
 <span class="code-correct">1</span> <span class="code-correct">200</span> https://asasmakeen.com/ar/blogs/d/62/%D8%A3%D8%B3%D8%A7%D8%B3-%D9%85%D9%83%D9%8A%D9%86-%D9%84%D9%8A%D8%B3-%D9%83-%D9%85%D9%83%D8%A7%D8%AA%D8%A8-%D8%B9%D9%82%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6-%D8%A7%D9%84%D9%85%D8%B9%D8%AA%D8%A7%D8%AF%D8%A9</pre>
     </div>
+  </section>
+
+  <section>
+    <p style="background:var(--gold-bg);border:1px solid var(--gold-border);border-left:4px solid var(--gold);border-radius:8px;padding:16px 18px;font-size:15px;">
+      <strong>ملاحظة (تحديث 2026-06-03):</strong> العنصران أعلاه مكتملان ومُتحقَّقان حيًّا (عربي + إنجليزي يصلان إلى الهدف بحالة 200). هذه التذكرة <strong>قائمة جارية</strong>؛ ستُضاف عمليات إعادة توجيه 301 أخرى كعناصر checklist جديدة تباعًا مع إقرار كل دمج، فلا تُعتبر التذكرة مغلقة بعد.
+    </p>
   </section>
 
   <div class="footer">
