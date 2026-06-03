@@ -246,26 +246,26 @@
 
   <section>
     <h2><span class="emoji">✅</span> Verify</h2>
-    <p>Each item in the checklist must return a direct 301 to its target (not 200, not a redirect chain), for both languages.</p>
+    <p>Follow redirects with <code>-L</code> and count the hops. A single <code>curl -sI</code> only shows the first hop and will <strong>not</strong> reveal a chain. <strong>Pass = exactly 1 redirect, ending in 200 at the target's Arabic URL.</strong> If <code>num_redirects</code> is 2 or more it is a chain (usually from pointing at the target's English slug, which itself 301s to the Arabic slug); collapse it to a single hop. Check the current live URL and the old English slug of each id.</p>
     <div class="code-block">
       <div class="code-block-header"><span>🖥️</span> /76/ &rarr; /75/</div>
-      <pre>$ curl -sI https://asasmakeen.com/ar/blogs/d/76/%D8%B4%D9%82%D9%82-%D8%AA%D9%85%D9%84%D9%8A%D9%83-%D8%A8%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6
-HTTP/2 <span class="code-correct">301</span>
-location: https://asasmakeen.com/ar/blogs/d/75/%D8%B4%D9%82%D9%82-%D9%84%D9%84%D8%A8%D9%8A%D8%B9-%D9%81%D9%8A-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6
+      <pre>$ curl -s -o /dev/null -w "%{num_redirects} %{http_code} %{url_effective}\n" -L \
+    https://asasmakeen.com/ar/blogs/d/76/%D8%B4%D9%82%D9%82-%D8%AA%D9%85%D9%84%D9%8A%D9%83-%D8%A8%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6
+<span class="code-correct">1</span> <span class="code-correct">200</span> https://asasmakeen.com/ar/blogs/d/75/%D8%B4%D9%82%D9%82-%D9%84%D9%84%D8%A8%D9%8A%D8%B9-%D9%81%D9%8A-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6
 
-$ curl -sI https://asasmakeen.com/en/blogs/d/76/ownership-apartments-in-riyadh
-HTTP/2 <span class="code-correct">301</span>
-location: https://asasmakeen.com/en/blogs/d/75/apartments-for-sale-in-riyadh</pre>
+$ curl -s -o /dev/null -w "%{num_redirects} %{http_code} %{url_effective}\n" -L \
+    https://asasmakeen.com/en/blogs/d/76/ownership-apartments-in-riyadh
+<span class="code-correct">1</span> <span class="code-correct">200</span> https://asasmakeen.com/en/blogs/d/75/apartments-for-sale-in-riyadh</pre>
     </div>
     <div class="code-block">
       <div class="code-block-header"><span>🖥️</span> /80/ + /179/ &rarr; /62/</div>
-      <pre>$ curl -sI https://asasmakeen.com/ar/blogs/d/80/%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6-%D9%88%D8%AC%D9%87%D8%A9-%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1-%D8%A7%D9%84%D8%B9%D9%82%D8%A7%D8%B1%D9%8A-%D8%A7%D9%84%D9%88%D8%A7%D8%B9%D8%AF%D8%A9
-HTTP/2 <span class="code-correct">301</span>
-location: https://asasmakeen.com/ar/blogs/d/62/%D8%A3%D8%B3%D8%A7%D8%B3-%D9%85%D9%83%D9%8A%D9%86-%D9%84%D9%8A%D8%B3-%D9%83-%D9%85%D9%83%D8%A7%D8%AA%D8%A8-%D8%B9%D9%82%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6-%D8%A7%D9%84%D9%85%D8%B9%D8%AA%D8%A7%D8%AF%D8%A9
+      <pre>$ curl -s -o /dev/null -w "%{num_redirects} %{http_code} %{url_effective}\n" -L \
+    https://asasmakeen.com/ar/blogs/d/80/%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6-%D9%88%D8%AC%D9%87%D8%A9-%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1-%D8%A7%D9%84%D8%B9%D9%82%D8%A7%D8%B1%D9%8A-%D8%A7%D9%84%D9%88%D8%A7%D8%B9%D8%AF%D8%A9
+<span class="code-correct">1</span> <span class="code-correct">200</span> https://asasmakeen.com/ar/blogs/d/62/%D8%A3%D8%B3%D8%A7%D8%B3-%D9%85%D9%83%D9%8A%D9%86-%D9%84%D9%8A%D8%B3-%D9%83-%D9%85%D9%83%D8%A7%D8%AA%D8%A8-%D8%B9%D9%82%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6-%D8%A7%D9%84%D9%85%D8%B9%D8%AA%D8%A7%D8%AF%D8%A9
 
-$ curl -sI https://asasmakeen.com/ar/blogs/d/179/%D8%A7%D9%81%D8%B6%D9%84-%D8%B4%D8%B1%D9%83%D8%A9-%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1-%D8%B9%D9%82%D8%A7%D8%B1%D9%8A-%D9%81%D9%8A-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6
-HTTP/2 <span class="code-correct">301</span>
-location: https://asasmakeen.com/ar/blogs/d/62/%D8%A3%D8%B3%D8%A7%D8%B3-%D9%85%D9%83%D9%8A%D9%86-%D9%84%D9%8A%D8%B3-%D9%83-%D9%85%D9%83%D8%A7%D8%AA%D8%A8-%D8%B9%D9%82%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6-%D8%A7%D9%84%D9%85%D8%B9%D8%AA%D8%A7%D8%AF%D8%A9</pre>
+$ curl -s -o /dev/null -w "%{num_redirects} %{http_code} %{url_effective}\n" -L \
+    https://asasmakeen.com/ar/blogs/d/179/%D8%A7%D9%81%D8%B6%D9%84-%D8%B4%D8%B1%D9%83%D8%A9-%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1-%D8%B9%D9%82%D8%A7%D8%B1%D9%8A-%D9%81%D9%8A-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6
+<span class="code-correct">1</span> <span class="code-correct">200</span> https://asasmakeen.com/ar/blogs/d/62/%D8%A3%D8%B3%D8%A7%D8%B3-%D9%85%D9%83%D9%8A%D9%86-%D9%84%D9%8A%D8%B3-%D9%83-%D9%85%D9%83%D8%A7%D8%AA%D8%A8-%D8%B9%D9%82%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6-%D8%A7%D9%84%D9%85%D8%B9%D8%AA%D8%A7%D8%AF%D8%A9</pre>
     </div>
   </section>
 
