@@ -203,6 +203,41 @@
         </div>
       </div>
 
+      <div class="check-item">
+        <div class="checkbox"></div>
+        <div class="check-body">
+          <div class="check-title">/80/ + /179/ &rarr; /62/ <span class="muted">(توحيد عنقود الاستثمار)</span></div>
+          <p>Blogs <code>/80/</code> (<span dir="rtl">الرياض وجهة الاستثمار العقاري</span>) and <code>/179/</code> (<span dir="rtl">أفضل شركة استثمار عقاري</span>) are consolidated into the brand authority page <code>/62/</code>. The useful content from both is merged into <code>/62/</code> first, then each is 301'd to it for both languages. <code>/73/</code> (the real-estate development guide) stays live and is <strong>not</strong> redirected.</p>
+          <p><strong>The redirect is keyed on the numeric blog id</strong> (<code>/d/80/</code> and <code>/d/179/</code>), so every slug variant of these ids resolves to <code>/62/</code>.</p>
+          <table class="redirect-table">
+            <thead>
+              <tr>
+                <th>Old URL (301 from)</th>
+                <th>New URL (301 to)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>https://asasmakeen.com/ar/blogs/d/80/riyadh-real-estate-investment-destination</code></td>
+                <td><code>https://asasmakeen.com/ar/blogs/d/62/asas-makeen-is-not-like-the-typical-real-estate-offices-in-riyadh</code></td>
+              </tr>
+              <tr>
+                <td><code>https://asasmakeen.com/en/blogs/d/80/riyadh-real-estate-investment-destination</code></td>
+                <td><code>https://asasmakeen.com/en/blogs/d/62/asas-makeen-is-not-like-the-typical-real-estate-offices-in-riyadh</code></td>
+              </tr>
+              <tr>
+                <td><code>https://asasmakeen.com/ar/blogs/d/179/real-estate-nvestment-company</code></td>
+                <td><code>https://asasmakeen.com/ar/blogs/d/62/asas-makeen-is-not-like-the-typical-real-estate-offices-in-riyadh</code></td>
+              </tr>
+              <tr>
+                <td><code>https://asasmakeen.com/en/blogs/d/179/real-estate-nvestment-company</code></td>
+                <td><code>https://asasmakeen.com/en/blogs/d/62/asas-makeen-is-not-like-the-typical-real-estate-offices-in-riyadh</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -218,6 +253,16 @@ location: https://asasmakeen.com/ar/blogs/d/75/apartments-for-sale-in-riyadh
 $ curl -sI https://asasmakeen.com/en/blogs/d/76/ownership-apartments-in-riyadh
 HTTP/2 <span class="code-correct">301</span>
 location: https://asasmakeen.com/en/blogs/d/75/apartments-for-sale-in-riyadh</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span>🖥️</span> /80/ + /179/ &rarr; /62/</div>
+      <pre>$ curl -sI https://asasmakeen.com/ar/blogs/d/80/riyadh-real-estate-investment-destination
+HTTP/2 <span class="code-correct">301</span>
+location: https://asasmakeen.com/ar/blogs/d/62/asas-makeen-is-not-like-the-typical-real-estate-offices-in-riyadh
+
+$ curl -sI https://asasmakeen.com/ar/blogs/d/179/real-estate-nvestment-company
+HTTP/2 <span class="code-correct">301</span>
+location: https://asasmakeen.com/ar/blogs/d/62/asas-makeen-is-not-like-the-typical-real-estate-offices-in-riyadh</pre>
     </div>
   </section>
 
