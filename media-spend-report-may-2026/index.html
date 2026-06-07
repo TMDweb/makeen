@@ -294,6 +294,7 @@
     .kpi-val.t  { color: var(--teal-dk); }
     .kpi-val.p  { color: var(--blue-dk); }
     .kpi-sub { font-size: .72rem; color: var(--muted); margin-top: 6px; }
+    .kpi-sub, .hero-stat-tile .t-sub { unicode-bidi: plaintext; }
 
     .stitle {
       font-size: .72rem;
@@ -578,7 +579,7 @@
           <span class="pill">أداء الحملات</span>
         </div>
         <h1><span class="accent">الإنفاق الإعلامي</span> والنتائج<br/>حسب الحملة</h1>
-        <p class="sub">عرض مقتصر على الحملات التي حققت ظهوراً فعلياً عبر Meta وSnapchat وGoogle Ads وTikTok، مفصّل حسب المشروع العقاري، مع تكلفة العميل المحتمل (CPL) وتكلفة النقرة (CPC) من كل منصة.</p>
+        <p class="sub">عرض مقتصر على الحملات التي حققت ظهوراً فعلياً عبر Meta وSnapchat وGoogle Ads وTikTok.</p>
         <div class="hero-meta">
           <span class="pill live"><span class="dot"></span>1 – 31 مايو 2026 · 31 يوماً</span>
           <span class="pill">4 منصات نشطة</span>
@@ -601,12 +602,12 @@
           <div class="hero-stat-tile spend">
             <div class="t-lbl">الإنفاق</div>
             <div class="t-val">199,638</div>
-            <div class="t-sub">ر.س · $53,237</div>
+            <div class="t-sub">ر.س · <bdi>$53,237</bdi></div>
           </div>
           <div class="hero-stat-tile leads">
             <div class="t-lbl">العملاء المحتملين Leads</div>
             <div class="t-val">4,338</div>
-            <div class="t-sub">CPL 39.41 ر.س</div>
+            <div class="t-sub"><bdi>CPL 39.41</bdi> ر.س</div>
           </div>
         </div>
       </aside>
@@ -618,17 +619,17 @@
     <div class="kpi k-yellow">
       <div class="kpi-lbl">المنصات النشطة</div>
       <div class="kpi-val y">4</div>
-      <div class="kpi-sub">Meta &middot; Snapchat &middot; Google &middot; TikTok</div>
+      <div class="kpi-sub"><bdi>Meta &middot; Snapchat &middot; Google &middot; TikTok</bdi></div>
     </div>
     <div class="kpi k-navy">
       <div class="kpi-lbl">إجمالي الإنفاق (1–31 مايو)</div>
       <div class="kpi-val n">199,638</div>
-      <div class="kpi-sub">ر.س &middot; $53,237 USD &middot; 4 منصات نشطة</div>
+      <div class="kpi-sub">ر.س &middot; <bdi>$53,237</bdi> &middot; <bdi>4 منصات نشطة</bdi></div>
     </div>
     <div class="kpi k-teal">
       <div class="kpi-lbl">إجمالي العملاء المحتملين (Meta + Snap + TikTok)</div>
       <div class="kpi-val t">4,338</div>
-      <div class="kpi-sub">نماذج عملاء &middot; CPL مدمج 39.41 ر.س</div>
+      <div class="kpi-sub">نماذج عملاء &middot; <bdi>CPL</bdi> مدمج <bdi>39.41</bdi> ر.س</div>
     </div>
   </div>
 
