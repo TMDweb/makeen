@@ -248,7 +248,7 @@
     /* ── KPI CARDS ── */
     .kpi-row {
       display: grid;
-      grid-template-columns: repeat(4,1fr);
+      grid-template-columns: repeat(3,1fr);
       gap: 14px;
       margin-bottom: 24px;
     }
@@ -619,9 +619,9 @@
         </div>
         <div class="hero-stat-row">
           <div class="hero-stat-tile">
-            <div class="t-lbl">الحملات</div>
-            <div class="t-val">23</div>
-            <div class="t-sub">محققة الظهور</div>
+            <div class="t-lbl">المنصات النشطة</div>
+            <div class="t-val">4</div>
+            <div class="t-sub">منصات إعلانية فعّالة</div>
           </div>
           <div class="hero-stat-tile spend">
             <div class="t-lbl">الإنفاق</div>
@@ -633,11 +633,6 @@
             <div class="t-val">4,338</div>
             <div class="t-sub">CPL 39.41 ر.س</div>
           </div>
-          <div class="hero-stat-tile clicks">
-            <div class="t-lbl">نقرات Google (PMax)</div>
-            <div class="t-val">551,869</div>
-            <div class="t-sub">CPC 0.05 ر.س</div>
-          </div>
         </div>
       </aside>
 
@@ -646,15 +641,15 @@
 
   <!-- CONTEXT NOTE -->
   <div class="context-note">
-    <strong>النطاق:</strong> مقتصر على الحملات التي حققت ظهوراً (impressions/spend) فعلياً خلال الفترة من 1 إلى 31 مايو 2026؛ الحملات الموقوفة أو ذات الإنفاق الصفري مستبعدة. <strong>لا توجد مقارنة بميزانية مستهدفة (PO/target benchmark).</strong> قيم الدولار الأصلية معروضة في العمود الباهت من كل جدول (Meta وSnapchat وGoogle بالدولار أصلاً، أما TikTok فبالريال أصلاً). <strong>تغيّرات هذا الشهر مقابل أبريل:</strong> دخلت TikTok كمنصة نشطة (توليد عملاء محتملين، 3 مشاريع)، وخرجت X من النشاط (حساب @We_TMD أصبح يتطلب اشتراك Premium لاستخدام مدير الإعلانات)، وتحوّلت Google من حملات Search على مستوى الحساب إلى حملات Performance Max مفصّلة حسب المشروع.
+    <strong>النطاق:</strong> مقتصر على الحملات التي حققت ظهوراً (impressions/spend) فعلياً خلال الفترة من 1 إلى 31 مايو 2026؛ الحملات الموقوفة أو ذات الإنفاق الصفري مستبعدة. <strong>لا توجد مقارنة بميزانية مستهدفة (PO/target benchmark).</strong> قيم الدولار الأصلية معروضة في العمود الباهت من كل جدول (Meta وSnapchat وGoogle بالدولار أصلاً، أما TikTok فبالريال أصلاً). تعمل حملات Google ضمن نمط Performance Max مفصّلةً حسب المشروع، بينما تستهدف Meta وSnapchat وTikTok توليد العملاء المحتملين. أما X فالوصول إلى حسابها الإعلاني محجوب من جهة مكين، وعليه لم تُشغَّل أي حملات عليها خلال هذه الفترة.
   </div>
 
   <!-- KPI CARDS -->
   <div class="kpi-row stagger">
     <div class="kpi k-yellow">
-      <div class="kpi-lbl">الحملات المحققة للظهور</div>
-      <div class="kpi-val y">23</div>
-      <div class="kpi-sub">7 Meta &middot; 7 Snap &middot; 6 Google &middot; 3 TikTok</div>
+      <div class="kpi-lbl">المنصات النشطة</div>
+      <div class="kpi-val y">4</div>
+      <div class="kpi-sub">Meta &middot; Snapchat &middot; Google &middot; TikTok</div>
     </div>
     <div class="kpi k-navy">
       <div class="kpi-lbl">إجمالي الإنفاق (1–31 مايو)</div>
@@ -666,161 +661,6 @@
       <div class="kpi-val t">4,338</div>
       <div class="kpi-sub">نماذج عملاء &middot; CPL مدمج 39.41 ر.س</div>
     </div>
-    <div class="kpi k-blue">
-      <div class="kpi-lbl">إجمالي نقرات Google (PMax)</div>
-      <div class="kpi-val p">551,869</div>
-      <div class="kpi-sub">نقرات/تفاعلات Performance Max &middot; CPC 0.05 ر.س</div>
-    </div>
-  </div>
-
-  <!-- ───────────────── PROJECT-LEVEL ROLLUP (META + SNAPCHAT + TIKTOK) ───────────────── -->
-  <div class="stitle">تجميع على مستوى المشروع · إجمالي الإنفاق المدفوع حسب المشروع العقاري (Meta + Snap + TikTok)</div>
-  <div class="tbl-wrap solo">
-    <table>
-      <thead>
-        <tr>
-          <th>المشروع العقاري</th>
-          <th class="c">المنصات</th>
-          <th class="r">Meta</th>
-          <th class="r">Snap</th>
-          <th class="r">TikTok</th>
-          <th class="r">إجمالي الإنفاق (ر.س)</th>
-          <th class="r">% من الإجمالي</th>
-          <th class="r">العملاء المحتملين Leads</th>
-          <th class="r">CPL لحملات العملاء المحتملين Leads (ر.س) <sup>†</sup></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 63</div><div class="proj-en">Makeen 63 (Al Arid)</div></div></td>
-          <td class="c">Meta · Snap · TikTok</td>
-          <td class="r">16,207.76</td>
-          <td class="r">14,322.64</td>
-          <td class="r">957.75</td>
-          <td class="r" style="font-weight:700">31,488.15</td>
-          <td class="r">
-            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
-              <div class="mini-bg"><div class="mini-fill" style="width:18.4%;background:var(--blue);"></div></div>
-              <span style="font-weight:700;color:var(--blue-dk)">18.4%</span>
-            </div>
-          </td>
-          <td class="r">582</td>
-          <td class="r">54.10</td>
-        </tr>
-        <tr>
-          <td><div class="project-cell"><div class="proj-ar">سنا مكين</div><div class="proj-en">Sana Makeen</div></div></td>
-          <td class="c">Meta · Snap</td>
-          <td class="r">16,237.05</td>
-          <td class="r">14,477.85</td>
-          <td class="r" style="color:var(--muted)">0.00</td>
-          <td class="r" style="font-weight:700">30,714.90</td>
-          <td class="r">
-            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
-              <div class="mini-bg"><div class="mini-fill" style="width:18.0%;background:var(--blue);"></div></div>
-              <span style="font-weight:700;color:var(--blue-dk)">18.0%</span>
-            </div>
-          </td>
-          <td class="r">1,104</td>
-          <td class="r" style="color:var(--teal-dk);font-weight:700">27.82</td>
-        </tr>
-        <tr>
-          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 80</div><div class="proj-en">Makeen 80</div></div></td>
-          <td class="c">Meta · Snap · TikTok</td>
-          <td class="r">16,234.88</td>
-          <td class="r">13,509.04</td>
-          <td class="r">931.91</td>
-          <td class="r" style="font-weight:700">30,675.82</td>
-          <td class="r">
-            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
-              <div class="mini-bg"><div class="mini-fill" style="width:17.9%;background:var(--blue);"></div></div>
-              <span style="font-weight:700;color:var(--blue-dk)">17.9%</span>
-            </div>
-          </td>
-          <td class="r">372</td>
-          <td class="r">82.46</td>
-        </tr>
-        <tr>
-          <td><div class="project-cell"><div class="proj-ar">المشرقية</div><div class="proj-en">Al Mushriqiyah</div></div></td>
-          <td class="c">Meta · Snap</td>
-          <td class="r">16,236.52</td>
-          <td class="r">7,787.93</td>
-          <td class="r" style="color:var(--muted)">0.00</td>
-          <td class="r" style="font-weight:700">24,024.45</td>
-          <td class="r">
-            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
-              <div class="mini-bg"><div class="mini-fill" style="width:14.1%;background:var(--blue);"></div></div>
-              <span style="font-weight:700;color:var(--blue-dk)">14.1%</span>
-            </div>
-          </td>
-          <td class="r">1,164</td>
-          <td class="r" style="color:var(--teal-dk);font-weight:700">20.64</td>
-        </tr>
-        <tr>
-          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 72</div><div class="proj-en">Makeen 72</div></div></td>
-          <td class="c">Meta · Snap</td>
-          <td class="r">6,374.32</td>
-          <td class="r">16,003.80</td>
-          <td class="r" style="color:var(--muted)">0.00</td>
-          <td class="r" style="font-weight:700">22,378.12</td>
-          <td class="r">
-            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
-              <div class="mini-bg"><div class="mini-fill" style="width:13.1%;background:var(--blue);"></div></div>
-              <span style="font-weight:700;color:var(--blue-dk)">13.1%</span>
-            </div>
-          </td>
-          <td class="r">782</td>
-          <td class="r" style="color:var(--teal-dk);font-weight:700">28.62</td>
-        </tr>
-        <tr>
-          <td><div class="project-cell"><div class="proj-ar">مكين 68 · حي الريان</div><div class="proj-en">Makeen 68 (Al Rayyan)</div></div></td>
-          <td class="c">Meta · Snap · TikTok</td>
-          <td class="r">16,427.10</td>
-          <td class="r">4,068.04</td>
-          <td class="r">931.48</td>
-          <td class="r" style="font-weight:700">21,426.62</td>
-          <td class="r">
-            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
-              <div class="mini-bg"><div class="mini-fill" style="width:12.5%;background:var(--blue);"></div></div>
-              <span style="font-weight:700;color:var(--blue-dk)">12.5%</span>
-            </div>
-          </td>
-          <td class="r">181</td>
-          <td class="r">118.38</td>
-        </tr>
-        <tr>
-          <td><div class="project-cell"><div class="proj-ar">مشروع مكين 64 · حي العارض</div><div class="proj-en">Makeen 64 (Al Arid)</div></div></td>
-          <td class="c">Meta · Snap</td>
-          <td class="r">2,208.49</td>
-          <td class="r">8,029.27</td>
-          <td class="r" style="color:var(--muted)">0.00</td>
-          <td class="r" style="font-weight:700">10,237.76</td>
-          <td class="r">
-            <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;">
-              <div class="mini-bg"><div class="mini-fill" style="width:5.99%;background:var(--blue);"></div></div>
-              <span style="font-weight:700;color:var(--blue-dk)">6.0%</span>
-            </div>
-          </td>
-          <td class="r">153</td>
-          <td class="r">66.91</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td>الإجمالي · 7 مشاريع</td>
-          <td class="c"></td>
-          <td class="r">89,926.13</td>
-          <td class="r">78,198.56</td>
-          <td class="r">2,821.14</td>
-          <td class="r">170,945.83</td>
-          <td class="r">100%</td>
-          <td class="r">4,338</td>
-          <td class="r">39.41</td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-  <div class="context-note" style="margin-top:14px;">
-    <strong><sup>†</sup> CPL لحملات العملاء المحتملين Leads</strong> يُحتسب باستخدام إنفاق Meta + Snapchat + TikTok (وهي حملات توليد عملاء)، أي 4,338 عميلاً / 170,946 ر.س = 39.41 ر.س. <strong>ملاحظة حول Google Ads:</strong> حملات Google لمايو هي حملات Performance Max مفصّلة حسب المشروع لكنها موجّهة للزيارات/التفاعل، لذا يُعرض إنفاقها البالغ <strong>28,692 ر.س</strong> و551,869 نقرة بشكل منفصل ولا يُدمج في تجميع العملاء المحتملين أعلاه. <strong>ملاحظة حول TikTok:</strong> تُحاسِب TikTok هذا الحساب بالريال السعودي أصلاً، فعمود TikTok هنا قيمته الأصلية من المنصة.
   </div>
 
   <!-- ───────────────── CHARTS ───────────────── -->
@@ -1098,7 +938,7 @@
     <div class="platform-icon google">G</div>
     <div class="platform-info">
       <h3>Google Ads · Performance Max (مفصّلة حسب المشروع)</h3>
-      <div class="meta-line">6 حملات محققة للظهور · حساب إعلاني واحد (TTP · Makeen Ad Account) · تحوّل من Search في أبريل</div>
+      <div class="meta-line">6 حملات محققة للظهور · حساب إعلاني واحد (TTP · Makeen Ad Account)</div>
     </div>
     <div class="platform-totals">
       <div class="pt-block"><div class="pt-lbl">الإنفاق</div><div class="pt-val">28,692 ر.س</div></div>
@@ -1207,11 +1047,11 @@
     </table>
   </div>
   <div class="context-note" style="margin-top:14px;">
-    <strong>ملاحظة حول Google Ads:</strong> تحوّلت حملات Google في مايو من حملات Search (على مستوى الحساب في أبريل) إلى حملات <strong>Performance Max</strong> مفصّلة حسب المشروع. النقرات المعروضة هي نقرات/تفاعلات Performance Max على شبكة Google الموسّعة (بتكلفة منخفضة جداً للنقرة)، وليست نقرات Search. أما تحويلات Performance Max فهي مقياس تفاعل آلي مضخّم ولا تُعادل نماذج العملاء المحتملين من Meta وSnapchat وTikTok، لذا استُبعدت من حساب CPL.
+    <strong>ملاحظة حول Google Ads:</strong> حملات Google تعمل ضمن نمط <strong>Performance Max</strong> مفصّلةً حسب المشروع. النقرات المعروضة هي نقرات/تفاعلات Performance Max على شبكة Google الموسّعة (بتكلفة منخفضة جداً للنقرة)، وليست نقرات Search. أما تحويلات Performance Max فهي مقياس تفاعل آلي مضخّم ولا تُعادل نماذج العملاء المحتملين من Meta وSnapchat وTikTok، لذا استُبعدت من حساب CPL.
   </div>
 
   <!-- ───────────────── TIKTOK ───────────────── -->
-  <div class="stitle">المنصة 4 · TikTok Ads (جديدة هذا الشهر)</div>
+  <div class="stitle">المنصة 4 · TikTok Ads</div>
 
   <div class="platform-strip">
     <div class="platform-icon tiktok">TT</div>
@@ -1300,7 +1140,7 @@
     <div class="platform-icon x">𝕏</div>
     <div class="ic-info">
       <h3>X (Twitter) Ads</h3>
-      <p>الحساب الإعلاني (@We_TMD) الذي شغّل حملات الوصول (Reach) في أبريل أصبح يتطلّب اشتراك <strong>Premium/Premium+</strong> لاستخدام مدير الإعلانات، ما يحجب لوحة الإعلانات والفوترة والتحليلات وواجهة الـAPI. لذلك لا تتوفّر بيانات إنفاق مايو على X، وتُعدّ المنصة <strong>غير نشطة</strong> هذا الشهر (مقابل 7,298 ر.س في أبريل). يمكن إعادة تفعيلها بعد استكمال الاشتراك.</p>
+      <p>الوصول إلى الحساب الإعلاني على X محجوب من جهة مكين، وتعذّر علينا الدخول إلى المنصة؛ وبالتالي <strong>لم تُشغَّل أي حملات</strong> على X خلال هذه الفترة، ولا تتوفّر بيانات إنفاق لإدراجها في التقرير.</p>
     </div>
     <div class="ic-status"><span class="chip chip-na">محجوبة</span></div>
   </div>
