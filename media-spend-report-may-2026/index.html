@@ -36,7 +36,6 @@
     }
     .page { max-width: 1180px; margin: 0 auto; }
 
-    /* ── ENTER STAGGER ── */
     @keyframes riseIn {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -58,7 +57,6 @@
     h1, h2, h3 { text-wrap: balance; }
     p, .sub, .ic-info p { text-wrap: pretty; }
 
-    /* ── HEADER (HERO) ── */
     .hero {
       position: relative;
       background:
@@ -156,7 +154,6 @@
     .hero-meta .pill.live { color: #c4f5cf; background: rgba(58,138,134,0.18); border-color: rgba(116,210,196,0.35); }
     .hero-meta .pill.live .dot { width:6px;height:6px;border-radius:50%;background:#74e896;box-shadow:0 0 8px #74e896; }
 
-    /* Hero stat panel (right side) */
     .hero-stat {
       position: relative;
       background: rgba(255,255,255,0.04);
@@ -231,7 +228,6 @@
       .hero-grid { grid-template-columns: 1fr; gap: 22px; }
     }
 
-    /* ── CONTEXT NOTE ── */
     .context-note {
       background: #fafbff;
       border: 1px solid var(--border);
@@ -245,7 +241,6 @@
     }
     .context-note strong { color: var(--navy); }
 
-    /* ── KPI CARDS ── */
     .kpi-row {
       display: grid;
       grid-template-columns: repeat(3,1fr);
@@ -300,7 +295,6 @@
     .kpi-val.p  { color: var(--blue-dk); }
     .kpi-sub { font-size: .72rem; color: var(--muted); margin-top: 6px; }
 
-    /* ── SECTION TITLE ── */
     .stitle {
       font-size: .72rem;
       font-weight: 700;
@@ -314,7 +308,6 @@
     }
     .stitle::after { content:''; flex:1; height:1px; background:var(--border); }
 
-    /* ── PLATFORM HEADER STRIP ── */
     .platform-strip {
       display: flex;
       align-items: center;
@@ -357,7 +350,6 @@
     .pt-block .pt-lbl { font-size: .65rem; color: var(--muted); text-transform: uppercase; letter-spacing: .09em; font-weight: 700; }
     .pt-block .pt-val { font-size: 1.05rem; font-weight: 800; color: var(--navy); }
 
-    /* ── TABLE WRAPPER ── */
     .tbl-wrap {
       background: var(--card);
       border-radius: 0 0 14px 14px;
@@ -408,7 +400,7 @@
     .pname { font-weight:700; }
     .pname-ar { font-size: .82rem; color: var(--muted); margin-top:1px; direction:rtl; }
     .project-cell { display:flex; flex-direction:column; }
-    .project-cell .proj-ar { font-weight: 700; color: var(--navy); direction: rtl; text-align: left; }
+    .project-cell .proj-ar { font-weight: 700; color: var(--navy); direction: rtl; text-align: right; }
     .project-cell .proj-en { font-size: .72rem; color: var(--muted); margin-top: 1px; }
 
     .chip {
@@ -426,11 +418,9 @@
     .chip-na     { background: #fde8e8; color: #b3261e; border: 1px solid #f4b8b8; }
     .chip-cap    { background: #eef3f9; color: var(--blue-dk); border: 1px solid #bfd2e6; }
 
-    /* mini bar in table */
     .mini-bg   { width:90px; height:6px; background:#eaecf6; border-radius:3px; overflow:hidden; display:inline-block; vertical-align:middle; }
     .mini-fill { height:100%; border-radius:3px; }
 
-    /* ── INACTIVE PLATFORM CARD ── */
     .inactive-card {
       background: var(--card);
       border: 1px dashed var(--border);
@@ -455,7 +445,6 @@
       flex-shrink: 0;
     }
 
-    /* ── CHART SECTION ── */
     .chart-row { display:grid; grid-template-columns:3fr 2fr; gap:14px; margin-bottom:18px; }
     .chart-card {
       background: var(--card);
@@ -474,7 +463,6 @@
     .chart-wrap { position: relative; height: 240px; }
     .chart-wrap.tall { height: 300px; }
 
-    /* ── FOOTER ── */
     .footer {
       margin-top: 48px;
       padding-top: 20px;
@@ -491,7 +479,6 @@
       table { font-size: .82rem; }
       th, td { padding: 10px 10px; }
 
-      /* Tables scroll horizontally on tablets too — desktop layout doesn't fit */
       .tbl-wrap, .tbl-wrap.solo {
         overflow-x: auto;
         overflow-y: hidden;
@@ -500,11 +487,9 @@
       .tbl-wrap table { min-width: 720px; }
     }
 
-    /* ── MOBILE (≤640px) ── */
     @media(max-width:640px){
       body { padding: 24px 14px 56px; }
 
-      /* Hero */
       .hero { padding: 24px 20px; border-radius: 18px; margin-bottom: 18px; }
       .hero-grid { gap: 18px; }
       .hero h1 { font-size: 1.7rem; max-width: none; }
@@ -516,20 +501,16 @@
       .hero-stat-tile .t-sub { font-size: .64rem; }
       .badge-ar, .pill { font-size: .68rem; }
 
-      /* Context note */
       .context-note { padding: 14px 16px; font-size: .82rem; line-height: 1.65; }
 
-      /* KPI cards */
       .kpi-row { gap: 10px; margin-bottom: 18px; }
       .kpi { padding: 16px 16px 14px; }
       .kpi-val { font-size: 1.55rem; }
       .kpi-lbl { font-size: .62rem; }
       .kpi-sub { font-size: .68rem; }
 
-      /* Section title */
       .stitle { font-size: .66rem; margin: 24px 0 10px; }
 
-      /* Platform header strip — stack vertically, totals as 2x2 grid */
       .platform-strip {
         flex-direction: column;
         align-items: flex-start;
@@ -549,7 +530,6 @@
       .pt-block .pt-val { font-size: .96rem; }
       .pt-block .pt-lbl { font-size: .6rem; }
 
-      /* Tables — tighter cell sizing (scroll wrapper inherits from 900px breakpoint) */
       th, td { padding: 9px 10px; font-size: .78rem; }
       th { font-size: .62rem; padding: 10px 10px; }
       .project-cell .proj-ar { font-size: .82rem; }
@@ -558,7 +538,6 @@
       .chip { font-size: .62rem; padding: 2px 8px; }
       .mini-bg { width: 60px; }
 
-      /* Inactive platform card — stack */
       .inactive-card {
         flex-direction: column;
         align-items: flex-start;
@@ -568,16 +547,13 @@
       .inactive-card .ic-status { margin-inline-start: 0; }
       .inactive-card .ic-info p { font-size: .8rem; }
 
-      /* Charts */
       .chart-card { padding: 14px 14px 12px; }
       .chart-wrap { height: 220px; }
       .chart-wrap.tall { height: 260px; }
 
-      /* Footer */
       .footer { font-size: .68rem; line-height: 1.7; padding-top: 16px; margin-top: 32px; }
     }
 
-    /* ── SMALL PHONES (≤380px) ── */
     @media(max-width:380px){
       body { padding: 20px 12px 48px; }
       .hero { padding: 22px 16px; }
@@ -592,7 +568,6 @@
 <body>
 <div class="page">
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero-grid stagger">
 
@@ -639,12 +614,10 @@
     </div>
   </section>
 
-  <!-- CONTEXT NOTE -->
   <div class="context-note">
     <strong>النطاق:</strong> مقتصر على الحملات التي حققت ظهوراً (impressions/spend) فعلياً خلال الفترة من 1 إلى 31 مايو 2026؛ الحملات الموقوفة أو ذات الإنفاق الصفري مستبعدة. <strong>لا توجد مقارنة بميزانية مستهدفة (PO/target benchmark).</strong> قيم الدولار الأصلية معروضة في العمود الباهت من كل جدول (Meta وSnapchat وGoogle بالدولار أصلاً، أما TikTok فبالريال أصلاً). تعمل حملات Google ضمن نمط Performance Max مفصّلةً حسب المشروع، بينما تستهدف Meta وSnapchat وTikTok توليد العملاء المحتملين. أما X فالوصول إلى حسابها الإعلاني محجوب من جهة مكين، وعليه لم تُشغَّل أي حملات عليها خلال هذه الفترة.
   </div>
 
-  <!-- KPI CARDS -->
   <div class="kpi-row stagger">
     <div class="kpi k-yellow">
       <div class="kpi-lbl">المنصات النشطة</div>
@@ -663,7 +636,6 @@
     </div>
   </div>
 
-  <!-- ───────────────── CHARTS ───────────────── -->
   <div class="stitle">تحليل بصري</div>
   <div class="chart-row">
     <div class="chart-card">
@@ -683,7 +655,6 @@
     </div>
   </div>
 
-  <!-- ───────────────── META / FACEBOOK ───────────────── -->
   <div class="stitle">المنصة 1 · Meta (الأعلى إنفاقاً)</div>
 
   <div class="platform-strip">
@@ -792,7 +763,6 @@
     </table>
   </div>
 
-  <!-- ───────────────── SNAPCHAT ───────────────── -->
   <div class="stitle">المنصة 2 · Snapchat Ads</div>
 
   <div class="platform-strip">
@@ -913,7 +883,6 @@
     <strong><sup>‡</sup> الظهور في جدول Snapchat:</strong> القيم على مستوى الحملة مشتقّة من (النقرات ÷ معدّل النقر) لأن المنصة تعرض هذه الأعمدة فقط في هذا العرض؛ أما القيم الأصلية الدقيقة من المنصة فهي الإنفاق وعدد العملاء والنقرات ومعدّل النقر. إجمالي الظهور المعروض في الترويسة (1,683,592) هو الرقم الفعلي من حساب Snapchat.
   </div>
 
-  <!-- ───────────────── GOOGLE ADS ───────────────── -->
   <div class="stitle">المنصة 3 · Google Ads</div>
 
   <div class="platform-strip">
@@ -1024,7 +993,6 @@
     <strong>ملاحظة حول Google Ads:</strong> حملات Google تعمل ضمن نمط <strong>Performance Max</strong> مفصّلةً حسب المشروع. النقرات المعروضة هي نقرات/تفاعلات Performance Max على شبكة Google الموسّعة (بتكلفة منخفضة جداً للنقرة)، وليست نقرات Search. أما تحويلات Performance Max فهي مقياس تفاعل آلي مضخّم ولا تُعادل نماذج العملاء المحتملين من Meta وSnapchat وTikTok، لذا استُبعدت من حساب CPL.
   </div>
 
-  <!-- ───────────────── TIKTOK ───────────────── -->
   <div class="stitle">المنصة 4 · TikTok Ads</div>
 
   <div class="platform-strip">
@@ -1102,7 +1070,6 @@
     </table>
   </div>
 
-  <!-- ───────────────── INACTIVE PLATFORMS ───────────────── -->
   <div class="stitle">منصات غير نشطة حالياً</div>
 
   <div class="inactive-card">
@@ -1114,12 +1081,11 @@
     <div class="ic-status"><span class="chip chip-na">محجوبة</span></div>
   </div>
 
-  <!-- FOOTER -->
   <div class="footer">
     تقرير إنفاق حملات مكين &nbsp;&middot;&nbsp; 1 – 31 مايو 2026 &nbsp;&middot;&nbsp; أُعدّ في 7 يونيو 2026 &nbsp;&middot;&nbsp; العملة: ر.س (USD في الأعمدة الباهتة؛ Meta وSnapchat وGoogle بالدولار أصلاً، TikTok بالريال أصلاً) &nbsp;&middot;&nbsp; النطاق: الحملات المحققة للظهور فقط
   </div>
 
-</div><!-- /page -->
+</div>
 
 <script>
 const NAVY    = '#0c0e1d';
@@ -1133,7 +1099,6 @@ const SNAP_C  = '#fbbc04';
 const SNAP_DK = '#b08900';
 const TIKTOK_C= '#25f4ee';
 
-// ── CHART 1: Spend by Project (stacked: Meta + Snap + TikTok) ─────────────
 const projectLabels = [
   'مكين 63',
   'سنا مكين',
@@ -1215,7 +1180,6 @@ new Chart(document.getElementById('projectBar').getContext('2d'), {
   }
 });
 
-// ── CHART 2: Platform Mix (donut) ────────────────────────────────────────
 new Chart(document.getElementById('platformPie').getContext('2d'), {
   type: 'doughnut',
   data: {
@@ -1253,7 +1217,6 @@ new Chart(document.getElementById('platformPie').getContext('2d'), {
   }
 });
 
-// ── CHART 3: Blended CPL by Project (Meta + Snap + TikTok) ────────────────
 const cplLabels = [
   'مشرقية','سنا','مكين 72','مكين 63',
   'مكين 64','مكين 80','مكين 68'
