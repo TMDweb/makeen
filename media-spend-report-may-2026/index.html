@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تقرير إنفاق حملات مكين (1–31 مايو 2026)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
   <style>
     :root {
@@ -27,10 +27,11 @@
     * { margin:0; padding:0; box-sizing:border-box; }
     html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     body * { unicode-bidi: plaintext; }
+    body { text-align: right; }
     .hero-stat-tile, .kpi { text-align: right; }
     .unit { font-size: .52em; font-weight: 600; opacity: .6; margin-inline-start: 3px; }
     body {
-      font-family: 'Baloo Bhaijaan 2', sans-serif;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
@@ -1145,7 +1146,7 @@ new Chart(document.getElementById('projectBar').getContext('2d'), {
       legend: {
         labels: {
           color: '#7c7f96',
-          font: { family:'Baloo Bhaijaan 2', size:11 },
+          font: { family:'IBM Plex Sans Arabic', size:11 },
           boxWidth: 12, padding: 16,
         }
       },
@@ -1160,14 +1161,14 @@ new Chart(document.getElementById('projectBar').getContext('2d'), {
         stacked: true,
         ticks: {
           color:'#7c7f96',
-          font:{ family:'Baloo Bhaijaan 2', size:11 },
+          font:{ family:'IBM Plex Sans Arabic', size:11 },
           callback: v => (v>=1000 ? (v/1000).toFixed(0)+'K' : v)
         },
         grid: { color:'rgba(0,0,0,0.05)' }
       },
       y: {
         stacked: true,
-        ticks: { color:'#7c7f96', font:{ family:'Baloo Bhaijaan 2', size:11 } },
+        ticks: { color:'#7c7f96', font:{ family:'IBM Plex Sans Arabic', size:11 } },
         grid:  { display:false }
       }
     }
@@ -1194,7 +1195,7 @@ new Chart(document.getElementById('platformPie').getContext('2d'), {
         position: 'bottom',
         labels: {
           color: '#7c7f96',
-          font: { family:'Baloo Bhaijaan 2', size:11 },
+          font: { family:'IBM Plex Sans Arabic', size:11 },
           boxWidth: 12, padding: 14,
         }
       },
@@ -1244,13 +1245,13 @@ new Chart(document.getElementById('cplBar').getContext('2d'), {
     },
     scales: {
       x: {
-        ticks: { color:'#7c7f96', font:{ family:'Baloo Bhaijaan 2', size:11 } },
+        ticks: { color:'#7c7f96', font:{ family:'IBM Plex Sans Arabic', size:11 } },
         grid:  { display:false }
       },
       y: {
         ticks: {
           color:'#7c7f96',
-          font:{ family:'Baloo Bhaijaan 2', size:11 },
+          font:{ family:'IBM Plex Sans Arabic', size:11 },
           callback: v => v + ' ر.س'
         },
         grid: { color:'rgba(0,0,0,0.05)' }
@@ -1272,7 +1273,7 @@ new Chart(document.getElementById('cplBar').getContext('2d'), {
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = 'rgba(12,14,29,0.55)';
-      ctx.font = '10px Baloo Bhaijaan 2';
+      ctx.font = '10px IBM Plex Sans Arabic';
       ctx.fillText('CPL مدمج ' + blendedCPL.toFixed(2) + ' ر.س', left + 6, yPos - 4);
       ctx.restore();
     }
