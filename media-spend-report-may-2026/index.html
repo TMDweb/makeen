@@ -27,6 +27,8 @@
     * { margin:0; padding:0; box-sizing:border-box; }
     html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     body * { unicode-bidi: plaintext; }
+    .hero-stat-tile, .kpi { text-align: right; }
+    .unit { font-size: .52em; font-weight: 600; opacity: .6; margin-inline-start: 3px; }
     body {
       font-family: 'Baloo Bhaijaan 2', sans-serif;
       background: var(--bg);
@@ -602,13 +604,13 @@
           </div>
           <div class="hero-stat-tile spend">
             <div class="t-lbl">الإنفاق</div>
-            <div class="t-val">199,638</div>
-            <div class="t-sub">ر.س · <bdi>$53,237</bdi></div>
+            <div class="t-val">199,638 <span class="unit">ر.س</span></div>
+            <div class="t-sub"><bdi>$53,237</bdi></div>
           </div>
           <div class="hero-stat-tile leads">
             <div class="t-lbl">العملاء المحتملين Leads</div>
-            <div class="t-val">4,338</div>
-            <div class="t-sub"><bdi>CPL 39.41</bdi> ر.س</div>
+            <div class="t-val">5,041</div>
+            <div class="t-sub"><bdi>CPL 39.60</bdi> ر.س</div>
           </div>
         </div>
       </aside>
@@ -624,13 +626,13 @@
     </div>
     <div class="kpi k-navy">
       <div class="kpi-lbl">إجمالي الإنفاق (1–31 مايو)</div>
-      <div class="kpi-val n">199,638</div>
-      <div class="kpi-sub">ر.س &middot; <bdi>$53,237</bdi> &middot; <bdi>4 منصات نشطة</bdi></div>
+      <div class="kpi-val n">199,638 <span class="unit">ر.س</span></div>
+      <div class="kpi-sub">ما يعادل <bdi>$53,237 USD</bdi></div>
     </div>
     <div class="kpi k-teal">
-      <div class="kpi-lbl">إجمالي العملاء المحتملين (Meta + Snap + TikTok)</div>
-      <div class="kpi-val t">4,338</div>
-      <div class="kpi-sub">نماذج عملاء &middot; <bdi>CPL</bdi> مدمج <bdi>39.41</bdi> ر.س</div>
+      <div class="kpi-lbl">إجمالي العملاء المحتملين Leads</div>
+      <div class="kpi-val t">5,041</div>
+      <div class="kpi-sub"><bdi>4,338</bdi> نموذج فوري (المنصات) + <bdi>703</bdi> نموذج موقع &middot; إجمالي CPL <bdi>39.60</bdi> ر.س</div>
     </div>
   </div>
 
