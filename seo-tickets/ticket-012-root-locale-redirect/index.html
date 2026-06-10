@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket #012 - Root URL Locale Redirect &amp; x-default Hreflang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c0e1d;
+      --gold: #ffc409;
+      --rose: #cc5f73;
+      --teal: #96c7c3;
+      --bg: #ffffff;
+      --surface: #f5f6f8;
+      --surface-2: #edeef2;
+      --border: #d8dbe3;
+      --text: #0c0e1d;
+      --text-muted: #5c5f72;
+      --gold-bg: rgba(255, 196, 9, 0.12);
+      --gold-border: rgba(255, 196, 9, 0.45);
+      --rose-bg: rgba(204, 95, 115, 0.10);
+      --rose-border: rgba(204, 95, 115, 0.35);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Baloo Bhaijaan 2', 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .banner { background: var(--navy); padding: 36px 0; }
+    .banner-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .ticket-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(204, 95, 115, 0.2);
+      border: 1px solid rgba(204, 95, 115, 0.5);
+      color: #f0a0b0; padding: 4px 14px; border-radius: 20px;
+      font-size: 15px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 16px;
+    }
+    .ticket-badge::before {
+      content: ''; width: 8px; height: 8px; background: var(--rose);
+      border-radius: 50%; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    .banner h1 { font-size: 34px; font-weight: 700; margin-bottom: 14px; color: #fff; }
+    .meta-row { display:flex; gap:24px; flex-wrap:wrap; font-size:16px; color:rgba(255,255,255,.55); }
+    .meta-item { display:flex; align-items:center; gap:6px; }
+    .meta-value { color: rgba(255,255,255,.9); font-weight:600; }
+    .priority-med { color: var(--teal); font-weight:700; }
+    .container { max-width: 900px; margin: 0 auto; padding: 36px 24px; }
+    section { margin-bottom: 32px; }
+    h2 {
+      font-size: 22px; font-weight: 700; margin-bottom: 14px;
+      padding-bottom: 8px; border-bottom: 2px solid var(--gold);
+      color: var(--navy);
+    }
+    h2 .emoji { margin-right: 8px; }
+    h3 { font-size: 18px; font-weight: 700; color: var(--navy); margin: 18px 0 10px; }
+    p { margin-bottom: 14px; color: var(--text); font-size: 17px; }
+    strong { color: var(--navy); font-weight: 700; }
+    a { color: var(--rose); }
+    code {
+      background: var(--surface-2); padding: 2px 7px; border-radius: 5px;
+      font-family: 'SF Mono','Fira Code','Courier New',monospace;
+      font-size: 15px; color: var(--navy); border: 1px solid var(--border);
+    }
+    .summary-box {
+      background: var(--gold-bg); border: 1px solid var(--gold-border);
+      border-left: 4px solid var(--gold); border-radius: 8px;
+      padding: 22px; margin-bottom: 24px;
+    }
+    .summary-box p:last-child { margin-bottom: 0; }
+    .redirect-table {
+      width: 100%; border-collapse: collapse; margin: 4px 0 18px;
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+      display: table;
+    }
+    .redirect-table th,
+    .redirect-table td {
+      padding: 11px 13px; border-bottom: 1px solid var(--border);
+      text-align: left; vertical-align: top; font-size: 14px;
+    }
+    .redirect-table th { background: var(--surface-2); color: var(--navy); font-size: 15px; }
+    .redirect-table tr:last-child td { border-bottom: 0; }
+    .redirect-table code { word-break: break-all; }
+    .code-block {
+      background: var(--navy); border: 1px solid #2a2d40;
+      border-radius: 10px; overflow-x: auto; margin: 12px 0;
+    }
+    .code-block-header {
+      background: rgba(255,255,255,.06); padding: 10px 18px;
+      font-size: 14px; font-weight: 600; color: rgba(255,255,255,.6);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display:flex; align-items:center; gap:8px;
+    }
+    .code-block pre {
+      padding: 18px; font-family: 'SF Mono','Fira Code','Courier New',monospace;
+      font-size: 14px; line-height: 1.6; color: #e2e4ef;
+      white-space: pre; overflow-x: auto;
+    }
+    .code-correct { color: var(--teal); }
+    .code-wrong { color: #f0a0b0; }
+    .footer {
+      text-align: center; padding: 28px; color: var(--text-muted);
+      font-size: 15px; background: var(--surface); border-top: 1px solid var(--border);
+    }
+    .footer p:first-child { font-weight: 600; color: var(--navy); }
+    .ar-summary {
+      background: var(--surface); border-top: 3px solid var(--gold);
+      border-bottom: 1px solid var(--border); padding: 28px 24px;
+      text-align: center; direction: rtl;
+      font-family: 'Baloo Bhaijaan 2','Noto Sans Arabic','Segoe UI',Tahoma,Arial,sans-serif;
+    }
+    .ar-summary-inner { max-width: 720px; margin: 0 auto; }
+    .ar-summary h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 14px; border: none; padding: 0; }
+    .ar-summary p { font-size: 17px; line-height: 2; color: var(--text); margin-bottom: 10px; }
+    .ar-summary p:last-child { margin-bottom: 0; }
+    .ar-summary strong { color: var(--rose); }
+    @media (max-width: 720px) {
+      .banner h1 { font-size: 28px; }
+      .redirect-table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="banner-inner">
+    <a href="../" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,196,9,0.15);border:1px solid rgba(255,196,9,0.45);color:#ffc409;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px;font-family:inherit;">&larr; All SEO Tickets</a>
+    <div class="ticket-badge">Hreflang - Open</div>
+    <h1>Ticket #012 - Root URL Locale Redirect &amp; x-default Hreflang</h1>
+    <div class="meta-row">
+      <div class="meta-item"><span>Project:</span><span class="meta-value">asasmakeen.com</span></div>
+      <div class="meta-item"><span>Priority:</span><span class="meta-value priority-med">Medium</span></div>
+      <div class="meta-item"><span>Date:</span><span class="meta-value">June 10, 2026</span></div>
+      <div class="meta-item"><span>Assignee:</span><span class="meta-value">Abdo (dev, Makeen)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="ar-summary">
+  <div class="ar-summary-inner">
+    <h2>ملخص المهمة</h2>
+    <p>الصفحة الرئيسية <strong>asasmakeen.com/</strong> تعمل بنظام كشف اللغة: تحوّل الزائر تحويل <strong>302</strong> إلى <code>/ar</code> أو <code>/en</code> حسب لغة المتصفح. هذا النمط بحد ذاته صحيح ومدعوم من Google، لكن وسوم hreflang الحالية تتعارض معه: <strong>x-default</strong> يشير إلى <code>/ar</code> بينما يجب أن يشير إلى الجذر <code>/</code> نفسه (صفحة الكشف).</p>
+    <p>المطلوب: تغيير قيمة <strong>x-default</strong> في الصفحتين الرئيسيتين (عربي وإنجليزي) لتشير إلى <code>https://asasmakeen.com/</code>، مع إبقاء التحويل <strong>302</strong> كما هو (لا يُغيَّر إلى 301). وهناك نقطة قرار للعميل: الزائر بدون لغة محددة يُحوَّل حالياً إلى الإنجليزية، والأنسب لسوق سعودي أن يكون الافتراضي العربية.</p>
+  </div>
+</div>
+
+<div class="container">
+  <section>
+    <div class="summary-box">
+      <p>The root URL <code>https://asasmakeen.com/</code> is a <strong>locale-detection redirect</strong>: it 302s to <code>/ar</code> or <code>/en</code> based on the browser's <code>Accept-Language</code> header. This pattern (302 + language detection at the root) is legitimate and supported by Google, and the 302 is deliberately correct here - it must <strong>not</strong> be "fixed" into a 301.</p>
+      <p>The actual defect is an <strong>hreflang contradiction</strong>: both homepages declare <code>x-default = /ar</code>, while the root redirect sends crawlers and header-less visitors to <code>/en</code>. The fix is to point <code>x-default</code> at the root <code>/</code> itself, so Google understands the root is the international default (the detector page) and consolidates the homepage signals correctly.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="emoji">🔎</span> Current Behavior (verified 2026-06-10)</h2>
+    <table class="redirect-table">
+      <thead>
+        <tr>
+          <th>Request to <code>https://asasmakeen.com/</code></th>
+          <th>Response</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>Accept-Language: ar-SA,ar</code></td>
+          <td><code>302 &rarr; /ar</code></td>
+        </tr>
+        <tr>
+          <td><code>Accept-Language: en-US,en</code></td>
+          <td><code>302 &rarr; /en</code></td>
+        </tr>
+        <tr>
+          <td>No <code>Accept-Language</code> header (most bots, incl. Googlebot)</td>
+          <td><code>302 &rarr; /en</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Meanwhile both <code>/ar</code> and <code>/en</code> declare in their <code>&lt;head&gt;</code>:</p>
+    <div class="code-block">
+      <div class="code-block-header"><span>🖥️</span> Current hreflang on /ar and /en</div>
+      <pre>&lt;link rel="alternate" hreflang="ar" href="https://asasmakeen.com/ar"&gt;
+&lt;link rel="alternate" hreflang="en" href="https://asasmakeen.com/en"&gt;
+<span class="code-wrong">&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/ar"&gt;</span></pre>
+    </div>
+    <p><strong>Why this is a problem:</strong> the markup tells Google "the default version for unmatched languages is <code>/ar</code>", but the server behavior sends every unmatched visitor (and Googlebot itself, which crawls without Arabic headers) to <code>/en</code>. Conflicting signals weaken the hreflang cluster, and the root - the URL that earns nearly all external backlinks - is left out of the cluster entirely.</p>
+  </section>
+
+  <section>
+    <h2><span class="emoji">🛠️</span> The Fix</h2>
+    <h3>1. Point x-default at the root (required)</h3>
+    <p>On <strong>both</strong> homepage language versions (<code>/ar</code> and <code>/en</code>), change the <code>x-default</code> alternate to the bare root. This is Google's documented pattern for homepages with automatic locale redirection: <code>x-default</code> should reference the detector/selector URL, and it is fine that this URL itself redirects.</p>
+    <div class="code-block">
+      <div class="code-block-header"><span>🖥️</span> Target hreflang on /ar and /en</div>
+      <pre>&lt;link rel="alternate" hreflang="ar" href="https://asasmakeen.com/ar"&gt;
+&lt;link rel="alternate" hreflang="en" href="https://asasmakeen.com/en"&gt;
+<span class="code-correct">&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/"&gt;</span></pre>
+    </div>
+    <p>This change applies to the <strong>homepage cluster only</strong>. Inner pages (blogs, projects) keep their current per-page <code>x-default</code> pointing at the Arabic version - do not touch those.</p>
+
+    <h3>2. Keep the 302 (do not change)</h3>
+    <p>The root redirect stays a <strong>302</strong>. A 301 would tell Google the root is permanently gone and the detection is not permanent - it varies per visitor. This is the one place on the site where a 302 is the correct status code.</p>
+
+    <h3>3. Default fallback language (client decision)</h3>
+    <p>Visitors with no language preference currently fall back to <strong>English</strong>. For a Saudi-market business whose primary audience and content are Arabic, the more natural fallback is <code>/ar</code>. This is a one-line change in the detection logic but it is a <strong>business decision</strong> - confirm with Makeen before changing. It does not block items 1-2.</p>
+  </section>
+
+  <section>
+    <h2><span class="emoji">✅</span> Verify</h2>
+    <p><strong>Pass = the x-default line on both homepages points to the bare root, and the root still answers 302.</strong></p>
+    <div class="code-block">
+      <div class="code-block-header"><span>🖥️</span> 1. x-default points to the root on both homepages</div>
+      <pre>$ curl -s https://asasmakeen.com/ar | grep -o '&lt;link[^&gt;]*x-default[^&gt;]*&gt;'
+<span class="code-correct">&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/"&gt;</span>
+
+$ curl -s https://asasmakeen.com/en | grep -o '&lt;link[^&gt;]*x-default[^&gt;]*&gt;'
+<span class="code-correct">&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/"&gt;</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span>🖥️</span> 2. Root still 302s by language (unchanged)</div>
+      <pre>$ curl -sI -H "Accept-Language: ar" https://asasmakeen.com/ | grep -i -e '^HTTP' -e '^location'
+<span class="code-correct">HTTP/2 302</span>
+<span class="code-correct">location: https://asasmakeen.com/ar</span>
+
+$ curl -sI -H "Accept-Language: en" https://asasmakeen.com/ | grep -i -e '^HTTP' -e '^location'
+<span class="code-correct">HTTP/2 302</span>
+<span class="code-correct">location: https://asasmakeen.com/en</span></pre>
+    </div>
+    <p style="font-size:15px;">Related: <a href="../ticket-011-sitemap-redirect-urls/">Ticket #011</a> already removes the redirecting root from <code>sitemap-pages.xml</code>; <a href="../ticket-003-hreflang-tags/">Ticket #003</a> set up the original hreflang tags.</p>
+  </section>
+
+  <div class="footer">
+    <p>Makeen SEO Task Ticket #012 - June 10, 2026</p>
+    <p>asasmakeen.com</p>
+  </div>
+</div>
+
+</body>
+</html>
