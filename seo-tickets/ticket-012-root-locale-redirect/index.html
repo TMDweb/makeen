@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ticket #012 - Root URL Locale Redirect &amp; x-default Hreflang</title>
+  <title>Ticket #012 - Replace Root Locale Detection with a 301 to /ar</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -74,6 +74,13 @@
       padding: 22px; margin-bottom: 24px;
     }
     .summary-box p:last-child { margin-bottom: 0; }
+    .quote-box {
+      background: var(--surface); border-left: 4px solid var(--teal);
+      border-radius: 8px; padding: 16px 20px; margin: 12px 0 18px;
+      font-size: 16px;
+    }
+    .quote-box p { margin-bottom: 6px; font-size: 16px; }
+    .quote-box .src { font-size: 14px; color: var(--text-muted); margin-bottom: 0; }
     .redirect-table {
       width: 100%; border-collapse: collapse; margin: 4px 0 18px;
       border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
@@ -103,7 +110,6 @@
       white-space: pre; overflow-x: auto;
     }
     .code-correct { color: var(--teal); }
-    .code-wrong { color: #f0a0b0; }
     .footer {
       text-align: center; padding: 28px; color: var(--text-muted);
       font-size: 15px; background: var(--surface); border-top: 1px solid var(--border);
@@ -131,8 +137,8 @@
 <div class="banner">
   <div class="banner-inner">
     <a href="../" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,196,9,0.15);border:1px solid rgba(255,196,9,0.45);color:#ffc409;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px;font-family:inherit;">&larr; All SEO Tickets</a>
-    <div class="ticket-badge">Hreflang - Open</div>
-    <h1>Ticket #012 - Root URL Locale Redirect &amp; x-default Hreflang</h1>
+    <div class="ticket-badge">Redirects - Open</div>
+    <h1>Ticket #012 - Replace Root Locale Detection with a 301 to /ar</h1>
     <div class="meta-row">
       <div class="meta-item"><span>Project:</span><span class="meta-value">asasmakeen.com</span></div>
       <div class="meta-item"><span>Priority:</span><span class="meta-value priority-med">Medium</span></div>
@@ -145,16 +151,16 @@
 <div class="ar-summary">
   <div class="ar-summary-inner">
     <h2>ملخص المهمة</h2>
-    <p>الصفحة الرئيسية <strong>asasmakeen.com/</strong> تعمل بنظام كشف اللغة: تحوّل الزائر تحويل <strong>302</strong> إلى <code>/ar</code> أو <code>/en</code> حسب لغة المتصفح. هذا النمط بحد ذاته صحيح ومدعوم من Google، لكن وسوم hreflang الحالية تتعارض معه: <strong>x-default</strong> يشير إلى <code>/ar</code> بينما يجب أن يشير إلى الجذر <code>/</code> نفسه (صفحة الكشف).</p>
-    <p>المطلوب: تغيير قيمة <strong>x-default</strong> في الصفحتين الرئيسيتين (عربي وإنجليزي) لتشير إلى <code>https://asasmakeen.com/</code>، مع إبقاء التحويل <strong>302</strong> كما هو (لا يُغيَّر إلى 301). وهناك نقطة قرار للعميل: الزائر بدون لغة محددة يُحوَّل حالياً إلى الإنجليزية، والأنسب لسوق سعودي أن يكون الافتراضي العربية.</p>
+    <p>الجذر <strong>asasmakeen.com/</strong> يحوّل الزائر حالياً تحويل <strong>302</strong> إلى <code>/ar</code> أو <code>/en</code> حسب لغة المتصفح. Google تنصح صراحةً بعدم التحويل التلقائي حسب اللغة، و Googlebot يزحف بدون ترويسة لغة فيصل دائماً إلى <code>/en</code>، بينما وسوم hreflang تعلن أن النسخة الافتراضية هي <code>/ar</code>. النتيجة: إشارات متضاربة على أهم رابط في الموقع.</p>
+    <p>المطلوب: إلغاء كشف اللغة في الجذر واستبداله بتحويل <strong>301 دائم</strong> ثابت إلى <code>/ar</code> لجميع الزوار. وسوم hreflang الحالية (<code>x-default = /ar</code>) تبقى كما هي بدون أي تعديل، وتبديل اللغة يبقى بيد المستخدم عبر زر اللغة في الموقع.</p>
   </div>
 </div>
 
 <div class="container">
   <section>
     <div class="summary-box">
-      <p>The root URL <code>https://asasmakeen.com/</code> is a <strong>locale-detection redirect</strong>: it 302s to <code>/ar</code> or <code>/en</code> based on the browser's <code>Accept-Language</code> header. This pattern (302 + language detection at the root) is legitimate and supported by Google, and the 302 is deliberately correct here - it must <strong>not</strong> be "fixed" into a 301.</p>
-      <p>The actual defect is an <strong>hreflang contradiction</strong>: both homepages declare <code>x-default = /ar</code>, while the root redirect sends crawlers and header-less visitors to <code>/en</code>. The fix is to point <code>x-default</code> at the root <code>/</code> itself, so Google understands the root is the international default (the detector page) and consolidates the homepage signals correctly.</p>
+      <p>The root URL <code>https://asasmakeen.com/</code> currently 302-redirects per visitor based on the <code>Accept-Language</code> header. Google's documentation explicitly advises against automatic language redirection, and Googlebot crawls without an <code>Accept-Language</code> header, so it always lands on <code>/en</code> - while the site's hreflang declares <code>x-default = /ar</code>. The site's most-linked URL is sending contradictory signals.</p>
+      <p><strong>Fix:</strong> remove the language detection at the root and replace it with a single, unconditional, permanent <strong>301 to <code>/ar</code></strong> for every request. The existing hreflang markup stays exactly as it is. Language switching remains user-initiated via the site's AR/EN switcher.</p>
     </div>
   </section>
 
@@ -182,57 +188,72 @@
         </tr>
       </tbody>
     </table>
-    <p>Meanwhile both <code>/ar</code> and <code>/en</code> declare in their <code>&lt;head&gt;</code>:</p>
-    <div class="code-block">
-      <div class="code-block-header"><span>🖥️</span> Current hreflang on /ar and /en</div>
-      <pre>&lt;link rel="alternate" hreflang="ar" href="https://asasmakeen.com/ar"&gt;
-&lt;link rel="alternate" hreflang="en" href="https://asasmakeen.com/en"&gt;
-<span class="code-wrong">&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/ar"&gt;</span></pre>
-    </div>
-    <p><strong>Why this is a problem:</strong> the markup tells Google "the default version for unmatched languages is <code>/ar</code>", but the server behavior sends every unmatched visitor (and Googlebot itself, which crawls without Arabic headers) to <code>/en</code>. Conflicting signals weaken the hreflang cluster, and the root - the URL that earns nearly all external backlinks - is left out of the cluster entirely.</p>
+    <p>Both <code>/ar</code> and <code>/en</code> declare <code>&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/ar"&gt;</code>.</p>
+    <p><strong>Three problems:</strong></p>
+    <p>1. <strong>Against Google guidance.</strong> Auto language redirection is explicitly discouraged (references below), and since Googlebot sends no <code>Accept-Language</code> header, the crawler can never see the Arabic side of the redirect.</p>
+    <p>2. <strong>Contradictory signals.</strong> The markup declares <code>/ar</code> as the default version, but the server sends every header-less visitor and bot to <code>/en</code>.</p>
+    <p>3. <strong>Wasted link equity.</strong> Nearly all external backlinks point at the bare root. A temporary (302) redirect whose destination varies per visitor gives Google no stable canonical to consolidate that equity onto.</p>
   </section>
 
   <section>
     <h2><span class="emoji">🛠️</span> The Fix</h2>
-    <h3>1. Point x-default at the root (required)</h3>
-    <p>On <strong>both</strong> homepage language versions (<code>/ar</code> and <code>/en</code>), change the <code>x-default</code> alternate to the bare root. This is Google's documented pattern for homepages with automatic locale redirection: <code>x-default</code> should reference the detector/selector URL, and it is fine that this URL itself redirects.</p>
+    <h3>1. Root 301s to /ar, unconditionally</h3>
+    <p>Delete the <code>Accept-Language</code> detection logic for <code>/</code>. Every request to the root - any visitor, any bot, any header - gets a permanent redirect:</p>
     <div class="code-block">
-      <div class="code-block-header"><span>🖥️</span> Target hreflang on /ar and /en</div>
-      <pre>&lt;link rel="alternate" hreflang="ar" href="https://asasmakeen.com/ar"&gt;
-&lt;link rel="alternate" hreflang="en" href="https://asasmakeen.com/en"&gt;
-<span class="code-correct">&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/"&gt;</span></pre>
+      <div class="code-block-header"><span>🖥️</span> Target behavior</div>
+      <pre>GET https://asasmakeen.com/
+<span class="code-correct">HTTP/2 301</span>
+<span class="code-correct">location: https://asasmakeen.com/ar</span></pre>
     </div>
-    <p>This change applies to the <strong>homepage cluster only</strong>. Inner pages (blogs, projects) keep their current per-page <code>x-default</code> pointing at the Arabic version - do not touch those.</p>
+    <p>Arabic is the default because it is the primary market, the primary content language, and already the declared <code>x-default</code>. The 301 (permanent) tells Google to consolidate the root's backlink equity onto <code>/ar</code>.</p>
 
-    <h3>2. Keep the 302 (do not change)</h3>
-    <p>The root redirect stays a <strong>302</strong>. A 301 would tell Google the root is permanently gone and the detection is not permanent - it varies per visitor. This is the one place on the site where a 302 is the correct status code.</p>
+    <h3>2. Hreflang stays unchanged</h3>
+    <p>The current markup on <code>/ar</code> and <code>/en</code> (<code>hreflang="ar"</code> &rarr; <code>/ar</code>, <code>hreflang="en"</code> &rarr; <code>/en</code>, <code>x-default</code> &rarr; <code>/ar</code>) is already correct for this setup. Do not modify it. English users searching in English still reach <code>/en</code> through the <code>hreflang="en"</code> annotation in search results.</p>
 
-    <h3>3. Default fallback language (client decision)</h3>
-    <p>Visitors with no language preference currently fall back to <strong>English</strong>. For a Saudi-market business whose primary audience and content are Arabic, the more natural fallback is <code>/ar</code>. This is a one-line change in the detection logic but it is a <strong>business decision</strong> - confirm with Makeen before changing. It does not block items 1-2.</p>
+    <h3>3. No auto-redirect anywhere else</h3>
+    <p>Language switching is user-initiated only, via the visible AR/EN switcher. Do not reintroduce <code>Accept-Language</code> redirection on any URL.</p>
+  </section>
+
+  <section>
+    <h2><span class="emoji">📚</span> References</h2>
+    <div class="quote-box">
+      <p>"Avoid automatically redirecting users from one language version of a site to a different language version of a site. For example, don't redirect based on what you think the user's language may be."</p>
+      <p class="src">Google Search Central - <a href="https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites">Managing multi-regional and multilingual sites</a></p>
+    </div>
+    <div class="quote-box">
+      <p>Googlebot "sends HTTP requests without setting Accept-Language in the request header" and crawls primarily from US IPs. "We recommend using separate locale URL configurations and annotating them with rel="alternate" hreflang annotations."</p>
+      <p class="src">Google Search Central - <a href="https://developers.google.com/search/docs/specialty/international/locale-adaptive-pages">How Google crawls locale-adaptive pages</a></p>
+    </div>
+    <div class="quote-box">
+      <p>The x-default value "is recommended for specifying the fallback page for users whose language settings don't match any of your site's localized versions."</p>
+      <p class="src">Google Search Central - <a href="https://developers.google.com/search/docs/specialty/international/localized-versions">Localized versions of your pages</a></p>
+    </div>
   </section>
 
   <section>
     <h2><span class="emoji">✅</span> Verify</h2>
-    <p><strong>Pass = the x-default line on both homepages points to the bare root, and the root still answers 302.</strong></p>
+    <p><strong>Pass = the root returns <code>301 &rarr; /ar</code> for all three header variants, and the x-default markup is unchanged.</strong></p>
     <div class="code-block">
-      <div class="code-block-header"><span>🖥️</span> 1. x-default points to the root on both homepages</div>
+      <div class="code-block-header"><span>🖥️</span> 1. Root 301s to /ar regardless of language headers</div>
+      <pre>$ for h in "ar" "en" ""; do \
+    curl -sI -H "Accept-Language: $h" https://asasmakeen.com/ \
+    | grep -i -e '^HTTP' -e '^location'; done
+<span class="code-correct">HTTP/2 301</span>
+<span class="code-correct">location: https://asasmakeen.com/ar</span>
+<span class="code-correct">HTTP/2 301</span>
+<span class="code-correct">location: https://asasmakeen.com/ar</span>
+<span class="code-correct">HTTP/2 301</span>
+<span class="code-correct">location: https://asasmakeen.com/ar</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span>🖥️</span> 2. Hreflang unchanged on both homepages</div>
       <pre>$ curl -s https://asasmakeen.com/ar | grep -o '&lt;link[^&gt;]*x-default[^&gt;]*&gt;'
-<span class="code-correct">&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/"&gt;</span>
+<span class="code-correct">&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/ar"&gt;</span>
 
 $ curl -s https://asasmakeen.com/en | grep -o '&lt;link[^&gt;]*x-default[^&gt;]*&gt;'
-<span class="code-correct">&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/"&gt;</span></pre>
+<span class="code-correct">&lt;link rel="alternate" hreflang="x-default" href="https://asasmakeen.com/ar"&gt;</span></pre>
     </div>
-    <div class="code-block">
-      <div class="code-block-header"><span>🖥️</span> 2. Root still 302s by language (unchanged)</div>
-      <pre>$ curl -sI -H "Accept-Language: ar" https://asasmakeen.com/ | grep -i -e '^HTTP' -e '^location'
-<span class="code-correct">HTTP/2 302</span>
-<span class="code-correct">location: https://asasmakeen.com/ar</span>
-
-$ curl -sI -H "Accept-Language: en" https://asasmakeen.com/ | grep -i -e '^HTTP' -e '^location'
-<span class="code-correct">HTTP/2 302</span>
-<span class="code-correct">location: https://asasmakeen.com/en</span></pre>
-    </div>
-    <p style="font-size:15px;">Related: <a href="../ticket-011-sitemap-redirect-urls/">Ticket #011</a> already removes the redirecting root from <code>sitemap-pages.xml</code>; <a href="../ticket-003-hreflang-tags/">Ticket #003</a> set up the original hreflang tags.</p>
+    <p style="font-size:15px;">Related: <a href="../ticket-011-sitemap-redirect-urls/">Ticket #011</a> already removes the redirecting root from <code>sitemap-pages.xml</code>; <a href="../ticket-003-hreflang-tags/">Ticket #003</a> set up the hreflang tags.</p>
   </section>
 
   <div class="footer">
