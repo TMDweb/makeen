@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Makeen development ticket explaining why the Snap, Meta and X advertising pixels fail under the current Content Security Policy.">
+  <title>Ticket #013 - Allow Advertising Pixels Through the Website CSP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c0e1d;
+      --gold: #ffc409;
+      --rose: #cc5f73;
+      --teal: #96c7c3;
+      --bg: #ffffff;
+      --surface: #f5f6f8;
+      --surface-2: #edeef2;
+      --border: #d8dbe3;
+      --text: #0c0e1d;
+      --muted: #5c5f72;
+      --gold-bg: rgba(255, 196, 9, 0.12);
+      --gold-border: rgba(255, 196, 9, 0.45);
+      --rose-bg: rgba(204, 95, 115, 0.10);
+      --rose-border: rgba(204, 95, 115, 0.35);
+      --teal-bg: rgba(150, 199, 195, 0.18);
+      --teal-border: rgba(150, 199, 195, 0.55);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Baloo Bhaijaan 2", "Segoe UI", Tahoma, Arial, sans-serif;
+      line-height: 1.75;
+    }
+    a { color: var(--rose); }
+    strong { color: var(--navy); }
+    code {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--navy);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.88em;
+      padding: 2px 7px;
+    }
+
+    .banner { background: var(--navy); padding: 38px 0; }
+    .banner-inner, .container { max-width: 920px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+    .ticket-badge {
+      align-items: center;
+      background: rgba(204, 95, 115, 0.2);
+      border: 1px solid rgba(204, 95, 115, 0.5);
+      border-radius: 999px;
+      color: #f0a0b0;
+      display: inline-flex;
+      font-size: 14px;
+      font-weight: 700;
+      gap: 8px;
+      letter-spacing: 0.45px;
+      margin-bottom: 16px;
+      padding: 5px 14px;
+      text-transform: uppercase;
+    }
+    .ticket-badge::before { background: var(--rose); border-radius: 50%; content: ""; height: 8px; width: 8px; }
+    .banner h1 { color: #fff; font-size: 35px; line-height: 1.25; margin-bottom: 14px; }
+    .meta-row { color: rgba(255,255,255,.55); display: flex; flex-wrap: wrap; font-size: 15px; gap: 10px 24px; }
+    .meta-value { color: rgba(255,255,255,.92); font-weight: 700; }
+    .priority-high { color: #f0a0b0; }
+
+    .ar-summary {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      direction: rtl;
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .ar-summary-inner { margin: 0 auto; max-width: 780px; }
+    .ar-summary h2 { border: 0; font-size: 23px; margin-bottom: 12px; padding: 0; }
+    .ar-summary p { font-size: 17px; line-height: 2; margin-bottom: 10px; }
+
+    .container { padding-bottom: 48px; padding-top: 38px; }
+    section { margin-bottom: 38px; }
+    h2 {
+      border-bottom: 2px solid var(--gold);
+      color: var(--navy);
+      font-size: 24px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+    }
+    h3 { color: var(--navy); font-size: 19px; margin: 20px 0 9px; }
+    p { font-size: 17px; margin-bottom: 13px; }
+
+    .summary-box, .alert, .evidence-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+    }
+    .summary-box { background: var(--gold-bg); border-color: var(--gold-border); }
+    .alert-danger { background: var(--rose-bg); border-color: var(--rose-border); }
+    .alert-info { background: var(--teal-bg); border-color: var(--teal-border); }
+    .summary-box p:last-child, .alert p:last-child { margin-bottom: 0; }
+
+    .status-grid { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); margin: 18px 0; }
+    .status-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; text-align: center; }
+    .status-value { color: var(--navy); display: block; font-size: 20px; font-weight: 800; }
+    .status-value.fail { color: var(--rose); }
+    .status-label { color: var(--muted); font-size: 14px; }
+
+    .flow { display: grid; gap: 12px; margin-top: 16px; }
+    .flow-step { align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; display: grid; gap: 14px; grid-template-columns: 36px 1fr; padding: 16px 18px; }
+    .flow-number { align-items: center; background: var(--navy); border-radius: 50%; color: #fff; display: flex; font-weight: 800; height: 32px; justify-content: center; width: 32px; }
+    .flow-step p { color: var(--muted); font-size: 15px; margin: 2px 0 0; }
+
+    .code-block { background: var(--navy); border: 1px solid #2a2d40; border-radius: 10px; margin: 14px 0; overflow-x: auto; }
+    .code-header { background: rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.65); font-size: 14px; font-weight: 700; padding: 10px 18px; }
+    pre { color: #e2e4ef; font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 13px; line-height: 1.65; min-width: 700px; padding: 18px; white-space: pre; }
+    .code-add { color: var(--teal); font-weight: 700; }
+    .code-note { color: #ffd861; }
+
+    table { border-collapse: separate; border-spacing: 0; border: 1px solid var(--border); border-radius: 10px; margin: 14px 0; overflow: hidden; width: 100%; }
+    th, td { border-bottom: 1px solid var(--border); font-size: 15px; padding: 12px 14px; text-align: left; vertical-align: top; }
+    th { background: var(--surface-2); color: var(--navy); }
+    tr:last-child td { border-bottom: 0; }
+    .yes { color: #357b74; font-weight: 800; }
+    .no { color: var(--rose); font-weight: 800; }
+
+    .checklist { display: grid; gap: 10px; list-style: none; }
+    .checklist li { align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: 9px; display: grid; font-size: 16px; gap: 12px; grid-template-columns: 24px 1fr; padding: 13px 16px; }
+    .checklist li::before { color: #357b74; content: "✓"; font-size: 18px; font-weight: 800; }
+    .check-detail { color: var(--muted); font-size: 14px; margin-top: 2px; }
+
+    .footer { background: var(--surface); border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; padding: 28px 24px; text-align: center; }
+    .footer strong { display: block; margin-bottom: 3px; }
+
+    @media (max-width: 720px) {
+      .banner h1 { font-size: 28px; }
+      .status-grid { grid-template-columns: 1fr; }
+      table { display: block; overflow-x: auto; }
+      pre { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="banner">
+    <div class="banner-inner">
+      <div class="ticket-badge">Tracking Infrastructure · Open</div>
+      <h1>Ticket #013 - Allow Advertising Pixels Through the Website CSP</h1>
+      <div class="meta-row">
+        <div>Project: <span class="meta-value">asasmakeen.com</span></div>
+        <div>Priority: <span class="meta-value priority-high">High</span></div>
+        <div>Date: <span class="meta-value">July 12, 2026</span></div>
+        <div>Owner: <span class="meta-value">Website / CDN developer</span></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="ar-summary">
+    <div class="ar-summary-inner">
+      <h2>ملخص المهمة</h2>
+      <p>وسوم الإعلانات الخاصة بـ <strong>Snapchat وMeta وX</strong> يتم تفعيلها من Google Tag Manager، لكنها تفشل بعد ذلك لأن سياسة أمان المحتوى <strong>Content Security Policy (CSP)</strong> في موقع مكين تسمح بنطاقات Google فقط تقريباً، وتمنع تحميل مكتبات منصات الإعلانات الأخرى أو إرسال طلبات القياس إليها.</p>
+      <p>المطلوب هو تحديث ترويسة CSP الحالية وإضافة النطاقات الرسمية اللازمة لكل منصة، مع الحفاظ على جميع القيم الموجودة. <strong><code>tr.snapchat.com</code> نطاق رسمي تابع لـ Snapchat وليس نطاق دولة تركيا <code>.tr</code>.</strong> لا يوجد تعديل مطلوب على Triggers أو Pixel IDs داخل GTM.</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <section>
+      <div class="summary-box">
+        <p><strong>Problem:</strong> GTM invokes the Makeen Snap, Meta and X page-view tags, but the browser blocks their external JavaScript or measurement endpoints under the site's current CSP.</p>
+        <p><strong>Required fix:</strong> update the existing website/CDN CSP with the documented and runtime-verified hosts listed below. Clear the CDN cache, then verify all three platforms in GTM Preview and the browser network panel.</p>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-card"><span class="status-value fail">Failed</span><span class="status-label">Snap PageView</span></div>
+        <div class="status-card"><span class="status-value fail">Failed</span><span class="status-label">Meta PageView</span></div>
+        <div class="status-card"><span class="status-value fail">Failed</span><span class="status-label">X PageView</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔎 What Was Verified</h2>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-number">1</div>
+          <div><strong>GTM Preview connected successfully</strong><p>Container <code>GTM-PZC74T44</code> loaded on <code>https://asasmakeen.com/ar/</code>.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-number">2</div>
+          <div><strong>The triggers matched</strong><p>The affected tags appear under Tags Fired, proving that <code>All Pages</code> is not the shared problem.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-number">3</div>
+          <div><strong>Three advertising tags failed</strong><p>Tag Assistant reports the Snap, Meta and X page-view tags as failed while the Google tags fire successfully.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-number">4</div>
+          <div><strong>The website CSP excludes all three vendors</strong><p>The final HTTP 200 response permits Google hosts but omits the loaders and measurement hosts required by Snap, Meta and X.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🧭 Why This Is Happening</h2>
+      <table>
+        <thead><tr><th>Platform</th><th>Official loader / measurement hosts</th><th>Current result</th></tr></thead>
+        <tbody>
+          <tr><td>Google</td><td><code>googletagmanager.com</code> and existing Google measurement hosts</td><td class="yes">Allowed / fired</td></tr>
+          <tr><td>Snapchat</td><td><code>sc-static.net</code>, <code>tr.snapchat.com</code></td><td class="no">Blocked / failed</td></tr>
+          <tr><td>Meta</td><td><code>connect.facebook.net</code>, <code>www.facebook.com</code></td><td class="no">Blocked / failed</td></tr>
+          <tr><td>X</td><td><code>static.ads-twitter.com</code>, <code>ads-api.twitter.com</code>, <code>analytics.twitter.com</code>, <code>t.co</code></td><td class="no">Blocked / failed</td></tr>
+        </tbody>
+      </table>
+
+      <div class="alert alert-info">
+        <p><strong>Evidence standard:</strong> X publishes explicit CSP guidance. Snap explicitly documents its loader; the request directives are also verified through the installed GTM template and current runtime. Meta does not publish a complete public CSP table, so its hosts are taken from Meta's current platform-owned <code>fbevents.js</code>. <code>tr.snapchat.com</code> is under <code>snapchat.com</code>; it is not the Turkish country-code domain <code>.tr</code>.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>🛠️ Required Change</h2>
+      <p>Modify the <strong>existing</strong> <code>Content-Security-Policy</code> response header. Do not replace the full policy and do not remove any existing sources.</p>
+
+      <div class="code-block">
+        <div class="code-header">Minimum required additions</div>
+        <pre>script-src ...
+  <span class="code-add">https://sc-static.net</span>
+  <span class="code-add">https://connect.facebook.net</span>
+  <span class="code-add">https://static.ads-twitter.com</span>;
+
+connect-src ...
+  <span class="code-add">https://tr.snapchat.com</span>
+  <span class="code-add">https://connect.facebook.net</span>
+  <span class="code-add">https://www.facebook.com</span>
+  <span class="code-add">https://*.ads-twitter.com</span>
+  <span class="code-add">https://ads-api.twitter.com</span>
+  <span class="code-add">https://analytics.twitter.com</span>
+  <span class="code-add">https://t.co</span>;
+
+img-src ...
+  <span class="code-add">https://tr.snapchat.com</span>
+  <span class="code-add">https://www.facebook.com</span>
+  <span class="code-add">https://*.ads-twitter.com</span>
+  <span class="code-add">https://ads-api.twitter.com</span>
+  <span class="code-add">https://analytics.twitter.com</span>
+  <span class="code-add">https://t.co</span>;</pre>
+      </div>
+
+      <h3>Example using the current policy</h3>
+      <div class="code-block">
+        <div class="code-header">Content-Security-Policy</div>
+        <pre>Content-Security-Policy:
+  default-src 'self';
+  script-src 'self' 'unsafe-inline'
+    https://code.jquery.com
+    https://cdn.jsdelivr.net
+    https://www.googletagmanager.com
+    https://www.google-analytics.com
+    https://unpkg.com
+    <span class="code-add">https://sc-static.net</span>
+    <span class="code-add">https://connect.facebook.net</span>
+    <span class="code-add">https://static.ads-twitter.com</span>;
+  connect-src 'self'
+    https://www.saudiexchange.sa
+    https://www.google-analytics.com
+    https://analytics.google.com
+    https://www.googletagmanager.com
+    https://www.google.com
+    https://www.google.com.sa
+    https://www.googleadservices.com
+    https://ad.doubleclick.net
+    https://googleads.g.doubleclick.net
+    <span class="code-add">https://tr.snapchat.com</span>
+    <span class="code-add">https://connect.facebook.net</span>
+    <span class="code-add">https://www.facebook.com</span>
+    <span class="code-add">https://*.ads-twitter.com</span>
+    <span class="code-add">https://ads-api.twitter.com</span>
+    <span class="code-add">https://analytics.twitter.com</span>
+    <span class="code-add">https://t.co</span>;
+  img-src 'self' data: blob:
+    https://cdn.jsdelivr.net
+    https://www.saudiexchange.sa
+    https://www.google-analytics.com
+    https://www.googletagmanager.com
+    https://www.google.com
+    https://www.google.com.sa
+    https://www.googleadservices.com
+    https://googleads.g.doubleclick.net
+    https://ad.doubleclick.net
+    <span class="code-add">https://tr.snapchat.com</span>
+    <span class="code-add">https://www.facebook.com</span>
+    <span class="code-add">https://*.ads-twitter.com</span>
+    <span class="code-add">https://ads-api.twitter.com</span>
+    <span class="code-add">https://analytics.twitter.com</span>
+    <span class="code-add">https://t.co</span>;
+  <span class="code-note"># Keep the existing style-src, font-src and frame-src unchanged.</span></pre>
+      </div>
+
+      <div class="alert alert-danger">
+        <p><strong>Do not use a global <code>*</code>.</strong> Keep the allowlist vendor-specific. The only wildcard above is limited to X's <code>ads-twitter.com</code> subdomains, following X's own domain-level CSP guidance. <code>t.co</code> is included because X's current official <code>uwt.js</code> constructs measurement requests to it, even though the CSP paragraph does not name it.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>🚫 What Does Not Need to Change</h2>
+      <ul class="checklist">
+        <li><div><strong>Do not change the GTM page-view triggers.</strong><div class="check-detail"><code>All Pages</code> already matches; the shared failure occurs after invocation.</div></div></li>
+        <li><div><strong>Do not replace the vendor IDs.</strong><div class="check-detail">The failure pattern is host-level, not an invalid-ID diagnosis.</div></div></li>
+        <li><div><strong>Do not replace the tags with Custom HTML.</strong><div class="check-detail">Custom HTML would still load the same external vendor libraries and remain subject to CSP.</div></div></li>
+        <li><div><strong>Do not treat this as a geography issue.</strong><div class="check-detail">These are vendor service hostnames used by the integrations, not country-specific routing choices.</div></div></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>🖥️ Where to Apply It</h2>
+      <p>Update whichever layer currently emits the response header:</p>
+      <table>
+        <thead><tr><th>Possible owner</th><th>Typical location</th></tr></thead>
+        <tbody>
+          <tr><td>Hosting / CDN</td><td>Security headers, response-header rules, or edge configuration</td></tr>
+          <tr><td>Nginx</td><td><code>add_header Content-Security-Policy ... always;</code></td></tr>
+          <tr><td>Apache</td><td><code>Header always set Content-Security-Policy "..."</code> in server config or <code>.htaccess</code></td></tr>
+          <tr><td>Application</td><td>Security middleware or framework response headers</td></tr>
+        </tbody>
+      </table>
+      <p>Only one layer should own the effective policy. Check that the server and CDN are not emitting two conflicting CSP headers.</p>
+    </section>
+
+    <section>
+      <h2>✅ Acceptance Criteria</h2>
+      <ul class="checklist">
+        <li><div>The final <code>200</code> response includes all Snap, Meta and X additions under their specified CSP directives.</div></li>
+        <li><div>Website/CDN caches are cleared after deployment.</div></li>
+        <li><div><code>scevent.min.js</code>, <code>fbevents.js</code> and <code>uwt.js</code> load successfully in Chrome.</div></li>
+        <li><div><code>window.snaptr</code>, <code>window.fbq</code> and <code>window.twq</code> are defined after page load.</div></li>
+        <li><div>GTM Preview reports the Snap, Meta and X page-view tags as <strong>Fired</strong>, not Failed.</div></li>
+        <li><div>The Network panel shows successful vendor measurement requests to Snapchat, Meta and X endpoints.</div></li>
+        <li><div>Existing Google and other tracking tags are regression-tested after the CSP deployment.</div></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>🧪 Quick Verification</h2>
+      <div class="code-block">
+        <div class="code-header">Terminal and browser checks</div>
+        <pre><span class="code-note"># 1. Confirm the final response policy</span>
+curl -sSIL https://asasmakeen.com/ar/ \
+  | grep -i '^content-security-policy:'
+
+<span class="code-note"># 2. Confirm all three vendor loaders are reachable</span>
+curl -sSI https://sc-static.net/scevent.min.js | head -1
+curl -sSI https://connect.facebook.net/en_US/fbevents.js | head -1
+curl -sSI https://static.ads-twitter.com/uwt.js | head -1
+
+<span class="code-note"># 3. In Chrome after loading the site</span>
+typeof window.snaptr
+typeof window.fbq
+typeof window.twq
+<span class="code-add">// Expected for all three: "function"</span>
+
+<span class="code-note"># 4. In GTM Preview</span>
+Makeen Main | Snap | PageView
+Makeen Main | Meta | All Page View
+Makeen Main | X | All Page View
+<span class="code-add">// Expected for all three: Fired, not Failed</span></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔁 Optional Server-Side Alternative</h2>
+      <p>Snap, Meta and X each offer server-side conversion APIs. Those are separate implementations, not GTM web-tag toggles. They require platform credentials, backend event generation, attribution data, consent handling, verification and event deduplication.</p>
+      <div class="alert alert-info">
+        <p><strong>Recommendation:</strong> apply the CSP fix for the browser pixels now. Add server-side events later for high-value conversions such as leads, with platform-specific deduplication. Replacing browser pixels entirely is a separate architecture project.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>📚 References</h2>
+      <p><a href="https://developers.snap.com/marketing-api/Ads-API/snap-pixel">Snap for Developers — Snap Pixel</a></p>
+      <p><a href="https://developers.snap.com/marketing-api/Conversions-API/Introduction">Snap for Developers — Conversions API</a></p>
+      <p><a href="https://www.facebook.com/help/messenger-app/952192354843755">Meta Help — Set up and install the Meta Pixel</a></p>
+      <p><a href="https://connect.facebook.net/en_US/fbevents.js">Meta platform-owned Pixel runtime — fbevents.js</a></p>
+      <p><a href="https://business.x.com/en/help/campaign-measurement-and-analytics/conversion-tracking-for-websites?lang=en&amp;location=na">X Business — Conversion tracking and CSP guidance</a></p>
+      <p><a href="https://static.ads-twitter.com/uwt.js">X platform-owned Pixel runtime — uwt.js</a></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <strong>Makeen Development Ticket #013 · July 12, 2026</strong>
+    asasmakeen.com · Advertising pixel CSP remediation
+  </footer>
+</body>
+</html>
